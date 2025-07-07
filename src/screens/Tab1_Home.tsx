@@ -154,7 +154,7 @@ const HomeScreen: React.FC = () => {
     return (
 
         <View style={s_global.Container}>
-            <StatusBar style="light" backgroundColor={colors.main} />
+            <StatusBar style="light" />
             <View>
 
                 <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />

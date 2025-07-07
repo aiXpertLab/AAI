@@ -80,7 +80,7 @@ export const RestoreScreen: React.FC = () => {
 
     return (
         <View style={s_global.Container}>
-            <StatusBar style="light" backgroundColor={colors.main} />
+            <StatusBar style="light" />
             {/* List Section - takes remaining space */}
             <FlatList
                 data={
