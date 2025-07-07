@@ -19,7 +19,7 @@
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
+                "foregroundImage": "./assets/images/adaptive-icon.png",
                 "backgroundColor": "#ffffff"
             },
             "edgeToEdgeEnabled": true,
@@ -35,7 +35,8 @@
         },
         "plugins": [
             "expo-sqlite",
-            "expo-mail-composer"
+            "expo-mail-composer",
+            "expo-router"
         ],
         "extra": {
             "eas": {
