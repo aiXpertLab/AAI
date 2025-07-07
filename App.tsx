@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SQLiteProvider } from 'expo-sqlite';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { migrateDbIfNeeded } from '@/src/db/db_i';
+import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
+import AppNavigator from '@/src/navigation/AppNavigator';
+import Toast from 'react-native-toast-message';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+function App() {
+
+    return (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <SQLiteProvider databaseName="db.db" onInit={migrateDbIfNeeded}>
+                {/* <SimpleErrorBoundary> */}
+                <StartupWrapper />
+                <AppNavigator />
+                <Toast />
+                {/* </SimpleErrorBoundary> */}
+            </SQLiteProvider>
+        </GestureHandlerRootView>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;

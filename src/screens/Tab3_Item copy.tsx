@@ -1,0 +1,178 @@
+import React, { useEffect, useState, useCallback } from "react";
+import { View, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+
+import { Swipeable } from 'react-native-gesture-handler';
+
+import { useModalStore } from '@/src/stores/useModalStore';
+import { cameraB64, processB64Item, uploadB64 } from "@/src/utils/u_img64";
+
+import { useSQLiteContext } from "expo-sqlite";
+import { Ionicons } from '@expo/vector-icons';
+
+import { useItemStore } from '@/src/stores/useItemStore';
+import { s_global, colors } from "@/src/constants";
+
+import { RootStackPara, ItemDB } from '@/src/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+import { useTabSync } from '@/src/hooks/useTabSync';
+import M_Spinning from "@/src/modals/M_Spinning";
+import { useItemCrud } from "../db/crud_item";
+import { M_Confirmation } from "../modals";
+
+const ItemsScreen: React.FC = () => {
+    useTabSync('items');
+    const db = useSQLiteContext();
+    const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const [isFocused, setIsFocused] = useState(false);
+    const [items, setItems] = useState<ItemDB[]>([]);
+    const { createEmptyItem4New, clearOItem } = useItemStore();  // 🧠 Zustand action
+    const [isProcessing, setIsProcessing] = React.useState(false);
+    const { oItem, setOItem, updateOItem } = useItemStore();  // 🧠 Zustand action
+
+    const [previewItems, setPreviewItems] = useState<ItemDB[]>([]);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const { insertItem , updateItem} = useItemCrud();
+
+
+    const fetchItems = async () => {
+        try {
+            const activeItems = await db.getAllAsync<ItemDB>("SELECT * FROM Items where NOT is_deleted ORDER BY id DESC");
+            setItems(activeItems);
+        } catch (err) { console.error("Failed to load Items:", err); }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            setIsFocused(true);
+            return () => setIsFocused(false);
+        }, [])
+    );
+
+    React.useEffect(() => { hideFilterIcon(); }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", fetchItems);
+        return unsubscribe;
+    }, [navigation]);
+
+
+    const handleUploadImage = async () => {
+        const base64Image = await uploadB64();
+        const items = await processB64Item(base64Image, setIsProcessing);
+        if (items && items.length > 0) {
+            setPreviewItems(items);
+            setShowConfirm(true);
+        }
+    };
+
+    const handleCamera = async () => {
+        const base64Image = await cameraB64();
+        await processB64Item(base64Image, setIsProcessing);
+    };
+
+    const cancelInsert = () => {
+        setPreviewItems([]);
+        setShowConfirm(false);
+    };
+
+
+    const confirmInsert = async () => {
+        for (const item of previewItems) {
+            await insertItem(item);  // insertItem already has defaults
+        }
+        setPreviewItems([]);
+        setShowConfirm(false);
+        fetchItems();  // refresh from DB
+    };
+
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <View style={{ flexDirection: 'row', marginRight: 10, alignItems: 'flex-end' }}>
+
+                    <TouchableOpacity onPressIn={handleUploadImage} style={{ marginRight: 20 }}>
+                        <Ionicons name="arrow-up" size={28} color="#fff" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPressIn={handleCamera} style={{ marginRight: 0 }}>
+                        <Ionicons name="camera-outline" size={28} color="#fff" />
+                    </TouchableOpacity>
+
+                </View>
+            )
+        });
+    }, [navigation]);
+
+    const renderItem = ({ item }: { item: ItemDB }) => (
+        <TouchableOpacity
+            style={s_global.Card}
+            onPress={() => {
+                setOItem(item)
+                navigation.navigate('DetailStack', {
+                    screen: 'Tab3_Item_Form',
+                    params: { mode: 'modify_existed' }
+                });
+            }}
+            onLongPress={() => console.log("Long Press - maybe show item options", item.id)}
+        >
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}>
+                <Text style={s_global.Label_BoldLeft_RegularRight} numberOfLines={1}>{item.item_name}</Text>
+                <Text>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(item.item_rate))}</Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}>
+                <View style={{ flex: 1, marginRight: 8 }}>
+                    <Text style={s_global.Content_Left_Right} numberOfLines={3}>
+                        {item.item_description}
+                    </Text>
+                </View>
+                <Text style={[s_global.Content, { textAlign: 'right', maxWidth: 180 }]} numberOfLines={1}>
+                    {item.item_sku}
+                </Text>
+            </View>
+
+        </TouchableOpacity>
+    );
+
+    return (
+        <View style={s_global.Container}>
+            <M_Spinning visible={isProcessing} />
+
+            {items.length === 0 ? (
+                <Text style={s_global.EmptyText}>No Items yet. Tap ➕ to add one.</Text>
+            ) : (
+                <FlatList
+                    data={items}
+                    keyExtractor={(item) => item.id!.toString()}
+                    renderItem={renderItem}
+                />
+            )}
+
+            <TouchableOpacity style={[s_global.FABSquare,]}
+                onPress={() => {
+                    createEmptyItem4New();
+                    navigation.navigate('DetailStack', {
+                        screen: 'Tab3_Item_Form',
+                        params: { mode: 'create_new' }
+                    });
+                }}
+            >
+                <Ionicons name="add" size={42} color="white" />
+            </TouchableOpacity>
+            <M_Confirmation
+                visible={showConfirm}
+                title="Confirm Import"
+                message={`Import ${previewItems.length} new item(s)?`}
+                confirmText="Yes, Import"
+                cancelText="Cancel"
+                onConfirm={confirmInsert}
+                onCancel={cancelInsert}
+            />
+        </View>
+
+    );
+};
+
+export default ItemsScreen;
