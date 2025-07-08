@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert } from 'react-native';
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-} from 'firebase/auth';
+import {signInWithEmailAndPassword,createUserWithEmailAndPassword,} from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig'; // Adjust the import path as necessary
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/src/types/RootStackParamList';
+type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
 export default function SmartAuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const navigation = useNavigation();
+    
+    const navigation = useNavigation<RootNav>();
 
     const handleAuth = async () => {
         setMessage('');
@@ -27,18 +28,20 @@ export default function SmartAuthScreen() {
         try {
             await signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
             setMessage('✅ Signed in successfully!');
-            navigation.navigate('Home');
+            navigation.navigate('MainDrawer');
         } catch (signInError: any) {
             console.log('Sign-in error:', signInError.code, signInError.message);
 
-            if (
+            // Treat both errors as "user not found"
+            const treatAsUserNotFound =
                 signInError.code === 'auth/user-not-found' ||
-                signInError.code === 'auth/invalid-credential'
-            ) {
+                signInError.code === 'auth/invalid-credential';
+
+            if (treatAsUserNotFound) {
                 try {
                     await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
-                    setMessage('✅ Account created and signed in!');
-                    navigation.navigate('Home');
+                    setMessage('✅ New account created and signed in!');
+                    navigation.navigate('MainDrawer');
                 } catch (signUpError: any) {
                     console.log('Sign-up error:', signUpError.code, signUpError.message);
                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
@@ -50,6 +53,7 @@ export default function SmartAuthScreen() {
             }
         }
     };
+
 
 
 

@@ -5,6 +5,7 @@ import type { DetailStackParamList } from './DetailStackParamList';  // we'll de
 
 export type RootStackParamList = {
     Home: undefined;
+    MainDrawer: undefined;
     Inv_New: undefined;
     Inv_Pay: undefined;
     Inv1Me_BizForm: undefined;
