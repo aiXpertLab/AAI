@@ -23,7 +23,7 @@ const CustomDrawerContent = (props: any) => {
     };
 
     const handleSignIn = () => {
-        props.navigation.navigate('DetailStack', { screen: 'SignInSignUpScreen' });
+        props.navigation.navigate('DetailStack', { screen: 'Sign' });
     };
 
     const handleRateUs = () => {
@@ -84,6 +84,7 @@ const CustomDrawerContent = (props: any) => {
     };
 
     const statusList = [
+        { icon: 'log-in-outline', label: 'Sign In', onPress: handleSignIn },
         { icon: 'help-circle-outline', label: 'FAQ & Support', onPress: handleSupport },
         { icon: 'star-outline', label: 'Rate Us', onPress: handleRateUs },
         { icon: 'share-social-outline', label: 'Share App', onPress: handleShareApp },
@@ -111,7 +112,7 @@ const CustomDrawerContent = (props: any) => {
                 {statusList.map((item, index) => (
                     <React.Fragment key={index}>
                         {/* Divider before "Share App" */}
-                        {(item.label === "Archived" || item.label === "Privacy Policy" ) && (
+                        {(item.label === "Archived" || item.label === "Privacy Policy") && (
                             <View style={{ borderBottomWidth: 1, borderBottomColor: '#ccc', marginVertical: 12 }} />
                         )}
                         <TouchableOpacity style={s_global.DrawerItem} onPress={item.onPress}>
