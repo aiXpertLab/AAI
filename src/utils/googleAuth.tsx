@@ -1,25 +1,29 @@
 import * as Google from 'expo-auth-session/providers/google';
 import { auth } from '@/src/config/firebaseConfig';
+import * as AuthSession from 'expo-auth-session';
 import { useEffect } from 'react';
 import { onAuthStateChanged, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 
 export function useGoogleAuth(navigation: any) {
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: 'YOUR_EXPO_CLIENT_ID.apps.googleusercontent.com',
-    androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com',
-    iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',
-    webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com',
-  });
+    const redirectUri = AuthSession.makeRedirectUri({
+        scheme: 'aiaa',
+    });
 
-  useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential)
-        .then(() => navigation.navigate('MainDrawer'))
-        .catch((err) => console.log('Google Sign-In Error:', err));
-    }
-  }, [response]);
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        androidClientId: '497498007772-r8759r8b9ssb12imubj77tgk9np0tpd8.apps.googleusercontent.com',
+        webClientId: '497498007772-f6gaje06h9beracmiadpa1gfhisgoncb.apps.googleusercontent.com',
+        redirectUri,
+    });
 
-  return { promptAsync };
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            const credential = GoogleAuthProvider.credential(id_token);
+            signInWithCredential(auth, credential)
+                .then(() => navigation.navigate('MainDrawer'))
+                .catch((err) => console.log('Google Sign-In Error:', err));
+        }
+    }, [response]);
+
+    return { promptAsync };
 }

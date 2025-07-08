@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-    View,
-    TextInput,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    Alert,
-} from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert, } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +7,6 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
-
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -96,7 +88,7 @@ export default function SmartAuthScreen() {
             <View style={styles.passwordContainer}>
                 <TextInput
                     style={styles.passwordInput}
-                    placeholder="Enter your 2 password"
+                    placeholder="Enter your password"
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
@@ -118,14 +110,14 @@ export default function SmartAuthScreen() {
             </TouchableOpacity>
 
 
-            <Text style={styles.orText}>────────  or  ────────</Text>
+            {/* <Text style={styles.orText}>────────  or  ────────</Text>
 
             <TouchableOpacity onPress={() => promptAsync()}>
                 <View style={styles.socialCircle}>
                     <Text>G</Text>
                 </View>
             </TouchableOpacity>
-
+            */}
 
             <TouchableOpacity style={styles.signUpButton}>
                 <Text style={styles.signUpText}>Sign up</Text>

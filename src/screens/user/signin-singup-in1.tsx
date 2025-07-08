@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, Alert } from 'react-native';
-import {signInWithEmailAndPassword,createUserWithEmailAndPassword,} from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig'; // Adjust the import path as necessary
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -11,7 +11,7 @@ export default function SmartAuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    
+
     const navigation = useNavigation<RootNav>();
 
     const handleAuth = async () => {
