@@ -37,7 +37,6 @@
       "expo-sqlite",
       "expo-mail-composer",
       "expo-router",
-      "expo-facebook",
       "expo-build-properties"
     ],
     "extra": {

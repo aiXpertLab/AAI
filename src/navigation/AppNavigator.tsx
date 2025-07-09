@@ -1,7 +1,8 @@
 // AppNavigator.tsx
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import analytics from '@react-native-firebase/analytics';
 
 import { colors } from "@/src/constants";
 import DrawerNavigator from './DrawerNavigator';
@@ -15,13 +16,14 @@ import Tab3_Item from '@/src/screens/Tab3_Item';
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
-import {Inv_Pay,Inv1Me_BizForm, Inv4Total_TaxForm} from "@/src/screens/invoice";
-import {Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List} from "@/src/screens/biz";
+import { Inv_Pay, Inv1Me_BizForm, Inv4Total_TaxForm } from "@/src/screens/invoice";
+import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 
-import {SupportHub,RestoreScreen} from "@/src/screens/drawer";
+import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
 
 const RootStack = createNativeStackNavigator();
 const DetailStack = createNativeStackNavigator();
+// const navigationRef = useNavigationContainerRef();
 
 function DetailStackNavigator() {
     return (
@@ -54,7 +56,19 @@ function DetailStackNavigator() {
 }
 
 const AppNavigator = () => (
-    <NavigationContainer>
+    <NavigationContainer
+    //     ref={navigationRef}
+    //     onStateChange={async () => {
+    //         const currentRoute = navigationRef.getCurrentRoute();
+    //         if (currentRoute) {
+    //             await analytics().logScreenView({
+    //                 screen_name: currentRoute.name,
+    //                 screen_class: currentRoute.name,
+    //             });
+    //         }
+    //     }}
+    >
+
         <RootStack.Navigator screenOptions={{ headerShown: false }}>
             <RootStack.Screen name="MainDrawer" component={DrawerNavigator} />
             <RootStack.Screen name="DetailStack" component={DetailStackNavigator} />
