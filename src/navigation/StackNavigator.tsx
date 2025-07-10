@@ -20,9 +20,8 @@ import { Inv_Pay, Inv1Me_BizForm, Inv4Total_TaxForm } from "@/src/screens/invoic
 import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 
 import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
-import TestScreen from '../screens/drawer/TestScreen';
+import TestScreen from '@/src/screens/drawer/TestScreen';
 
-const RootStack = createNativeStackNavigator();
 const DetailStack = createNativeStackNavigator();
 // const navigationRef = useNavigationContainerRef();
 
@@ -56,6 +55,5 @@ function StackNavigator() {
         </DetailStack.Navigator>
     );
 }
-
 
 export default StackNavigator;
