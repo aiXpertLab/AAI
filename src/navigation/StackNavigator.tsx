@@ -20,6 +20,7 @@ import { Inv_Pay, Inv1Me_BizForm, Inv4Total_TaxForm } from "@/src/screens/invoic
 import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 
 import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
+import TestScreen from '../screens/drawer/TestScreen';
 
 const RootStack = createNativeStackNavigator();
 const DetailStack = createNativeStackNavigator();
@@ -50,6 +51,7 @@ function StackNavigator() {
             <DetailStack.Screen name="PaymentMethod_Form" component={PaymentMethod_Form} options={{ title: 'Payment Method' }} />
             <DetailStack.Screen name="RestoreScreen" component={RestoreScreen} options={{ title: 'Restore' }} />
             <DetailStack.Screen name="SupportHub" component={SupportHub} options={{ title: 'Support Hub' }} />
+            <DetailStack.Screen name="TestScreen" component={TestScreen} options={{ title: 'Test Screen' }} />
             <DetailStack.Screen name="Biz_Logo" component={Biz_Logo} options={{ title: 'Logo' }} />
         </DetailStack.Navigator>
     );

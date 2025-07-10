@@ -18,6 +18,7 @@ export type DetailStackPara = {
     Inv4Total_TaxForm: undefined;
     Tab2_Client: undefined;
     Tab3_Item: undefined;
+    TestScreen: undefined;
 
     Restore: { mode?: 'restore_deleted' | 'restore_archived' };
     CreateModify: { mode?: 'create_new' | 'modify_existed' };

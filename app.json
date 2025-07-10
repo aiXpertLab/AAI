@@ -2,7 +2,7 @@
     "expo": {
         "name": "AI Auto Invoicing",
         "slug": "ai-auto-invoicing",
-        "version": "3.35.708",
+        "version": "3.35.710",
         "orientation": "portrait",
         "icon": "./assets/images/icon5.png",
         "scheme": "aiaa",

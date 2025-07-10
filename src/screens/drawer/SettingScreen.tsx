@@ -1,6 +1,6 @@
 // src/screens/Drawer_Settings_Screen.tsx
 import React, { useLayoutEffect, useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Switch } from "react-native";
+import { View, Text, ScrollView, Pressable, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DetailStackPara } from "@/src/types";
@@ -64,7 +64,17 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem title="Share App" />
             </Section> */}
 
-            <Text style={s_global.Setting_VersionText}>Version: {version}</Text>
+            {/* <Text style={s_global.Setting_VersionText}>Version: {version}</Text> */}
+            <Pressable
+                onLongPress={() => {
+                    navigation.navigate('TestScreen'); // or your route name
+                }}
+                delayLongPress={1500} // optional: require holding for 1.5s
+            >
+                <Text style={s_global.Setting_VersionText}>
+                    Version: {version}
+                </Text>
+            </Pressable>
         </ScrollView>
     );
 };
