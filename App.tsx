@@ -6,13 +6,18 @@ import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
 import AppNavigator from '@/src/navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
 
+import { analytics } from '@/src/config/firebaseConfig'; // ✅ import firebase analytics
+import { logEvent } from 'firebase/analytics';
+
 // import analytics from '@react-native-firebase/analytics';
 
 function App() {
-    
-    // useEffect(() => {
-    //     analytics().logAppOpen(); // logs "app_open" event
-    // }, []);
+
+    useEffect(() => {
+        if (analytics) {
+            logEvent(analytics, 'app_open');
+        }
+    }, []);
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
