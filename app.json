@@ -1,49 +1,60 @@
 {
-  "expo": {
-    "name": "AI Auto Invoicing",
-    "slug": "ai-auto-invoicing",
-    "version": "3.35.708",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon5.png",
-    "scheme": "aiaa",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash-icon5.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.aixpertlab.aiautoinvoicing"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true,
-      "permissions": [
-        "com.android.vending.BILLING"
-      ],
-      "package": "com.aixpertlab.aiautoinvoicing"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-sqlite",
-      "expo-mail-composer",
-      "expo-router",
-      "expo-build-properties"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "34b54ade-5bad-41d3-aba2-f67589a7044c"
-      }
-    },
-    "owner": "aixpertlab"
-  }
+    "expo": {
+        "name": "AI Auto Invoicing",
+        "slug": "ai-auto-invoicing",
+        "version": "3.35.708",
+        "orientation": "portrait",
+        "icon": "./assets/images/icon5.png",
+        "scheme": "aiaa",
+        "userInterfaceStyle": "automatic",
+        "newArchEnabled": true,
+        "splash": {
+            "image": "./assets/images/splash-icon5.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.aixpertlab.aiautoinvoicing"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/images/adaptive-icon.png",
+                "backgroundColor": "#ffffff"
+            },
+            "edgeToEdgeEnabled": true,
+            "googleServicesFile": "./google-services.json",
+            "permissions": [
+                "com.android.vending.BILLING"
+            ],
+            "package": "com.aixpertlab.aiautoinvoicing"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/images/favicon.png"
+        },
+        "plugins": [
+            "expo-sqlite",
+            "expo-mail-composer",
+            "expo-router",
+            "expo-build-properties",
+            "@react-native-firebase/app",
+            "@react-native-firebase/crashlytics",
+            [
+                "expo-build-properties",
+                {
+                    "ios": {
+                        "useFrameworks": "static"
+                    }
+                }
+            ]
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "34b54ade-5bad-41d3-aba2-f67589a7044c"
+            }
+        },
+        "owner": "aixpertlab"
+    }
 }

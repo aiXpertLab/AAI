@@ -11,6 +11,7 @@ import Toast from 'react-native-toast-message';
 import analytics from '@react-native-firebase/analytics';
 import crashlytics from '@react-native-firebase/crashlytics';
 
+crashlytics().setCrashlyticsCollectionEnabled(true);
 analytics().setAnalyticsCollectionEnabled(true);
 analytics().setSessionTimeoutDuration(1800000); // optional
 analytics().setUserId('debug_user'); // optional
@@ -20,6 +21,10 @@ const TestScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>🔥 Firebase Test Screen</Text>
+            <Button
+                title="Crash 11 Test"
+                onPress={() => crashlytics().crash()}
+            />
             <Button
                 title="Send Analytics Event"
                 onPress={() => {
@@ -45,6 +50,12 @@ function App() {
 
         // ✅ Log to Crashlytics (no crash by default)
         crashlytics().log('App booted — Crashlytics logging active');
+    }, []);
+
+
+    useEffect(() => {
+        crashlytics().setCrashlyticsCollectionEnabled(true);
+        crashlytics().log('App started – crashlytics enabled');
     }, []);
 
     return (
@@ -79,53 +90,3 @@ const styles = StyleSheet.create({
     },
 });
 
-
-
-
-// import { useEffect } from 'react';
-// import { SQLiteProvider } from 'expo-sqlite';
-// import { GestureHandlerRootView } from 'react-native-gesture-handler';
-// import { migrateDbIfNeeded } from '@/src/db/db_i';
-// import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
-// import AppNavigator from '@/src/navigation/AppNavigator';
-// import Toast from 'react-native-toast-message';
-
-// // import { analytics } from '@/src/config/firebaseConfig'; // ✅ import firebase analytics
-// import { logEvent } from 'firebase/analytics';
-
-// import TestScreen from './src/screens/TestScreen';
-
-// // import analytics from '@react-native-firebase/analytics';
-// import analytics from '@react-native-firebase/analytics';
-// import crashlytics from '@react-native-firebase/crashlytics';
-
-// function App() {
-
-//     // useEffect(() => {
-//     //     if (analytics) {
-//     //         logEvent(analytics, 'app_open');
-//     //     }
-//     // }, []);
-
-//     useEffect(() => {
-//         analytics().logEvent('test_event', { debug: true });
-
-//         crashlytics().log('App booted — testing crash logging');
-//         crashlytics().crash(); // Uncomment only for crash test
-//     }, []);
-
-
-//     return (
-//         <GestureHandlerRootView style={{ flex: 1 }}>
-//             <SQLiteProvider databaseName="db.db" onInit={migrateDbIfNeeded}>
-//                 {/* <SimpleErrorBoundary> */}
-//                 <StartupWrapper />
-//                 <AppNavigator />
-//                 <Toast />
-//                 {/* </SimpleErrorBoundary> */}
-//             </SQLiteProvider>
-//         </GestureHandlerRootView>
-//     );
-// }
-
-// export default App;
