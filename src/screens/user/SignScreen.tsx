@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {    View, TextInput, Text, TouchableOpacity, ScrollView,    StyleSheet, Alert, KeyboardAvoidingView, Platform} from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, ScrollView, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
+import analytics from '@react-native-firebase/analytics';
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -73,6 +74,9 @@ export default function SmartAuthScreen() {
         }
     };
 
+    useEffect(() => {
+        analytics().logEvent('sign_in_page_open');
+    }, []);
 
     return (
         <KeyboardAvoidingView
