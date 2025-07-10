@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "497498007772",
+    "project_id": "aiinvapp",
+    "storage_bucket": "aiinvapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497498007772:android:f0d46420d4ea8dca8a2c19",
+        "android_client_info": {
+          "package_name": "com.aixpertlab.aiautoinvoicing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6QZYvm1sd4ARKYmPeS5MJLz1h-oCfs8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
