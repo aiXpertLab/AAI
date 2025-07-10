@@ -25,8 +25,6 @@ export const InvoiceCard: React.FC<Props> = ({ item }) => {
             }
         ]} >
             <View style={{ flexDirection: 'row', alignItems: 'center', padding: 6 }}>
-                {/* <Text style={{ marginRight: 12 }}>{item.inv_flag_emoji}</Text> */}
-
                 <View style={{ flex: 1 }}>
                     <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>{item.client_company_name}</Text>
                     <Text style={{ color: 'gray', lineHeight: 20 }}>{item.inv_number}</Text>

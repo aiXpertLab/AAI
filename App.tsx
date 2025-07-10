@@ -5,6 +5,7 @@ import { migrateDbIfNeeded } from '@/src/db/db_i';
 import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
 import AppNavigator from '@/src/navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
+import "./global.css"
 
 // import analytics from '@react-native-firebase/analytics';
 
