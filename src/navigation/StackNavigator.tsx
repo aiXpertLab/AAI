@@ -1,11 +1,8 @@
 // AppNavigator.tsx
 import React from 'react';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import analytics from '@react-native-firebase/analytics';
 
 import { colors } from "@/src/constants";
-import DrawerNavigator from './DrawerNavigator';
 import Drawer_Settings from "@/src/screens/drawer/SettingScreen";
 
 import Tab2_Client_Form from '@/src/screens/Tab2_Client_Form';
