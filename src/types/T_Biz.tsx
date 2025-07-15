@@ -48,9 +48,9 @@ export interface TaxPickerModalProps {
 
 
 export interface PMDB {
-    id: number;
-    user_id: number;
-    biz_id: number;
+    id: string;
+    user_id: string;
+    biz_id: string;
 
     pm_name: string;
     pm_note: string;

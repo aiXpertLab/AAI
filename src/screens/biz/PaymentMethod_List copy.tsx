@@ -4,6 +4,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from 'expo-status-bar';
 import { useModalStore } from '@/src/stores/useModalStore';
 
+import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
 import { usePMStore } from '@/src/stores/useInvStore';
@@ -14,29 +15,18 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTabSync } from '@/src/hooks/useTabSync';
 
-// Firestore imports
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-import { app } from "@/src/config/firebaseConfig";
-
 export const PaymentMethod_List: React.FC = () => {
     useTabSync('items');
+    const db = useSQLiteContext();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<PMDB[]>([]);
     const { oPM, setOPM, createEmptyPM4New  } = usePMStore();  // 🧠 Zustand action
 
-    // Firestore fetch
     const fetchItems = async () => {
         try {
-            const db = getFirestore(app);
-            const colRef = collection(db, "payment_methods");
-            const q = query(colRef, where("is_deleted", "==", 0));
-            const snapshot = await getDocs(q);
-            const activeItems: PMDB[] = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                id: doc.id, // Use Firestore doc ID
-            })) as PMDB[];
+            const activeItems = await db.getAllAsync<PMDB>("SELECT * FROM payment_methods where NOT is_deleted");
             setItems(activeItems);
         } catch (err) { console.error("Failed to load Items:", err); }
     };
@@ -49,6 +39,7 @@ export const PaymentMethod_List: React.FC = () => {
     );
 
     React.useEffect(() => { hideFilterIcon(); }, []);
+
 
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", fetchItems);

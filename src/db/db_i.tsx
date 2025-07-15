@@ -4,6 +4,7 @@ import { createClientsTable, seedClients } from './db_clients';
 import { createInvoicesTable, seedInvoices } from './db_invoices';
 import { createItemsTable, seedItems } from './db_items';
 import { seedDemoInvoices } from './seedDemoInvoices';
+import { seedPaymentMethodsFirestore } from '../firestore/seedPaymentMethods';
 
 // Function to initialize or migrate the database
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {
@@ -13,9 +14,12 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     const currentDbVersion = result?.user_version ?? 0;
 
     if (currentDbVersion >= DATABASE_VERSION) {
-        return;         
+        // return;         
         console.log('new db created.');
     }
+
+    await seedPaymentMethodsFirestore();
+
 
     // Drop existing tables (if any) and recreate them with the new schema
     await db.execAsync(`
