@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Text, TouchableOpacity, ScrollView, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
@@ -7,11 +7,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
+import { colors } from '@/src/constants/colors';
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
 export default function SmartAuthScreen() {
-    const navigation = useNavigation<RootNav>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -92,160 +93,73 @@ export default function SmartAuthScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            style={styles.wrapper}
+            className="flex-1 bg-white"
         >
-            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
-                <View style={styles.container}>
-                    <Text style={styles.title}>AI Auto Invoicing</Text>
-                    <Text style={styles.subtitle}>
-                        Sign in for a smarter invoicing experience.
-                    </Text>
-
+            <View className="flex-1 justify-center px-6 mt-0">
+                {/* Logo */}
+                <View className="items-center mt-0 mb-10">
+                    <Image source={require('@/assets/logo_transparent.png')} className="w-[280px] mb-2" resizeMode="contain" />
+                </View>
+                {/* Welcome text */}
+                <Text className="text-center text-xl font-bold text-black mb-10">Welcome to AI Auto Invoicing!</Text>
+                <Text className="text-center text-gray-400 mb-10">Sign in for a smarter invoicing experience.</Text>
+                {/* Email input */}
+                <View className="mb-8">
                     <TextInput
-                        style={styles.input}
+                        className="bg-gray-100 rounded-full px-5 py-3 text-base"
                         placeholder="Email"
+                        placeholderTextColor="#B0B0B0"
                         value={email}
                         onChangeText={setEmail}
                         autoCapitalize="none"
                         keyboardType="email-address"
                     />
-
-                    <View style={styles.passwordContainer}>
-                        <TextInput
-                            style={styles.passwordInput}
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry={!showPassword}
-                        />
-                        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                            <Text style={styles.showText}>{showPassword ? 'Hide' : 'Show'}</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <TouchableOpacity style={styles.loginButton} onPress={handleAuth}>
-                        <Text style={styles.loginButtonText}>Sign In / Register</Text>
-                    </TouchableOpacity>
-
-                    {/* Guest/Anonymous option */}
-                    <TouchableOpacity style={styles.guestButton} onPress={handleAnonymous}>
-                        <Text style={styles.guestButtonText}>Continue as Guest (No Registration Required)</Text>
-                    </TouchableOpacity>
-
-                    {message ? <Text style={styles.message}>{message}</Text> : null}
-
-                    <TouchableOpacity onPress={handleForgotPassword}>
-                        <Text style={styles.forgotPassword}>Forgot password?</Text>
-                    </TouchableOpacity>
-
-                    {/* <Text style={styles.orText}>────────  or  ────────</Text>
-
-        <TouchableOpacity onPress={() => promptAsync()}>
-          <View style={styles.socialCircle}>
-            <Text>G</Text>
-          </View>
-        </TouchableOpacity> */}
-
-                    <TouchableOpacity style={styles.signUpButton}>
-                        <Text style={styles.signUpText}>Have a reference number? Register here</Text>
+                </View>
+                {/* Password input with eye toggle */}
+                <View className="mb-4 flex-row items-center bg-gray-100 rounded-full px-5">
+                    <TextInput
+                        className="flex-1 py-3 text-base"
+                        placeholder="Password"
+                        placeholderTextColor="#B0B0B0"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={!showPassword}
+                    />
+                    <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                        <Text className="text-gray-400 font-bold ml-2">{showPassword ? '🙈' : '👁️'}</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+                {/* Login button */}
+                <TouchableOpacity
+                    className="mt-6 mb-8 rounded-full py-4 items-center"
+                    style={{ backgroundColor: colors.main }}
+                    onPress={handleAuth}
+                >
+                    <Text className="text-white font-bold text-base tracking-wide">LOGIN</Text>
+                </TouchableOpacity>
+                {/* Forgot password */}
+                <View className="flex-row justify-between items-center w-full mb-8">
+                    <TouchableOpacity onPress={handleAnonymous}>
+                        <Text className="text-gray-400  text-sm">Continue as Guest</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleForgotPassword}>
+                        <Text className="text-right text-sm" style={{ color: colors.main }}>Forgot password?</Text>
+                    </TouchableOpacity>
+                </View>
+                {/* <TouchableOpacity onPress={handleForgotPassword} className="mb-8">
+                    <Text className="text-center" style={{ color: colors.main }}>Forgot password?</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleAnonymous}>
+                    <Text className="text-center text-gray-400 text-sm underline">Continue as Guest</Text>
+                </TouchableOpacity> */}
+
+                {message ? <Text className="text-center text-red-500 mb-2">{message}</Text> : null}
+            </View>
+            {/* Register link at the bottom */}
+            <View className="absolute bottom-8 w-full flex-row justify-center">
+                <Text className="text-gray-400">Don't have an account? </Text>
+                <Text className="font-bold" style={{ color: colors.main }}>Register!</Text>
+            </View>
         </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    scrollContainer: {
-        paddingTop: 60, // reduced top padding
-        paddingHorizontal: 24,
-        paddingBottom: 60,
-    },
-    container: {
-        flexGrow: 1,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: '#F28500',
-        textAlign: 'center',
-        marginBottom: 16,
-    },
-    subtitle: {
-        textAlign: 'center',
-        marginBottom: 24,
-        fontSize: 14,
-        color: '#555',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 12,
-        borderRadius: 6,
-        marginBottom: 22,
-    },
-    passwordContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 6,
-        marginBottom: 16,
-        paddingRight: 12,
-    },
-    passwordInput: {
-        flex: 1,
-        padding: 12,
-    },
-    showText: {
-        color: '#aaa',
-        fontWeight: '600',
-    },
-    loginButton: {
-        backgroundColor: '#F28500',
-        paddingVertical: 14,
-        borderRadius: 30,
-        alignItems: 'center',
-        marginBottom: 22,
-        marginTop: 22,
-    },
-    loginButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-    message: {
-        textAlign: 'center',
-        color: 'red',
-        marginBottom: 8,
-    },
-    forgotPassword: {
-        textAlign: 'center',
-        color: '#aaa',
-        marginBottom: 30,
-    },
-    signUpButton: {
-        paddingVertical: 12,
-    },
-    signUpText: {
-        textAlign: 'center',
-        color: '#aaa',
-        fontWeight: 'bold',
-    },
-    guestButton: {
-        backgroundColor: '#aaa',
-        paddingVertical: 14,
-        borderRadius: 30,
-        alignItems: 'center',
-        marginBottom: 22,
-    },
-    guestButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-});

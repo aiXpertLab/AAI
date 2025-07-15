@@ -104,7 +104,17 @@ const CustomDrawerContent = (props: any) => {
                     style={{ width: 200, height: 60, borderRadius: 32 }}
                     resizeMode="contain"
                 />
-                <Text style={s_global.Textfff}>AI Auto Invoicing</Text>
+                <TouchableOpacity onPress={async () => {
+                    try {
+                        const { signOut } = await import('firebase/auth');
+                        const { auth } = await import('@/src/config/firebaseConfig');
+                        await signOut(auth);
+                    } catch (error) {
+                        // Optionally handle error
+                    }
+                }}>
+                    <Text style={s_global.Textfff}>AI Auto Invoicing</Text>
+                </TouchableOpacity>
             </View>
 
 
