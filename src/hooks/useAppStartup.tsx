@@ -28,8 +28,8 @@ export const useAppStartup = () => {
                     }) || '',
                 });
 
-                Purchases.setDebugLogsEnabled(true); // Optional: for logging in development mode
-                console.log('RevenueCat configured successfully');
+                // Purchases.setDebugLogsEnabled(true); // Optional: for logging in development mode
+                // console.log('RevenueCat configured successfully');
             } catch (error) {
                 console.error("Startup: Failed to fetch oBiz", error);
             }

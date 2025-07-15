@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, TouchableOpacity, ScrollView, StyleSheet, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -41,6 +41,7 @@ export default function SmartAuthScreen() {
         try {
             await signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
             setMessage('✅ Signed in successfully!');
+            navigation.navigate('MainDrawer');
         } catch (signInError: any) {
             if (
                 signInError.code === 'auth/user-not-found' ||
@@ -57,6 +58,7 @@ export default function SmartAuthScreen() {
                                 try {
                                     await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     setMessage('✅ New account created and signed in!');
+                                    navigation.navigate('MainDrawer');
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
                                 }
@@ -69,19 +71,6 @@ export default function SmartAuthScreen() {
             } else {
                 setMessage(`❌ Sign-in failed: ${signInError.message}`);
             }
-        }
-    };
-
-    const handleAnonymous = async () => {
-        try {
-            if (!auth.currentUser) {
-                await signInAnonymously(auth);
-                setMessage('✅ Continuing as guest!');
-            } else {
-                setMessage('✅ Already signed in as guest!');
-            }
-        } catch (error: any) {
-            Alert.alert('Error', error.message || 'Failed to sign in as guest.');
         }
     };
 
@@ -125,11 +114,6 @@ export default function SmartAuthScreen() {
 
                     <TouchableOpacity style={styles.loginButton} onPress={handleAuth}>
                         <Text style={styles.loginButtonText}>Sign In / Register</Text>
-                    </TouchableOpacity>
-
-                    {/* Guest/Anonymous option */}
-                    <TouchableOpacity style={styles.guestButton} onPress={handleAnonymous}>
-                        <Text style={styles.guestButtonText}>Continue as Guest (No Registration Required)</Text>
                     </TouchableOpacity>
 
                     {message ? <Text style={styles.message}>{message}</Text> : null}
@@ -236,16 +220,5 @@ const styles = StyleSheet.create({
         color: '#aaa',
         fontWeight: 'bold',
     },
-    guestButton: {
-        backgroundColor: '#aaa',
-        paddingVertical: 14,
-        borderRadius: 30,
-        alignItems: 'center',
-        marginBottom: 22,
-    },
-    guestButtonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
+
 });

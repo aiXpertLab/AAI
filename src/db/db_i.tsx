@@ -14,7 +14,7 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase) {
     const currentDbVersion = result?.user_version ?? 0;
 
     if (currentDbVersion >= DATABASE_VERSION) {
-        // return;         
+        return;         
         console.log('new db created.');
     }
 
