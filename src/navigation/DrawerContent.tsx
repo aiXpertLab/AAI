@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global } from "@/src/constants";
+import { auth } from '@/src/config/firebaseConfig';
 
 // Define a more specific type for Ionicons names
 type IoniconName = "help-circle-outline" | "sync-outline" | "star-outline" | "gift-outline" | "cloud-upload-outline" | "share-social-outline" | "mail-outline" | "settings-outline";
@@ -101,7 +102,7 @@ const CustomDrawerContent = (props: any) => {
             <View style={s_global.Drawer_Header}>
                 <Image
                     source={require('@/assets/h.jpg')}
-                    style={{ width: 200, height: 60, borderRadius: 32,  }}
+                    style={{ width: 200, height: 60, borderRadius: 32, }}
                     resizeMode="contain"
                 />
                 <TouchableOpacity onPress={async () => {
@@ -113,7 +114,13 @@ const CustomDrawerContent = (props: any) => {
                         // Optionally handle error
                     }
                 }}>
-                    <Text style={s_global.Textfff}>AI Auto Invoicing</Text>
+                    <Text className="text-white mt-2 text-base">
+                        {auth.currentUser
+                            ? (auth.currentUser.isAnonymous
+                                ? "Guest User"
+                                : auth.currentUser.email || "User")
+                            : "User"}
+                    </Text>
                 </TouchableOpacity>
             </View>
 
