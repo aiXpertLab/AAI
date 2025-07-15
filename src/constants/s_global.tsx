@@ -58,11 +58,6 @@ export const s_global = StyleSheet.create({
         elevation: 2, // subtle Android shadow
     },
 
-    Textfff: {
-        color: '#fff',
-        marginTop: 10,
-        fontSize: 16,
-    },
 
     Text888: {
         marginLeft: 8,
