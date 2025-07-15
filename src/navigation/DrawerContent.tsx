@@ -101,7 +101,7 @@ const CustomDrawerContent = (props: any) => {
             <View style={s_global.Drawer_Header}>
                 <Image
                     source={require('@/assets/h.jpg')}
-                    style={{ width: 200, height: 60, borderRadius: 32 }}
+                    style={{ width: 200, height: 60, borderRadius: 32,  }}
                     resizeMode="contain"
                 />
                 <TouchableOpacity onPress={async () => {

@@ -111,8 +111,8 @@ export const s_global = StyleSheet.create({
     },
     Drawer_Header: {
         backgroundColor: '#F28500',
-        marginHorizontal: -80, // override drawer padding
-        marginTop: -44,
+        marginHorizontal: -60, // override drawer padding
+        marginTop: -45,
         paddingTop: 60,
         paddingBottom: 20,
         paddingHorizontal: 20,
