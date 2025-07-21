@@ -9,7 +9,7 @@ import "@/src/css/firebase.css"
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
 
-import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
+import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ 
 
 function App() {
 
