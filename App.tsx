@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { SQLiteProvider } from 'expo-sqlite';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { migrateDbIfNeeded } from '@/src/db/db_i';
-import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
 import AppNavigator from '@/src/navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
-import "./global.css"
 
+import "@/src/css/firebase.css"
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
+
+import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ import it
 
 function App() {
 

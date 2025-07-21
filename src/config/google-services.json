@@ -12,7 +12,20 @@
           "package_name": "com.aixpertlab.aiautoinvoicing"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "497498007772-r8759r8b9ssb12imubj77tgk9np0tpd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aixpertlab.aiautoinvoicing",
+            "certificate_hash": "d467e5b1b92bd56f36ff3c9e632081503127ba1c"
+          }
+        },
+        {
+          "client_id": "497498007772-f6gaje06h9beracmiadpa1gfhisgoncb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB6QZYvm1sd4ARKYmPeS5MJLz1h-oCfs8U"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497498007772-f6gaje06h9beracmiadpa1gfhisgoncb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
