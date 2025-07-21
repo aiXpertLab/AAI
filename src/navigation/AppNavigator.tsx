@@ -11,12 +11,16 @@ import StackNavigator from './StackNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import SignScreen from '@/src/screens/user/SignScreen';
 
+import { useFirebaseUserStore } from '@/src/stores/useUserStore';
+
 const RootStack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     console.log('AppNavigator function called'); // Log when component function runs
     const [initializing, setInitializing] = useState(true);
-    const [user, setUser] = useState<any>(null);
+    // const [user, setUser] = useState<any>(null);
+    const user = useFirebaseUserStore((state) => state.FirebaseUser);
+    const setUser = useFirebaseUserStore((state) => state.setFirebaseUser);
 
     useEffect(() => {
         console.log('AppNavigator useEffect for auth state runs'); // Log when useEffect runs
@@ -26,7 +30,8 @@ const AppNavigator = () => {
             setInitializing(false);
         });
         return unsubscribe;
-    }, []);
+    }, [setUser]);
+    
 
     console.log('AppNavigator render, user:', user);
     console.log('AppNavigator render after restart, auth.currentUser:', auth.currentUser); // Debug log for persistence
