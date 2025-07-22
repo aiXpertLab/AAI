@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { StatusBar } from 'expo-status-bar';
 import { useModalStore } from '@/src/stores/useModalStore';
 
 import { Ionicons } from '@expo/vector-icons';

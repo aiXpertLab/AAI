@@ -25,7 +25,7 @@ const AppNavigator = () => {
     useEffect(() => {
         console.log('AppNavigator useEffect for auth state runs'); // Log when useEffect runs
         const unsubscribe = onAuthStateChanged(auth, (usr) => {
-            console.log('Auth state changed:', usr);
+            console.log('Auth state changed:', usr?.email);
             setUser(usr);
             setInitializing(false);
         });
@@ -33,8 +33,8 @@ const AppNavigator = () => {
     }, [setUser]);
     
 
-    console.log('AppNavigator render, user:', user);
-    console.log('AppNavigator render after restart, auth.currentUser:', auth.currentUser); // Debug log for persistence
+    // console.log('AppNavigator render, user:', user);
+    console.log('AppNavigator render after restart, auth.currentUser:', auth.currentUser?.uid); // Debug log for persistence
 
     if (initializing) {
         return (
