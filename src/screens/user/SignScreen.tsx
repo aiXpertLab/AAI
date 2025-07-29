@@ -8,6 +8,7 @@ import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
+import { createBusinessEntity } from '@/src/firestore/business/createBusiness';
 
 type RootNav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -56,8 +57,19 @@ export default function SmartAuthScreen() {
                             text: 'Create Account',
                             onPress: async () => {
                                 try {
-                                    await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
-                                    setMessage('✅ New account created and signed in!');
+                                    // Create the user account
+                                    const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
+                                    const user = userCredential.user;
+                                    
+                                    // Create business entity for the new user
+                                    try {
+                                        await createBusinessEntity(user.uid);
+                                        setMessage('✅ New account created with business setup!');
+                                    } catch (businessError) {
+                                        console.error('Business creation failed:', businessError);
+                                        setMessage('✅ Account created! Business setup will be completed shortly.');
+                                    }
+                                    
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
                                 }
