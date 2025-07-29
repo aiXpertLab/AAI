@@ -5,4 +5,5 @@ export type DetailStackParamList = {
 
     Tab2_Client_Form: undefined;
     Tab3_Item_Form: undefined;
+    SeedBizScreen: undefined;
 };

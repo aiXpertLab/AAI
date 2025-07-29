@@ -13,7 +13,8 @@ export type RootStackParamList = {
     Tab2_Client_Form: undefined;
     Tab3_Item_Form: undefined;
     Drawer_Settings: undefined;
-    DetailStack: NavigatorScreenParams<DetailStackParamList>;  
+    SeedBizScreen: undefined;
+    DetailStack: NavigatorScreenParams<DetailStackParamList>;
 
     AddItem: undefined;
     ItemForm: { item?: ItemDB; selectedItem?: ItemDB } | undefined;

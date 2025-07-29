@@ -56,15 +56,12 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem title="Date Format" subtitle="31/12/2025" />
             </Section> */}
 
-            {/* About Section */}
-            {/* <Section title="About">
-                <SettingItem title="Feedback" />
-                <SettingItem title="Privacy Policy" />
-                <SettingItem title="Rate Us" />
-                <SettingItem title="Share App" />
-            </Section> */}
-
-            {/* <Text style={s_global.Setting_VersionText}>Version: {version}</Text> */}
+            {__DEV__ && (
+                <Section title="Dev">
+                    <SettingItem title="Seed" onPress={() => navigation.navigate("SeedBizScreen")} />
+                </Section>
+            )}
+            
             <Pressable
                 onLongPress={() => {
                     navigation.navigate('TestScreen'); // or your route name
