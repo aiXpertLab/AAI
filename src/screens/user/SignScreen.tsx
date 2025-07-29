@@ -88,8 +88,17 @@ export default function SmartAuthScreen() {
     const handleAnonymous = async () => {
         try {
             if (!auth.currentUser) {
-                await signInAnonymously(auth);
-                setMessage('✅ Continuing as guest!');
+                const userCredential = await signInAnonymously(auth);
+                const user = userCredential.user;
+                
+                // Create business entity for anonymous user
+                try {
+                    await createBusinessEntity(user.uid);
+                    setMessage('✅ Continuing as guest with business setup!');
+                } catch (businessError) {
+                    console.error('Business creation failed for anonymous user:', businessError);
+                    setMessage('✅ Continuing as guest! Business setup will be completed shortly.');
+                }
             } else {
                 setMessage('✅ Already signed in as guest!');
             }
