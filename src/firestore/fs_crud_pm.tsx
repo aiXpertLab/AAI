@@ -1,8 +1,10 @@
-import { getFirestore, collection, addDoc, getDocs, query, where, updateDoc, doc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, setDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
+import * as Crypto from 'expo-crypto';
+
 import { getUserUid } from "@/src/utils/getFirebaseUid";
 const db = getFirestore(app);
-import {PMDB } from '@/src/types';
+import { PMDB } from '@/src/types';
 
 
 export const usePMCrud = () => {
@@ -17,7 +19,7 @@ export const usePMCrud = () => {
             if (!uid || !pm.pm_id) throw new Error("Missing UID or PaymentMethod ID");
 
             const docRef = doc(db, `aai/be_${uid}/payment_methods`, pm.pm_id);
-            
+
             const { pm_id, ...updateFields } = pm; // remove id from payload
 
             await updateDoc(docRef, {
@@ -31,51 +33,39 @@ export const usePMCrud = () => {
             onError(err);
         }
     };
-    return {updatePM };
-}
 
-// export const addPaymentMethodToUser = async (
-//     paymentMethod: Omit<PaymentMethod, "id" | "created_at" | "updated_at">
-// ): Promise<string | null> => {
-//     const uid = getUserUid();
-//     if (!uid) return null;
 
-//     try {
-//         const colRef = collection(db, `aai/be_${uid}/payment_methods`);
-//         const docRef = await addDoc(colRef, {
-//             ...paymentMethod,
-//             is_deleted: 0,
-//             created_at: serverTimestamp(),
-//             updated_at: serverTimestamp(),
-//         });
+    const insertPM = async (
+        pm: Partial<PMDB>,
+        onSuccess: () => void,
+        onError: (err: any) => void
+    ) => {
+        try {
+            const uid = getUserUid();
+            if (!uid) throw new Error('Missing UID');
+            const pm_id = Crypto.randomUUID();
 
-//         return docRef.id;
-//     } catch (err) {
-//         console.error("Failed to add payment method:", err);
-//         return null;
-//     }
-// };
+            // const colRef = collection(db, `aai/be_${uid}/payment_methods`);
+            const docRef = doc(db, `aai/be_${uid}/payment_methods`, pm_id);
 
-// // ✅ Fetch all (non-deleted)
-// export const fetchUserPaymentMethods = async (
-//     setItems: (items: PMDB[]) => void
-// ): Promise<void> => {
-//     const uid = getUserUid();
-//     if (!uid) return;
+            const newPM: Partial<PMDB> = {
+                ...pm,
+                pm_id: pm_id,
+                created_at: serverTimestamp(),
+                updated_at: serverTimestamp(),
+                is_deleted: 0,
+            };
 
-//     try {
-//         const colRef = collection(db, `aai/be_${uid}/payment_methods`);
-//         const q = query(colRef, where("is_deleted", "==", 0));
-//         const snapshot = await getDocs(q);
+            // const docRef = await addDoc(colRef, newPM);
+            await setDoc(docRef, newPM);
+            console.log("✅ Inserted PM:", docRef.id);
 
-//         const items: PMDB[] = snapshot.docs.map((doc) => ({
-//             id: doc.id,
-//             ...doc.data(),
-//         } as PMDB));
+            onSuccess();
+        } catch (err) {
+            console.error("❌ insertPM error:", err);
+            onError(err);
+        }
+    };
 
-//         setItems(items);
-//     } catch (err) {
-//         console.error("Failed to fetch payment methods:", err);
-//     }
-// };
-
+    return { insertPM, updatePM };
+};

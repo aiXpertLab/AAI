@@ -5,6 +5,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import Toast from 'react-native-toast-message';
 
 import Constants from 'expo-constants';
+import * as Crypto from 'expo-crypto';
+
 const version = Constants.expoConfig?.version ?? '1.0.0';
 
 const TestScreen = () => {
@@ -24,6 +26,9 @@ const TestScreen = () => {
     };
 
     const sendTestEvent = async () => {
+        const uuid = Crypto.randomUUID();
+        console.log(uuid);
+        console.log(`Sending test analytics event with ID: ${uuid}`);
         await analytics().logEvent('dev_manual_event', { foo: 'bar' });
         Toast.show({
             type: 'success',
@@ -40,6 +45,16 @@ const TestScreen = () => {
         });
     };
 
+    const createUUID = async () => {
+        const uuid = Crypto.randomUUID();
+        console.log(`Generated UUID: ${uuid}`);
+        Toast.show({
+            type: 'info',
+            text1: 'UUID Created',
+            text2: `UUID: ${uuid}`,
+        });
+    };
+    
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>🔥 Developer Test Screen</Text>
@@ -54,6 +69,11 @@ const TestScreen = () => {
             <View style={styles.buttonGroup}>
                 <Text style={styles.sectionTitle}>📊 Analytics</Text>
                 <Button title="Send Manual Analytics Event" onPress={sendTestEvent} />
+            </View>
+
+            <View style={styles.buttonGroup}>
+                <Text style={styles.sectionTitle}>📊 Analytics</Text>
+                <Button title="UUID" onPress={createUUID} />
             </View>
 
             <View style={styles.footerNote}>

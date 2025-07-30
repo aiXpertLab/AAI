@@ -3,6 +3,7 @@ import React, { useState, useCallback, useLayoutEffect, useRef } from "react";
 import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import * as Crypto from 'expo-crypto';
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
@@ -15,7 +16,7 @@ export const PaymentMethod_Form: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const saveRef = useRef(() => { });
     const { oPM, updateOPM, setOPM, createEmptyPM4New, clearOPM } = usePMStore();  // 🧠 Zustand action
-    const { updatePM } = usePMCrud();
+    const { insertPM, updatePM } = usePMCrud();
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -56,10 +57,22 @@ export const PaymentMethod_Form: React.FC = () => {
         }
 
         if (mode === 'create_new') {
-            // insertPM(oPM, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed');
-            // }
-            // );
+            console.log("Creating new PM:", oPM);
+            const pm_id = Crypto.randomUUID();
+
+            if (!oPM.pm_id) {
+                console.log("-----------Creating new PM:", pm_id);
+                updateOPM({ pm_id: pm_id });
+                // updateOPM({ ...oPM, pm_id: pm_id });
+                const newOPM = usePMStore.getState().oPM;
+                console.log("Updated oPM:++++", newOPM);
+                console.log("Creating new PM:------", oPM);
+            }
+
+            insertPM(oPM, () => { navigation.goBack(); }, (err) => {
+                console.error('Insert failed:', err);
+            }
+            );
         } else {
             console.log("Updating existing PM:", oPM);
             updatePM(oPM, () => { navigation.goBack(); }, (err) => {

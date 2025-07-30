@@ -49,13 +49,13 @@ export interface TaxPickerModalProps {
 
 export interface PMDB {
     pm_id: string;
-    user_id: string;
-    biz_id: string;
 
     pm_name: string;
     pm_note: string;
     is_deleted: number;
     is_locked: number;
 
+    created_at: any; // serverTimestamp()
+    updated_at: any; // serverTimestamp()
 }
 
