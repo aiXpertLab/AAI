@@ -10,15 +10,12 @@ import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
 import { createBusinessEntity } from '@/src/firestore/business/createBusiness';
 
-type RootNav = NativeStackNavigationProp<RootStackParamList>;
-
 export default function SmartAuthScreen() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const { promptAsync } = useGoogleAuth(navigation);
 
     const handleForgotPassword = async () => {
         if (!email) return Alert.alert('Please enter your email to reset password.');
@@ -156,10 +153,10 @@ export default function SmartAuthScreen() {
                     style={{ backgroundColor: colors.main }}
                     onPress={handleAuth}
                 >
-                    <Text className="text-white font-bold text-base tracking-wide">LOGIN</Text>
+                    <Text className="text-white font-bold text-base tracking-wide">LOGIN / REGISTER</Text>
                 </TouchableOpacity>
                 {/* Forgot password */}
-                <View className="flex-row justify-between items-center w-full mb-8">
+                <View className="absolute bottom-8 flex-row justify-between items-center w-full mb-8 px-6">
                     <TouchableOpacity onPress={handleAnonymous}>
                         <Text className="text-gray-400  text-sm">Continue as Guest</Text>
                     </TouchableOpacity>
@@ -167,20 +164,14 @@ export default function SmartAuthScreen() {
                         <Text className="text-right text-sm" style={{ color: colors.main }}>Forgot password?</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <TouchableOpacity onPress={handleForgotPassword} className="mb-8">
-                    <Text className="text-center" style={{ color: colors.main }}>Forgot password?</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleAnonymous}>
-                    <Text className="text-center text-gray-400 text-sm underline">Continue as Guest</Text>
-                </TouchableOpacity> */}
 
                 {message ? <Text className="text-center text-red-500 mb-2">{message}</Text> : null}
             </View>
             {/* Register link at the bottom */}
-            <View className="absolute bottom-8 w-full flex-row justify-center">
+            {/* <View className="absolute bottom-8 w-full flex-row justify-center">
                 <Text className="text-gray-400">Don't have an account? </Text>
                 <Text className="font-bold" style={{ color: colors.main }}>Register!</Text>
-            </View>
+            </View> */}
         </KeyboardAvoidingView>
     );
 }
