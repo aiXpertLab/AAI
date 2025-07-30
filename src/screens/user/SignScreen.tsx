@@ -8,7 +8,7 @@ import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
-import { createBusinessEntity } from '@/src/firestore/business/createBusiness';
+import { createBusinessEntity } from '@/src/firestore_cursor/business/createBusiness';
 
 export default function SmartAuthScreen() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();

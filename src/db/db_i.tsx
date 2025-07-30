@@ -4,7 +4,7 @@ import { createClientsTable, seedClients } from './db_clients';
 import { createInvoicesTable, seedInvoices } from './db_invoices';
 import { createItemsTable, seedItems } from './db_items';
 import { seedDemoInvoices } from './seedDemoInvoices';
-import { seedPaymentMethodsFirestore } from '../firestore/seedPaymentMethods';
+import { seedPaymentMethodsFirestore } from '../firestore_cursor/seedPaymentMethods';
 
 // Function to initialize or migrate the database
 export async function migrateDbIfNeeded(db: SQLiteDatabase) {

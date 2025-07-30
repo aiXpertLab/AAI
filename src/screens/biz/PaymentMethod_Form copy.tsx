@@ -9,13 +9,13 @@ import { s_global, colors } from "@/src/constants";
 import { usePMStore } from '@/src/stores/useInvStore';
 
 import { DetailStackPara, PMDB, RouteType } from '@/src/types';
-import { usePMCrud } from '@/src/firestore/fs_crud_pm';
+import { usePMCrud } from '@/src/db/crud_pm';
 
 export const PaymentMethod_Form: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const saveRef = useRef(() => { });
     const { oPM, updateOPM, setOPM, createEmptyPM4New, clearOPM } = usePMStore();  // 🧠 Zustand action
-    const { updatePM } = usePMCrud();
+    const { insertPM, updatePM } = usePMCrud();
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -29,10 +29,7 @@ export const PaymentMethod_Form: React.FC = () => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity onPress={() => {
-                    console.log("Save button pressed");
-                    saveRef.current()
-                }}>
+                <TouchableOpacity onPressIn={() => saveRef.current()}>
                     <Ionicons name="checkmark-sharp" size={32} color="#fff" style={{ marginRight: 15 }} />
                 </TouchableOpacity>),
             title: mode === 'create_new' ? 'New Payment Method' : 'Edit Payment Method',
@@ -40,7 +37,6 @@ export const PaymentMethod_Form: React.FC = () => {
     }, [navigation]);
 
     const handleChange = (field: keyof PMDB, value: string | number) => {
-        console.log(`handleChange: ${field} = ${value}`);
         if (!oPM) return; // guard clause
         updateOPM({ [field]: value });
     };
@@ -56,12 +52,11 @@ export const PaymentMethod_Form: React.FC = () => {
         }
 
         if (mode === 'create_new') {
-            // insertPM(oPM, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed');
-            // }
-            // );
+            insertPM(oPM, () => { navigation.goBack(); }, (err) => {
+                console.error('Insert failed:', err);
+            }
+            );
         } else {
-            console.log("Updating existing PM:", oPM);
             updatePM(oPM, () => { navigation.goBack(); }, (err) => {
                 console.error('Insert failed:', err);
             }
