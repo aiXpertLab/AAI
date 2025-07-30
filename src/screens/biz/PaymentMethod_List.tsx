@@ -6,7 +6,7 @@ import { useModalStore } from '@/src/stores/useModalStore';
 import { Ionicons } from '@expo/vector-icons';
 
 import { usePMStore } from '@/src/stores/useInvStore';
-import { s_global, colors } from "@/src/constants";
+import { s_global, } from "@/src/constants";
 
 import { RootStackPara, PMDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -15,6 +15,7 @@ import { useTabSync } from '@/src/hooks/useTabSync';
 
 // Firestore imports
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { app } from "@/src/config/firebaseConfig";
 
 export const PaymentMethod_List: React.FC = () => {
@@ -23,19 +24,22 @@ export const PaymentMethod_List: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<PMDB[]>([]);
-    const { oPM, setOPM, createEmptyPM4New  } = usePMStore();  // 🧠 Zustand action
+    const { oPM, setOPM, createEmptyPM4New } = usePMStore();  // 🧠 Zustand action
 
     // Firestore fetch
     const fetchItems = async () => {
         try {
             const db = getFirestore(app);
-            const colRef = collection(db, "payment_methods");
+            const auth = getAuth(app);
+            const user = auth.currentUser;
+            if (!user) { return; } // Ensure user is authenticated
+            const uid = user.uid;
+            const colRef = collection(db, `aai/be_${uid}/payment_methods`);
             const q = query(colRef, where("is_deleted", "==", 0));
             const snapshot = await getDocs(q);
-            const activeItems: PMDB[] = snapshot.docs.map(doc => ({
-                ...doc.data(),
-                id: doc.id, // Use Firestore doc ID
-            })) as PMDB[];
+
+            const activeItems: PMDB[] = snapshot.docs.map(doc => doc.data() as PMDB);
+
             setItems(activeItems);
         } catch (err) { console.error("Failed to load Items:", err); }
     };
@@ -78,7 +82,7 @@ export const PaymentMethod_List: React.FC = () => {
             ) : (
                 <FlatList
                     data={items}
-                    keyExtractor={(item) => item.id!.toString()}
+                    keyExtractor={(item) => item.pm_id}
                     renderItem={renderPM}
                 />
             )}

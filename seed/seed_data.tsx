@@ -96,7 +96,7 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            pm_id: "pm_other",
+            pm_id: "pm_z_other",
             pm_name: "Other",
             pm_note: "Refer to the invoice note for custom payment instructions.",
             ...baseFlags,
