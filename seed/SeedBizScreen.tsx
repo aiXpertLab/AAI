@@ -14,18 +14,8 @@ const SeedBizScreen = () => {
 
             for (const method of seed_data.payment_methods) {
                 const paymentDoc = doc(collection(bizRef, "payment_methods"), method.pm_id);
-
                 await setDoc(paymentDoc, method);
             }
-
-            // const paymentRef = collection(bizRef, 'paymentmethods');
-            // await addDoc(paymentRef, {
-            //     pm_name: 'Credit Card',
-            //     pm_note: 'Stripe',
-            //     is_default: true,
-            //     created_at: serverTimestamp(),
-            //     updated_at: serverTimestamp(),
-            // });
 
             console.log('✅ Seeding done');
         })();
