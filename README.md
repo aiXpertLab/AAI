@@ -10,3 +10,5 @@ adb shell setprop debug.firebase.analytics.app com.aixpertlab.aiautoinvoicing
         - biz_seed_doc doc
             - payment_methods col
             - 
+
+

@@ -1,3 +1,23 @@
+export interface BE_DB {
+    be_id?: string;
+    be_name: string;
+    be_address: string;
+    be_tax_id: string;
+    be_biz_number: string;
+    be_bank_info: string;
+    be_email: string;
+    be_phone: string;
+    be_website: string;
+    be_currency: string;
+    be_description: string;
+    be_note: string;
+    be_logo: string;
+    be_logo64: string;
+    be_64_square: string;
+    be_inv_template_id: string;
+}
+
+
 export interface BizDB {
     id?: number;
     me: string;
