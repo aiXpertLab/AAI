@@ -546,7 +546,7 @@ export const s_global = StyleSheet.create({
         textAlign: "center",
         marginTop: 10,
     },
-    
+
     deleteButtonContainer: {
         height: '100%',
         justifyContent: 'center',
@@ -579,6 +579,22 @@ export const s_global = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
+    arrow: {
+        fontSize: 18,
+        color: '#9CA3AF',
+        marginLeft: 12,
+    },
+
+    drawer_title: {
+        fontSize: 16,
+        color: '#111827',
+    },
+    drawer_subtitle: {
+        fontSize: 14,
+        color: '#6B7280',
+        marginTop: 2,
+    },
+
 });
 
 

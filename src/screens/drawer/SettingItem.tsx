@@ -22,14 +22,14 @@ const SettingItem: React.FC<SettingItemProps> = ({
 }) => {
     return (
         <TouchableOpacity style={s_global.SettingsItem} activeOpacity={toggle ? 1 : 0.7} onPress={toggle ? undefined : onPress}>
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>{title}</Text>
-                {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+            <View style={s_global.Drawer_Container}>
+                <Text style={s_global.drawer_title}>{title}</Text>
+                {subtitle && <Text style={s_global.drawer_subtitle}>{subtitle}</Text>}
             </View>
             {toggle ? (
                 <Switch value={toggleValue} onValueChange={onToggle} />
             ) : (
-                <Text style={styles.arrow}>›</Text>
+                <Text style={s_global.arrow}>›</Text>
             )}
         </TouchableOpacity>
     );
@@ -37,22 +37,3 @@ const SettingItem: React.FC<SettingItemProps> = ({
 
 export default SettingItem;
 
-const styles = StyleSheet.create({
-    textContainer: {
-        flex: 1,
-    },
-    title: {
-        fontSize: 16,
-        color: '#111827',
-    },
-    subtitle: {
-        fontSize: 14,
-        color: '#6B7280',
-        marginTop: 2,
-    },
-    arrow: {
-        fontSize: 18,
-        color: '#9CA3AF',
-        marginLeft: 12,
-    },
-});

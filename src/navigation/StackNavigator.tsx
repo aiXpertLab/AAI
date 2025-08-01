@@ -3,7 +3,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { colors } from "@/src/constants";
-import Drawer_Settings from "@/src/screens/drawer/SettingScreen";
+import Drawer_Settings from "@/src/screens/Settings/SettingScreen";
 
 import Tab2_Client_Form from '@/src/screens/Tab2_Client_Form';
 import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';

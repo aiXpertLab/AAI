@@ -12,7 +12,6 @@ const version = Constants.expoConfig?.version ?? '1.0.0';
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
-
     useLayoutEffect(() => {
         const parent = navigation.getParent();
         if (parent) {
