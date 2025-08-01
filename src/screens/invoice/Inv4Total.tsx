@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { modalStyles, invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global";
 import { TaxDB } from "@/src/types";
-import { useInvItemListStore, useInvStore } from '@/src/stores/useInvStore';
+import { useInvItemListStore, useInvStore } from '@/src/stores/InvStore';
 import DiscountModal from "@/src/modals/DiscountModal";
 import M_TaxPicker from "@/src/modals/M_TaxPicker";
 

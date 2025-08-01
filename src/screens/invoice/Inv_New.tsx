@@ -11,7 +11,7 @@ import { genHTML } from "@/src/utils/genHTML";
 import { useInvoiceCrud } from '@/src/db/useInvoiceCrud';
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara,  InvDB } from "@/src/types";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 

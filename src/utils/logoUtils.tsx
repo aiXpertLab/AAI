@@ -2,7 +2,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { SQLiteDatabase } from 'expo-sqlite';
 import Toast from 'react-native-toast-message';
-import { useBizStore, useInvStore } from '@/src/stores/useInvStore';
+import { useBizStore, useInvStore } from '@/src/stores/InvStore';
 import * as FileSystem from "expo-file-system";
 
 export const saveLogoToDB = async (db: SQLiteDatabase, uri: string, b64:string) => {

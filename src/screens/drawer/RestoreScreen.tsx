@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSQLiteContext } from "expo-sqlite";
 import { M_Confirmation, } from "@/src/modals";
 
-import { useInvStore, useBizStore, useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvStore, useBizStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { RouteType } from "@/src/types";
 

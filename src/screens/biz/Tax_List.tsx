@@ -6,7 +6,7 @@ import { useModalStore } from '@/src/stores/useModalStore';
 import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
-import { useTaxStore } from '@/src/stores/useInvStore';
+import { useTaxStore } from '@/src/stores/InvStore';
 import { s_global, colors } from "@/src/constants";
 
 import { RootStackPara, TaxDB } from '@/src/types';

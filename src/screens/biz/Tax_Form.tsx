@@ -9,7 +9,7 @@ import { useSQLiteContext } from "expo-sqlite";
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
-import { useTaxStore } from '@/src/stores/useInvStore';
+import { useTaxStore } from '@/src/stores/InvStore';
 
 import { DetailStackPara, TaxDB, RouteType } from '@/src/types';
 import { useTaxCrud } from '@/src/db/crud_tax';

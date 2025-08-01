@@ -5,7 +5,7 @@ import { insertInvoice } from '@/src/db/crud_invoices';
 import { ClientDB, ItemDB, InvDB, BizDB, TaxDB, defaultInvoiceUI } from "@/src/types";
 import { SQLiteDatabase } from "expo-sqlite";
 
-import { useInvStore } from '@/src/stores/useInvStore';
+import { useInvStore } from '@/src/stores/InvStore';
 
 export function useInvoiceForm(db: SQLiteDatabase, navigation: any) {
     const saveRef = useRef(() => { });

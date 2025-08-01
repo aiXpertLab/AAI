@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useInvStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import { DetailStackPara } from '@/src/types';
 import { s_inv } from "@/src/constants/s_inv";

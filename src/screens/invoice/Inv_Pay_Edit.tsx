@@ -15,7 +15,7 @@ import { useInvoiceCrud } from '@/src/db/useInvoiceCrud';
 import { s_global, s_fab, colors } from "@/src/constants";
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, ClientDB, RouteType, InvDB } from "@/src/types";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
 
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';

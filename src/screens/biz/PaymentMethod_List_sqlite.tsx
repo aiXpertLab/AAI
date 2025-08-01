@@ -7,7 +7,7 @@ import { useModalStore } from '@/src/stores/useModalStore';
 import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
-import { usePMStore } from '@/src/stores/useInvStore';
+import { usePMStore } from '@/src/stores/InvStore';
 import { s_global, colors } from "@/src/constants";
 
 import { RootStackPara, PMDB } from '@/src/types';

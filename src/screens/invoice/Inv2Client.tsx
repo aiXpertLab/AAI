@@ -9,7 +9,7 @@ import { invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global"
 import M_ClientPicker from "@/src/modals/M_ClientPicker_Inv";
 
-import { useInvStore } from "@/src/stores/useInvStore";
+import { useInvStore } from "@/src/stores/InvStore";
 
 export const Inv2Client: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();

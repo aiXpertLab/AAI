@@ -10,7 +10,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
-import { useInvStore, useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 

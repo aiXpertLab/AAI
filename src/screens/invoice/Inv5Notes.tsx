@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { s_global } from "@/src/constants/s_global";
-import { useInvStore } from '@/src/stores/useInvStore';
+import { useInvStore } from '@/src/stores/InvStore';
 
 export const Inv5Notes: React.FC = () => {
     const { oInv, updateOInv, setOInv, isDirty, setIsDirty } = useInvStore();

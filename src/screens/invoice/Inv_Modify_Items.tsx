@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB, ItemDB } from "@/src/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvItemListStore } from '@/src/stores/InvStore';
 import { invoiceStyles } from "@/src/constants/styles";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 import { useNavigation, } from "@react-navigation/native";

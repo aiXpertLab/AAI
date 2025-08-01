@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import Purchases from 'react-native-purchases';
 
 import { useSQLiteContext } from "expo-sqlite";
-import { useBizStore } from '@/src/stores/useInvStore';
+import { useBizStore } from '@/src/stores/InvStore';
 import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
 import { useBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import path as necessary
 import { BE_DB } from "../types";

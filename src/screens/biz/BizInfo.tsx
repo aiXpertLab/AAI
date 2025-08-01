@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React from "react";
 import { Image, ActivityIndicator, Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Alert, } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
@@ -6,20 +6,18 @@ import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from '@expo/vector-icons';
 
 import Toast from 'react-native-toast-message';
-import { useSQLiteContext } from "expo-sqlite";
 
 import { s_global, s_inv } from "@/src/constants";
-import { BizDB } from '@/src/types';
+import { BE_DB } from '@/src/types';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
-import { useInvStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
 
 const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
-export const Inv1Me_BizForm: React.FC = () => {
-    const db = useSQLiteContext();
+export const BizInfo: React.FC = () => {
     const navigation = useNavigation();
 
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
@@ -34,11 +32,11 @@ export const Inv1Me_BizForm: React.FC = () => {
 
     console.log("Inv1Me_BizForm: oBiz:");
 
-    const saveRef = useRef(() => { });
-    const [isFocused, setIsFocused] = useState(false);
+    const saveRef = React.useRef(() => { });
+    const [isFocused, setIsFocused] = React.useState(false);
 
     useFocusEffect(
-        useCallback(() => {
+        React.useCallback(() => {
             setIsFocused(true);
             return () => setIsFocused(false);
         }, [])

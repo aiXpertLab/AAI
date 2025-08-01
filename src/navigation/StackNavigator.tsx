@@ -13,7 +13,7 @@ import Tab3_Item from '@/src/screens/Tab3_Item';
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
-import { Inv_Pay, Inv1Me_BizForm as BizInfo, Inv4Total_TaxForm } from "@/src/screens/invoice";
+import { Inv_Pay, BizInfo as BizInfo, Inv4Total_TaxForm } from "@/src/screens/invoice";
 import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 import SeedBizScreen from '@/seed/SeedBizScreen';
 

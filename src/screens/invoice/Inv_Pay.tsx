@@ -4,7 +4,7 @@ import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView,
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
 import { useSQLiteContext } from "expo-sqlite";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
 import { WebView } from "react-native-webview";
 
 import { genHTML } from "@/src/utils/genHTML";

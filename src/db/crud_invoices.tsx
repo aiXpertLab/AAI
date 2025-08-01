@@ -1,6 +1,6 @@
 import { useSQLiteContext, SQLiteDatabase } from 'expo-sqlite';
 import { InvDB } from '@/src/types';
-import { useInvStore, useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import Toast from 'react-native-toast-message';
 
 export const insertInvoice = async (db: any, oInv: any): Promise<number> => {

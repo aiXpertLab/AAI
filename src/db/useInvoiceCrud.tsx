@@ -1,7 +1,7 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback } from 'react';
 import Toast from 'react-native-toast-message';
-import { useInvStore, useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { genInvNumber } from '@/src/utils/genInvNumber';
 import { InvDB, InvItemDB } from '@/src/types';
 

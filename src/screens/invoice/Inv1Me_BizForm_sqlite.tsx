@@ -11,7 +11,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { s_global, s_inv } from "@/src/constants";
 import { BizDB } from '@/src/types';
 import { updateBiz } from "@/src/db/crud_me";
-import { useBizStore, useInvStore } from '@/src/stores/useInvStore';
+import { useBizStore, useInvStore } from '@/src/stores/InvStore';
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";

@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { useBizStore } from '@/src/stores/useInvStore';
+import { useBizStore } from '@/src/stores/InvStore';
 
 import { formatDate2Iso, getTodayISO, addIsoDays } from "@/src/utils/dateUtils";
 

@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
-import { usePMStore } from '@/src/stores/useInvStore';
+import { usePMStore } from '@/src/stores/InvStore';
 
 import { DetailStackPara, PMDB, RouteType } from '@/src/types';
 import { usePMCrud } from '@/src/db/crud_pm';

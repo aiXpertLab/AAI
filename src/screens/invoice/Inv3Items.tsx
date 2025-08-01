@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB } from "@/src/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { useInvStore, useInvItemListStore } from '@/src/stores/useInvStore';
+import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { s_inv } from "@/src/constants";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 

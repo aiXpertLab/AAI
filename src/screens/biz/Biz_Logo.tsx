@@ -2,14 +2,14 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Image, View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { useModalStore } from '@/src/stores/useModalStore';
-import { useInvStore, useBizStore } from '@/src/stores/useInvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from "expo-file-system";
 import { useSQLiteContext } from "expo-sqlite";
 import Toast from "react-native-toast-message";
 
-import { useTaxStore } from '@/src/stores/useInvStore';
+import { useTaxStore } from '@/src/stores/InvStore';
 import { s_inv, s_global, } from "@/src/constants";
 
 import { RootStackPara, TaxDB } from '@/src/types';

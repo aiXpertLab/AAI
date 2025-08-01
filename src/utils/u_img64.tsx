@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 import { fetchAPIUrl } from "@/src/utils/fetchAPIUrl"; // Adjust the import path as needed
-import { useInvItemListStore, useInvStore } from '@/src/stores/useInvStore';
+import { useInvItemListStore, useInvStore } from '@/src/stores/InvStore';
 import { ItemDB } from '../types';
 
 
