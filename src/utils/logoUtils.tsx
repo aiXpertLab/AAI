@@ -2,7 +2,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { SQLiteDatabase } from 'expo-sqlite';
 import Toast from 'react-native-toast-message';
-import { useBizStore, useInvStore } from '@/src/stores/InvStore';
+import { useBizStore,  } from '@/src/stores/InvStore';
 import * as FileSystem from "expo-file-system";
 
 export const saveLogoToDB = async (db: SQLiteDatabase, uri: string, b64:string) => {
@@ -17,7 +17,6 @@ export const saveLogoToDB = async (db: SQLiteDatabase, uri: string, b64:string) 
 
 export const pickAndSaveLogo = async (db: SQLiteDatabase) => {
     const { updateOBiz } = useBizStore.getState();
-    const { updateOInv } = useInvStore.getState();
 
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -39,8 +38,7 @@ export const pickAndSaveLogo = async (db: SQLiteDatabase) => {
             const mimeType = pickerResult.assets[0].mimeType || "image/jpeg";
             const dataUri64 = `data:${mimeType};base64,${base64}`;
             
-            updateOBiz({ biz_logo: uri, biz_logo64: dataUri64 });
-            updateOInv({ biz_logo: uri, biz_logo64: dataUri64 });
+            updateOBiz({ be_logo: uri, be_logo64: dataUri64 });
             await saveLogoToDB(db, uri, dataUri64);
         } catch (error) {
             console.error("Failed to convert logo to base64:", error);

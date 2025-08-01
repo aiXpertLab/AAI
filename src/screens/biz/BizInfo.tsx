@@ -6,6 +6,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from '@expo/vector-icons';
 
 import Toast from 'react-native-toast-message';
+import { useSQLiteContext } from "expo-sqlite";
 
 import { s_global, s_inv } from "@/src/constants";
 import { BE_DB } from '@/src/types';
@@ -18,6 +19,7 @@ import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
 const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 export const BizInfo: React.FC = () => {
+    const db = useSQLiteContext();
     const navigation = useNavigation();
 
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
@@ -81,7 +83,7 @@ export const BizInfo: React.FC = () => {
         await processB64Me(base64Image, updateOBiz, updateOInv, setIsProcessing);
     };
 
-    const handleChange = <K extends keyof BizDB>(key: K, value: BizDB[K]) => {
+    const handleChange = <K extends keyof BE_DB>(key: K, value: BE_DB[K]) => {
         updateOBiz({ [key]: value });
         updateOInv({ [key]: value });
     };
@@ -136,42 +138,42 @@ export const BizInfo: React.FC = () => {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Card 1: Basic Info: biz_name,  */}
+                        {/* Card 1: Basic Info: be_name,  */}
                         <View style={s_global.Card} >
                             <Text style={s_global.Label}>Business Name <Text style={{ color: "red" }}>*</Text></Text>
                             <TextInput style={s_global.InputGreyBackground} placeholder="Biz Name" placeholderTextColor="#999" multiline
                                 value={oBiz?.be_name || ''}
-                                onChangeText={(text) => handleChange("biz_name", text)} />
+                                onChangeText={(text) => handleChange("be_name", text)} />
 
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Business Address</Text>
                             <TextInput style={[s_global.InputGreyBackground]} placeholder="Address" placeholderTextColor="#999" multiline
-                                value={oBiz?.be_address} onChangeText={(text) => handleChange("biz_address", text)} />
+                                value={oBiz?.be_address} onChangeText={(text) => handleChange("be_address", text)} />
 
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Email</Text>
                             <TextInput style={[s_global.InputGreyBackground]} placeholder="Email" placeholderTextColor="#999"
-                                value={oBiz?.be_email} onChangeText={(text) => handleChange("biz_email", text)} />
+                                value={oBiz?.be_email} onChangeText={(text) => handleChange("be_email", text)} />
 
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Phone</Text>
                             <TextInput style={[s_global.InputGreyBackground]} placeholder="Phone" placeholderTextColor="#999"
-                                value={oBiz?.be_phone} onChangeText={(text) => handleChange("biz_phone", text)} />
+                                value={oBiz?.be_phone} onChangeText={(text) => handleChange("be_phone", text)} />
 
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Business Number</Text>
                             <TextInput style={[s_global.InputGreyBackground]} placeholder="Business Number" placeholderTextColor="#999"
-                                value={oBiz?.be_biz_number} onChangeText={(text) => handleChange("biz_biz_number", text)} />
+                                value={oBiz?.be_biz_number} onChangeText={(text) => handleChange("be_biz_number", text)} />
 
                         </View>
 
-                        {/* Card 2: Fin Info: biz_name,  */}
+                        {/* Card 2: Fin Info: be_name,  */}
                         <View style={s_global.Card} >
                             <Text style={s_global.Label}>Base Currency</Text>
                             <View style={s_global.Picker}>
                                 <Picker
                                     selectedValue={oBiz?.be_currency}
-                                    onValueChange={(itemValue) => handleChange("biz_currency", itemValue)}
+                                    onValueChange={(itemValue) => handleChange("be_currency", itemValue)}
                                     mode="dropdown" // Android only
                                 >
                                     {currencies.map((currency) => (
@@ -188,12 +190,12 @@ export const BizInfo: React.FC = () => {
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Bank Info</Text>
                             <TextInput style={[s_global.InputGreyBackground, { height: 100, textAlignVertical: 'top' }]} placeholder="Bank Info" placeholderTextColor="#999" multiline numberOfLines={5}
-                                value={oBiz?.be_bank_info} onChangeText={(text) => handleChange("biz_bank_info", text)} />
+                                value={oBiz?.be_bank_info} onChangeText={(text) => handleChange("be_bank_info", text)} />
 
                             <View style={{ height: 12 }} />
                             <Text style={s_global.Label}>Description</Text>
                             <TextInput style={[s_global.InputGreyBackground, { height: 100, textAlignVertical: 'top' }]} placeholder="Description" placeholderTextColor="#999" multiline numberOfLines={5}
-                                value={oBiz?.be_description} onChangeText={(text) => handleChange("biz_description", text)} />
+                                value={oBiz?.be_description} onChangeText={(text) => handleChange("be_description", text)} />
                         </View>
                         {isProcessing && (
                             <Modal
