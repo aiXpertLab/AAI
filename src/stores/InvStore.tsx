@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { InvDB, InvItemDB, BE_DB, TaxDB } from '@/src/types';
-import { createEmptyTax4New } from './seeds4store';
+import { InvDB, InvItemDB, BE_DB, PMDB, TaxDB } from '@/src/types';
+import {createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 // Store for the list of invoice items
 type OInvItemListStore = {
@@ -85,3 +85,19 @@ export const useInvStore = create<OInvStore>((set) => ({
     setIsDirty: (flag) => set({ isDirty: flag }),
 }));
 
+
+type OPMStore = {
+    oPM: Partial<PMDB> | null;
+    setOPM: (PM: PMDB) => void;
+    updateOPM: (PM: Partial<PMDB>) => void;
+    clearOPM: () => void;
+    createEmptyPM4New: () => void;
+};
+
+export const usePMStore = create<OPMStore>((set) => ({
+    oPM: null,
+    setOPM: (PM) => set({ oPM: PM }),
+    updateOPM: (PM) => set((state) => ({ oPM: { ...state.oPM!, ...PM } })),
+    clearOPM: () => set({ oPM: null }),
+    createEmptyPM4New: () => set({ oPM: createEmptyPM4New() })
+}));
