@@ -50,6 +50,8 @@ export interface TaxDB {
     is_deleted: number;
     is_locked: number;
 
+    created_at: any; // serverTimestamp()
+    updated_at: any; // serverTimestamp()
 }
 
 export interface BizWithTaxes extends BizDB {

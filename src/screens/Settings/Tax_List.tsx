@@ -60,7 +60,7 @@ export const Tax_List: React.FC = () => {
                     params: { mode: 'modify_existed' }
                 });
             }}
-            onLongPress={() => console.log("Long Press - maybe show item options", item.id)}
+            onLongPress={() => console.log("Long Press - maybe show item options", item.tax_id)}
         >
             <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}>
                 <Text style={s_global.Label_BoldLeft_RegularRight} numberOfLines={1}>{item.tax_name}</Text>

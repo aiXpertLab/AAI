@@ -1,21 +1,18 @@
 import React, { useState, useCallback, useLayoutEffect, useRef } from "react";
-import Toast from 'react-native-toast-message';
+import * as Crypto from 'expo-crypto';
 
 import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-import { useSQLiteContext } from "expo-sqlite";
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
 import { useTaxStore } from '@/src/stores/InvStore';
 
 import { DetailStackPara, TaxDB, RouteType } from '@/src/types';
-import { useTaxCrud } from '@/src/db/crud_tax';
+import { useTaxCrud } from '@/src/firestore/fs_crud_tax';
 
 export const Tax_Form: React.FC = () => {
-    const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const saveRef = useRef(() => { });
     const { oTax, updateOTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action
@@ -55,6 +52,10 @@ export const Tax_Form: React.FC = () => {
         }
 
         if (mode === 'create_new') {
+            const tax_id = Crypto.randomUUID();
+            updateOTax({ tax_id: tax_id });
+            const newOTax = useTaxStore.getState().oTax;
+
             insertTax(oTax, () => { navigation.goBack(); }, (err) => {
                 console.error('Insert failed:', err);
             }
