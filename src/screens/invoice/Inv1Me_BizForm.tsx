@@ -11,8 +11,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { s_global, s_inv } from "@/src/constants";
 import { BizDB } from '@/src/types';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
-import { useInvStore } from '@/src/stores/useInvStore';
-import { useBizStore } from '@/src/stores/useBizStore';
+import { useInvStore, useBizStore } from '@/src/stores/useInvStore';
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
@@ -33,7 +32,7 @@ export const Inv1Me_BizForm: React.FC = () => {
 
     if (!oBiz) return <Text>Loading...</Text>;
 
-    console.log("Inv1Me_BizForm: oBiz:", oBiz);
+    console.log("Inv1Me_BizForm: oBiz:");
 
     const saveRef = useRef(() => { });
     const [isFocused, setIsFocused] = useState(false);
