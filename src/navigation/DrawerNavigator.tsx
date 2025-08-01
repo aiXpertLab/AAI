@@ -2,7 +2,7 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Ionicons } from '@expo/vector-icons';
-import { useModalStore } from '@/src/stores/useModalStore';
+import { useModalStore } from '@/src/stores/ModalStore';
 import { useTabStore } from '@/src/stores/useTabStore';
 
 import CustomDrawerContent from "@/src/navigation/DrawerContent";

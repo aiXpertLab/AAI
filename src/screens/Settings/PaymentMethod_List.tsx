@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useModalStore } from '@/src/stores/useModalStore';
+import { useModalStore } from '@/src/stores/ModalStore';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,15 +11,12 @@ import { s_global, } from "@/src/constants";
 import { RootStackPara, PMDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useTabSync } from '@/src/hooks/useTabSync';
-
 // Firestore imports
 import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { app } from "@/src/config/firebaseConfig";
 
 export const PaymentMethod_List: React.FC = () => {
-    useTabSync('items');
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);

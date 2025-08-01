@@ -3,7 +3,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { colors } from "@/src/constants";
-import Drawer_Settings from "@/src/screens/Settings/SettingScreen";
+import Drawer_Settings from "@/src/screens/settings/SettingScreen";
 
 import Tab2_Client_Form from '@/src/screens/Tab2_Client_Form';
 import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';
@@ -13,8 +13,9 @@ import Tab3_Item from '@/src/screens/Tab3_Item';
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
-import { Inv_Pay, BizInfo as BizInfo, Inv4Total_TaxForm } from "@/src/screens/invoice";
-import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
+import { Inv_Pay, Inv4Total_TaxForm } from "@/src/screens/invoice";
+import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
+import {  Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 import SeedBizScreen from '@/seed/SeedBizScreen';
 
 

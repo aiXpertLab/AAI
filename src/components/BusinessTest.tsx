@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useFirebaseUserStore } from '../stores/useUserStore';
+import { useFirebaseUserStore } from '../stores/UserStore';
 import { getUserBusinessEntity } from '../firestore/business/getBusiness';
 
 /**

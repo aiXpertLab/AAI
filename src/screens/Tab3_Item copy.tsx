@@ -4,7 +4,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Swipeable } from 'react-native-gesture-handler';
 
-import { useModalStore } from '@/src/stores/useModalStore';
+import { useModalStore } from '@/src/stores/ModalStore';
 import { cameraB64, processB64Item, uploadB64 } from "@/src/utils/u_img64";
 
 import { useSQLiteContext } from "expo-sqlite";

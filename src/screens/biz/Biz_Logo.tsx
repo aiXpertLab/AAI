@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Image, View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useModalStore } from '@/src/stores/useModalStore';
+import { useModalStore } from '@/src/stores/ModalStore';
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import * as ImagePicker from 'expo-image-picker';

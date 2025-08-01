@@ -10,7 +10,7 @@ import { useBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import p
 import { BE_DB } from "../types";
 
 import { waitForFirebaseUser } from "@/src/utils/getFirebaseUid"; // path as needed
-import { useFirebaseUserStore } from '@/src/stores/useUserStore';
+import { useFirebaseUserStore } from '@/src/stores/UserStore';
 
 
 export const useAppStartup = () => {

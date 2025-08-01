@@ -6,7 +6,7 @@ import {
   getOrCreateBusinessEntity,
   BusinessEntity 
 } from '../firestore';
-import { useFirebaseUserStore } from '../stores/useUserStore';
+import { useFirebaseUserStore } from '../stores/UserStore';
 
 export interface UseAuthWithBusinessReturn {
   user: User | null;

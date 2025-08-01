@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, View, Text, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Ionicons } from "@expo/vector-icons";
-import { useModalStore } from '@/src/stores/useModalStore';
+import { useModalStore } from '@/src/stores/ModalStore';
 import { s_modal, s_global } from "@/src/constants";
 import M_HeaderClientPicker from "@/src/modals/M_ClientPicker_Header";
 import { ClientDB } from "@/src/types";

@@ -20,6 +20,7 @@ export type DetailStackPara = {
     SeedBizScreen: undefined;
     Tab3_Item: undefined;
     TestScreen: undefined;
+    BizInfo: undefined;
 
     Restore: { mode?: 'restore_deleted' | 'restore_archived' };
     CreateModify: { mode?: 'create_new' | 'modify_existed' };

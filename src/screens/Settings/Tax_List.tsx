@@ -1,31 +1,35 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import { useModalStore } from '@/src/stores/useModalStore';
-
-import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
+// Firestore imports
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { app } from "@/src/config/firebaseConfig";
 
-import { useTaxStore } from '@/src/stores/InvStore';
+import { useModalStore, useFirebaseUserStore, useTaxStore } from '@/src/stores/'
 import { s_global, colors } from "@/src/constants";
 
 import { RootStackPara, TaxDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useTabSync } from '@/src/hooks/useTabSync';
-
 export const Tax_List: React.FC = () => {
-    useTabSync('items');
-    const db = useSQLiteContext();
+    const db = getFirestore(app);
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<TaxDB[]>([]);
-    const {oTax, setOTax, createEmptyTax4New,  clearOTax } = useTaxStore();  // 🧠 Zustand action
+    const { oTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action
+    const { FirebaseUser } = useFirebaseUserStore();
+    const uid = FirebaseUser?.uid;
 
     const fetchItems = async () => {
         try {
-            const activeItems = await db.getAllAsync<TaxDB>("SELECT * FROM tax where NOT is_deleted");
+            const colRef = collection(db, `aai/be_${uid}/tax_list`);
+            const q = query(colRef, where("is_deleted", "==", 0));
+            const snapshot = await getDocs(q);
+
+            const activeItems: TaxDB[] = snapshot.docs.map(doc => doc.data() as TaxDB);
+
             setItems(activeItems);
         } catch (err) { console.error("Failed to load Items:", err); }
     };
@@ -77,7 +81,7 @@ export const Tax_List: React.FC = () => {
             ) : (
                 <FlatList
                     data={items}
-                    keyExtractor={(item) => item.id!.toString()}
+                    keyExtractor={(item) => item.tax_id}
                     renderItem={renderItem}
                 />
             )}

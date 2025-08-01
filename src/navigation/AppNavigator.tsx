@@ -11,7 +11,7 @@ import StackNavigator from './StackNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import SignScreen from '@/src/screens/user/SignScreen';
 
-import { useFirebaseUserStore } from '@/src/stores/useUserStore';
+import { useFirebaseUserStore } from '@/src/stores/UserStore';
 
 const RootStack = createNativeStackNavigator();
 

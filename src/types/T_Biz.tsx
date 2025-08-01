@@ -37,9 +37,9 @@ export interface BizDB {
 }
 
 export interface TaxDB {
-    id: number;
-    user_id: number;
-    biz_id: number;
+    tax_id: string;
+    user_id: string;
+    biz_id: string;
 
     tax_name: string;
     tax_rate: number;
