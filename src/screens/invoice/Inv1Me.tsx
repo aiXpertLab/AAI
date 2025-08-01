@@ -38,7 +38,7 @@ export const Inv1Me: React.FC = () => {
 
             {/* Biz Info */}
             <TouchableOpacity
-                onPress={() => navigation.navigate("Inv1Me_BizForm")}
+                onPress={() => navigation.navigate("BizInfo")}
                 activeOpacity={0.8}
                 style={{ flex: 1 }}
             >

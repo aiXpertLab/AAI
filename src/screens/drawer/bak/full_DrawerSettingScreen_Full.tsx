@@ -4,7 +4,7 @@ import { View, Text, ScrollView, StyleSheet, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { DetailStackPara } from "@/src/types";
-import SettingItem from "@/src/screens/drawer/SettingItem";
+import SettingItem from "@/src/screens/Settings/SettingItem";
 import { s_global, colors } from "@/src/constants";
 
 const Drawer_Settings_Screen: React.FC = () => {
@@ -24,7 +24,7 @@ const Drawer_Settings_Screen: React.FC = () => {
         <ScrollView style={styles.container}>
             {/* Business Section */}
             <Section title="Business">
-                <SettingItem title="Business Info" onPress={() => navigation.navigate("Inv1Me_BizForm")} />
+                <SettingItem title="Business Info" onPress={() => navigation.navigate("BizInfo")} />
                 <SettingItem title="Tax"  onPress={() => navigation.navigate("Tax_List")} />
                 <SettingItem title="Payment Method" />
                 <SettingItem title="Terms & Conditions" />

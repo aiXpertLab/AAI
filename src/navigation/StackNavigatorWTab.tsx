@@ -16,7 +16,7 @@ import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';
 import Inv_Pay from "@/src/screens/invoice/Inv_Pay";
 import Inv_New from "@/src/screens/invoice/Inv_New";
 
-import Inv1Me_BizForm from "@/src/screens/invoice/Inv1Me_BizForm";
+import Inv1Me_BizForm from "@/src/screens/biz/BizInfo";
 import Inv4Total_TaxForm from '@/src/screens/invoice/Inv4Total_TaxForm';
 
 const Stack = createStackNavigator<RootStackParamList>();

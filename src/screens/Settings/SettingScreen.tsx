@@ -1,18 +1,21 @@
 // src/screens/Drawer_Settings_Screen.tsx
-import React, { useLayoutEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable, Switch } from "react-native";
+import React from "react";
+import { View, Text, ScrollView, Pressable } from "react-native";
+
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { DetailStackPara } from "@/src/types";
-import SettingItem from "@/src/screens/drawer/SettingItem";
+
 import { s_global } from "@/src/constants";
 import Constants from 'expo-constants';
 const version = Constants.expoConfig?.version ?? '1.0.0';
 
+import { DetailStackPara } from "@/src/types";
+import SettingItem from "./SettingItem";
+
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
-    useLayoutEffect(() => {
+    React.useLayoutEffect(() => {
         const parent = navigation.getParent();
         if (parent) {
             parent.setOptions({ headerShown: false });
@@ -20,13 +23,13 @@ const Drawer_Settings_Screen: React.FC = () => {
         }
     }, [navigation]);
 
-    const [showPaidOnInvoice, setShowPaidOnInvoice] = useState(false);
+    const [showPaidOnInvoice, setShowPaidOnInvoice] = React.useState(false);
 
     return (
         <ScrollView style={s_global.SettingsContainer}>
             {/* Business Section */}
             <Section title="My Business">
-                <SettingItem title="Business Info" onPress={() => navigation.navigate("Inv1Me_BizForm")} />
+                <SettingItem title="Business Info" onPress={() => navigation.navigate("BizInfo")} />
                 <SettingItem title="Tax" onPress={() => navigation.navigate("Tax_List")} />
                 <SettingItem title="Payment Method" onPress={() => navigation.navigate("PaymentMethod_List")} />
                 {/* <SettingItem title="Payment Method" />
@@ -60,7 +63,7 @@ const Drawer_Settings_Screen: React.FC = () => {
                     <SettingItem title="Seed" onPress={() => navigation.navigate("SeedBizScreen")} />
                 </Section>
             )}
-            
+
             <Pressable
                 onLongPress={() => {
                     navigation.navigate('TestScreen'); // or your route name

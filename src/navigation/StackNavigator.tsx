@@ -13,7 +13,7 @@ import Tab3_Item from '@/src/screens/Tab3_Item';
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
-import { Inv_Pay, Inv1Me_BizForm, Inv4Total_TaxForm } from "@/src/screens/invoice";
+import { Inv_Pay, Inv1Me_BizForm as BizInfo, Inv4Total_TaxForm } from "@/src/screens/invoice";
 import { Tax_List, Tax_Form, Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 import SeedBizScreen from '@/seed/SeedBizScreen';
 
@@ -38,7 +38,7 @@ function StackNavigator() {
             <DetailStack.Screen name="Inv_Pay" component={Inv_Pay} options={{ title: 'Invoice Payment', }} />
             <DetailStack.Screen name="Inv_Form" component={Inv_Form} options={{ title: 'Invoice' }} />
             <DetailStack.Screen name="Inv_Form_New" component={Inv_Form_New} options={{ title: 'New Invoice' }} />
-            <DetailStack.Screen name="Inv1Me_BizForm" component={Inv1Me_BizForm} options={{ title: 'My Business' }} />
+            <DetailStack.Screen name="BizInfo" component={BizInfo} options={{ title: 'My Business' }} />
             <DetailStack.Screen name="Tab2_Client" component={Tab2_Client} options={{ title: 'My Client' }} />
             <DetailStack.Screen name="Tab2_Client_Form" component={Tab2_Client_Form} options={{ title: 'My Client' }} />
             <DetailStack.Screen name="Tab3_Item" component={Tab3_Item} options={{ title: 'Item or Service' }} />
