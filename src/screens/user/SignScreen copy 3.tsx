@@ -9,8 +9,7 @@ import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
-import { useBizCrud } from '@/src/firestore/fs_crud_biz';
-import { useBizStore } from '@/src/stores/InvStore';
+import { createBusinessEntity } from '@/src/firestore_cursor/business/createBusiness';
 
 export default function SmartAuthScreen() {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -18,8 +17,6 @@ export default function SmartAuthScreen() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const { setOBiz, } = useBizStore();  // 🧠 Zustand action
-
 
     const handleForgotPassword = async () => {
         if (!email) return Alert.alert('Please enter your email to reset password.');
@@ -64,10 +61,7 @@ export default function SmartAuthScreen() {
 
                                     // Create business entity for the new user
                                     try {
-                                        await useBizCrud().createBiz(user.uid);
-                                        const bizData = await useBizCrud().fetchBiz(user.uid);
-                                        setOBiz(bizData ?? null);
-
+                                        await createBusinessEntity(user.uid);
                                         setMessage('✅ New account created with business setup!');
                                     } catch (businessError) {
                                         console.error('Business creation failed:', businessError);
@@ -97,9 +91,7 @@ export default function SmartAuthScreen() {
 
                 // Create business entity for anonymous user
                 try {
-                    await useBizCrud().createBiz(user.uid);
-                    const bizData = await useBizCrud().fetchBiz(user.uid);
-                    setOBiz(bizData ?? null);
+                    await createBusinessEntity(user.uid);
                     setMessage('✅ Continuing as guest with business setup!');
                 } catch (businessError) {
                     console.error('Business creation failed for anonymous user:', businessError);
@@ -123,71 +115,70 @@ export default function SmartAuthScreen() {
             className="flex-1 bg-white"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View className="flex-1">
-                    <ScrollView
-                        contentContainerStyle={{
-                            paddingTop: 80, // or whatever you want
-                            paddingHorizontal: 16,
-                            paddingBottom: 24,
-                        }}
-                        keyboardShouldPersistTaps="handled"
-                    >
-                        <View className="flex-1 justify-center px-6 mt-0">
-                            {/* Logo */}
-                            <View className="items-center mt-0 mb-6">
-                                <Image source={require('@/assets/logo_transparent.png')} className="w-[280px] mb-2" resizeMode="contain" />
-                            </View>
-                            {/* Welcome text */}
-                            <Text className="text-center text-xl font-bold text-black mb-10">Welcome to AI Auto Invoicing!</Text>
-                            <Text className="text-center text-gray-400 mb-10">Sign in for a smarter invoicing experience...</Text>
-                            {/* Email input */}
-                            <View className="mb-4">
-                                <TextInput
-                                    className="bg-gray-100 rounded-full px-5 py-3 text-base"
-                                    placeholder="Email"
-                                    placeholderTextColor="#B0B0B0"
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    autoCapitalize="none"
-                                    keyboardType="email-address"
-                                />
-                            </View>
-                            {/* Password input with eye toggle */}
-                            <View className="mb-4 flex-row items-center bg-gray-100 rounded-full px-5">
-                                <TextInput
-                                    className="flex-1 py-3 text-base"
-                                    placeholder="Password"
-                                    placeholderTextColor="#B0B0B0"
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    secureTextEntry={!showPassword}
-                                />
-                                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                    <Text className="text-gray-400 font-bold ml-2">{showPassword ? '🙈' : '👁️'}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            {/* Login button */}
-                            <TouchableOpacity
-                                className="mt-6 mb-8 rounded-full py-4 items-center"
-                                style={{ backgroundColor: colors.main }}
-                                onPress={handleAuth}
-                            >
-                                <Text className="text-white font-bold text-base tracking-wide">LOGIN / REGISTER</Text>
-                            </TouchableOpacity>
-                            {/* Forgot password */}
-
-                            {message ? <Text className="text-center text-red-500 mb-2">{message}</Text> : null}
+                <ScrollView
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <View className="flex-1 justify-center px-6 mt-0">
+                        {/* Logo */}
+                        <View className="items-center mt-0 mb-10">
+                            <Image source={require('@/assets/logo_transparent.png')} className="w-[280px] mb-2" resizeMode="contain" />
                         </View>
-                    </ScrollView>
-                    <View className="absolute bottom-8 flex-row justify-between items-center w-full mb-8 px-6">
-                        <TouchableOpacity onPress={handleAnonymous}>
-                            <Text className="text-gray-400  text-sm">Continue as Guest</Text>
+                        {/* Welcome text */}
+                        <Text className="text-center text-xl font-bold text-black mb-10">Welcome to AI Auto Invoicing!</Text>
+                        <Text className="text-center text-gray-400 mb-10">Sign in for a smarter invoicing experience...</Text>
+                        {/* Email input */}
+                        <View className="mb-8">
+                            <TextInput
+                                className="bg-gray-100 rounded-full px-5 py-3 text-base"
+                                placeholder="Email"
+                                placeholderTextColor="#B0B0B0"
+                                value={email}
+                                onChangeText={setEmail}
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                            />
+                        </View>
+                        {/* Password input with eye toggle */}
+                        <View className="mb-4 flex-row items-center bg-gray-100 rounded-full px-5">
+                            <TextInput
+                                className="flex-1 py-3 text-base"
+                                placeholder="Password"
+                                placeholderTextColor="#B0B0B0"
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry={!showPassword}
+                            />
+                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                <Text className="text-gray-400 font-bold ml-2">{showPassword ? '🙈' : '👁️'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                        {/* Login button */}
+                        <TouchableOpacity
+                            className="mt-6 mb-8 rounded-full py-4 items-center"
+                            style={{ backgroundColor: colors.main }}
+                            onPress={handleAuth}
+                        >
+                            <Text className="text-white font-bold text-base tracking-wide">LOGIN / REGISTER</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleForgotPassword}>
-                            <Text className="text-right text-sm" style={{ color: colors.main }}>Forgot password?</Text>
-                        </TouchableOpacity>
+                        {/* Forgot password */}
+                        <View className="absolute bottom-8 flex-row justify-between items-center w-full mb-8 px-6">
+                            <TouchableOpacity onPress={handleAnonymous}>
+                                <Text className="text-gray-400  text-sm">Continue as Guest</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleForgotPassword}>
+                                <Text className="text-right text-sm" style={{ color: colors.main }}>Forgot password?</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {message ? <Text className="text-center text-red-500 mb-2">{message}</Text> : null}
                     </View>
-                </View>
+                    {/* Register link at the bottom */}
+                    {/* <View className="absolute bottom-8 w-full flex-row justify-center">
+                <Text className="text-gray-400">Don't have an account? </Text>
+                <Text className="font-bold" style={{ color: colors.main }}>Register!</Text>
+            </View> */}
+                </ScrollView>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
     );

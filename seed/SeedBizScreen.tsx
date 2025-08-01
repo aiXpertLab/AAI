@@ -18,6 +18,13 @@ const SeedBizScreen = () => {
                 const paymentDoc = doc(collection(bizRef, "payment_methods"), method.pm_id);
                 await setDoc(paymentDoc, method);
             }
+
+            // 3. tax list
+            for (const tax of seed_data.tax_list) {
+                const taxDoc = doc(collection(bizRef, "tax_list"), tax.tax_id);
+                await setDoc(taxDoc, tax);
+            }
+
         })();
     }, []);
 

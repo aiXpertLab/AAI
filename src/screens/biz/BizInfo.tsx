@@ -28,6 +28,7 @@ export const BizInfo: React.FC = () => {
     const updateOBiz = useBizStore((s) => s.updateOBiz);
     const { updateBiz } = useBizCrud();
 
+    console.log("BizInfo: oBiz:", oBiz);
     if (!oBiz) return <Text>Loading...</Text>;
 
     console.log("Inv1Me_BizForm: oBiz:");
