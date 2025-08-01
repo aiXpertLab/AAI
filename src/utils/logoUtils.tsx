@@ -1,22 +1,24 @@
 // src/utils/logoUtils.ts
-import * as ImagePicker from 'expo-image-picker';
-import { SQLiteDatabase } from 'expo-sqlite';
+import axios from 'axios';
 import Toast from 'react-native-toast-message';
-import { useBizStore,  } from '@/src/stores/InvStore';
-import * as FileSystem from "expo-file-system";
 
-export const saveLogoToDB = async (db: SQLiteDatabase, uri: string, b64:string) => {
-    try {
-        await db.runAsync('UPDATE biz SET biz_logo = ?, biz_logo64=? WHERE me = ?', [uri,b64, 'meme']);
-        Toast.show({ type: 'success', text1: 'Logo Saved!', text2: "Your logo has been updated.", position: 'bottom' });
-    } catch (err) {
-        console.error("Error saving logo:", err);
-        Toast.show({ type: 'error', text1: 'Failed to Save Logo', text2: "An error occurred.", position: 'bottom' });
-    }
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from 'expo-image-picker';
+
+import { useBizStore, } from '@/src/stores/InvStore';
+import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+
+const CLOUD_NAME = 'dbysasiob';
+const UPLOAD_PRESET = 'aailogo';
+
+const showToast = (type: 'success' | 'error', title: string, message: string) => {
+    Toast.show({ type, text1: title, text2: message, position: 'bottom' });
 };
 
-export const pickAndSaveLogo = async (db: SQLiteDatabase) => {
+
+export const pickAndSaveLogo = async () => {
     const { updateOBiz } = useBizStore.getState();
+    const { updateBiz } = useBizCrud();
 
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -27,21 +29,45 @@ export const pickAndSaveLogo = async (db: SQLiteDatabase) => {
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0.7,
-        base64: false,
     });
 
     if (!pickerResult.canceled && pickerResult.assets.length > 0) {
-        const uri = pickerResult.assets[0].uri;
+        const localUri = pickerResult.assets[0].uri;
 
         try {
-            const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64, });
-            const mimeType = pickerResult.assets[0].mimeType || "image/jpeg";
-            const dataUri64 = `data:${mimeType};base64,${base64}`;
-            
-            updateOBiz({ be_logo: uri, be_logo64: dataUri64 });
-            await saveLogoToDB(db, uri, dataUri64);
+            // Prepare file data for Cloudinary upload
+            const formData = new FormData();
+            formData.append('file', {
+                uri: localUri,
+                type: 'image/jpeg', // or pickerResult.assets[0].type || 'image/jpeg'
+                name: 'logo.jpg',
+            } as any);
+            formData.append('upload_preset', UPLOAD_PRESET);
+
+            // Upload to Cloudinary
+            const response = await axios.post(
+                `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+                formData,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                }
+            );
+
+            const cloudinaryUrl = response.data.secure_url;
+
+            // Update Zustand (local state)
+            updateOBiz({ be_logo: cloudinaryUrl });
+
+            // Update Firestore (remote)
+            await updateBiz(
+                { be_logo: cloudinaryUrl },
+                () => showToast('success', 'Logo Saved!', 'Your logo has been updated.'),
+                (err) => showToast('error', 'Failed to Save Logo', 'An error occurred.')
+            );
+
         } catch (error) {
-            console.error("Failed to convert logo to base64:", error);
+            console.error("Cloudinary upload failed:", error);
+            showToast('error', 'Upload Failed', 'Could not upload image to Cloudinary.');
         }
-    };
+    }
 };

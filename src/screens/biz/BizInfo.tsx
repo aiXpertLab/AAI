@@ -6,7 +6,6 @@ import { Picker } from "@react-native-picker/picker";
 import { Ionicons } from '@expo/vector-icons';
 
 import Toast from 'react-native-toast-message';
-import { useSQLiteContext } from "expo-sqlite";
 
 import { s_global, s_inv } from "@/src/constants";
 import { BE_DB } from '@/src/types';
@@ -19,7 +18,6 @@ import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
 const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 export const BizInfo: React.FC = () => {
-    const db = useSQLiteContext();
     const navigation = useNavigation();
 
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
@@ -127,7 +125,7 @@ export const BizInfo: React.FC = () => {
                         keyboardShouldPersistTaps="handled"                    >
 
                         <View style={[s_global.Container, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
-                            <TouchableOpacity style={[s_inv.LogoBoxBig,]} onPress={() => pickAndSaveLogo(db)}>
+                            <TouchableOpacity style={[s_inv.LogoBoxBig,]} onPress={() => pickAndSaveLogo()}>
                                 {oBiz?.be_logo ? (
                                     <Image source={{ uri: logo }} style={s_inv.LogoBoxBig} resizeMode="cover" />
                                 ) : (

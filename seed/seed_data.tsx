@@ -17,9 +17,7 @@ export const seed_data = {
 
         be_id: "be_id_aiautoinvoicing",
         be_bk: "BK.",
-        be_64_square: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
-        be_logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
-        be_logo_64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFUlEQVR42mP8z8BQz0AEYBxVSF+FABJADveWkH6oAAAAAElFTkSuQmCC",
+        be_logo: "https://raw.githubusercontent.com/aiautoinvoicing/aiautoinvoicing.github.io/22b311237f4246003211eeb5d44aa1a7f60dc706/logo.png",
 
         be_name: "My Corporation",
         be_type: "sole_proprietorship",

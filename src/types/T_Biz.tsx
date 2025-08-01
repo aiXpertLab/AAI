@@ -12,8 +12,6 @@ export interface BE_DB {
     be_description: string;
     be_note: string;
     be_logo: string;
-    be_logo64: string;
-    be_64_square: string;
     be_inv_template_id: string;
 }
 
