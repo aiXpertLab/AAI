@@ -5,9 +5,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { colors } from "@/src/constants";
 import Drawer_Settings from "@/src/screens/settings/SettingScreen";
 
-import Tab2_Client_Form from '@/src/screens/Tab2_Client_Form';
+import Tab2_Client_Form from '@/src/screens/settings/Client_Form';
 import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';
-import Tab2_Client from '@/src/screens/Tab2_Client';
+import Tab2_Client from '@/src/screens/settings/Client_List';
 import Tab3_Item from '@/src/screens/Tab3_Item';
 
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";

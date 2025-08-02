@@ -25,6 +25,12 @@ const SeedBizScreen = () => {
                 await setDoc(taxDoc, tax);
             }
 
+
+            // 4. clients
+            for (const client of seed_data.clients) {
+                const clientDoc = doc(collection(bizRef, "clients"), client.client_id);
+                await setDoc(clientDoc, client);
+            }
         })();
     }, []);
 

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { InvDB, InvItemDB, BE_DB, PMDB, TaxDB } from '@/src/types';
-import {createEmptyPM4New, createEmptyTax4New } from './seeds4store';
+import { InvDB, InvItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
+import {createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 // Store for the list of invoice items
 type OInvItemListStore = {
@@ -68,6 +68,7 @@ type OInvStore = {
         oInvItemList: Partial<InvItemDB>[];
         oTax: Partial<TaxDB> | null;
         oBiz: Partial<BE_DB> | null;
+        oClient: Partial<ClientDB> | null;
     } | null;
     setOInv: (inv: Partial<InvDB>) => void;
     updateOInv: (inv: Partial<InvDB>) => void;
@@ -78,7 +79,7 @@ type OInvStore = {
 
 export const useInvStore = create<OInvStore>((set) => ({
     oInv: null,
-    setOInv: (inv) => set({ oInv: { ...inv, oInvItemList: [], oTax: null, oBiz: null } }), // Initialize with empty sub-states
+    setOInv: (inv) => set({ oInv: { ...inv, oInvItemList: [], oTax: null, oBiz: null, oClient: null } }), // Initialize with empty sub-states
     updateOInv: (inv) => set((state) => ({ oInv: { ...state.oInv!, ...inv } })),
     clearOInv: () => set({ oInv: null }),
     isDirty: false,
@@ -101,3 +102,28 @@ export const usePMStore = create<OPMStore>((set) => ({
     clearOPM: () => set({ oPM: null }),
     createEmptyPM4New: () => set({ oPM: createEmptyPM4New() })
 }));
+
+
+
+type ClientStore = {
+    oClient: Partial<ClientDB> | null;
+    setOClient: (client: Partial<ClientDB> | null) => void;
+    updateOClient: (client: Partial<ClientDB>) => void;
+    createEmptyClient4New: () => void;
+    clearOClient: () => void;
+  };
+
+
+
+export const useClientStore = create<ClientStore>((set) => ({
+    oClient: null,
+    // setOClient: (client: ClientDB | null) => set({ oClient: client }),
+    setOClient: (client) => set({ oClient: client }),
+    updateOClient: (client) => set((state) => ({ oClient: { ...state.oClient!, ...client } })),
+    clearOClient: () => set({ oClient: null }),
+
+    createEmptyClient4New: () => set({ oClient: createEmptyClient4New() })
+    
+}));
+
+

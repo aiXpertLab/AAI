@@ -4,9 +4,7 @@ import { View, Text, FlatList, TouchableOpacity, Animated } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
-import { useTabSync } from '@/src/hooks/useTabSync';
 import { s_global } from "@/src/constants";
 
 import { useClientStore, useModalStore } from '@/src/stores';
@@ -15,12 +13,10 @@ import { RootStackPara, ClientDB } from '@/src/types';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
-import { useClientCrud } from "../db/crud_client";
+import { useClientCrud } from "../../db/crud_client";
 
 
 const ClientsScreen: React.FC = () => {
-    useTabSync('clients');
-    const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
