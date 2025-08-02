@@ -31,6 +31,21 @@ const SeedBizScreen = () => {
                 const clientDoc = doc(collection(bizRef, "clients"), client.client_id);
                 await setDoc(clientDoc, client);
             }
+
+
+            // 5. items & services
+            for (const item of seed_data.items) {
+                const itemDoc = doc(collection(bizRef, "items"), item.item_id);
+                await setDoc(itemDoc, item);
+            }
+
+            // 6. invocies
+            for (const inv of seed_data.invoices) {
+                const invDoc = doc(collection(bizRef, "invocies"), inv.inv_id);
+                await setDoc(invDoc, inv);
+            }
+
+
         })();
     }, []);
 
