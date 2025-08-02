@@ -53,28 +53,56 @@ export const useBizCrud = () => {
     };
 
 
+    // const createBiz = async (uid: string) => {
+    //     const seedRef = doc(db, "biz_seed", "biz_seed_doc");
+    //     const seedSnap = await getDoc(seedRef);
+    //     if (!seedSnap.exists()) { throw new Error("Seed document not found."); }
+
+    //     const paymentMethodsRef = collection(seedRef, "payment_methods");
+    //     const paymentSnaps = await getDocs(paymentMethodsRef);
+
+    //     const taxRef = collection(seedRef, "tax_list");
+    //     const taxSnaps = await getDocs(taxRef);
+
+    //     const biz_id = `be_${uid}`;
+    //     const userBizRef = doc(db, "aai", biz_id);
+    //     await setDoc(userBizRef, seedSnap.data());
+
+    //     for (const snap of paymentSnaps.docs) {
+    //         const destRef = doc(db, "aai", biz_id, "payment_methods", snap.id);
+    //         await setDoc(destRef, snap.data());
+    //     }
+
+    //     for (const snap of taxSnaps.docs) {
+    //         const destRef = doc(db, "aai", biz_id, "tax_list", snap.id);
+    //         await setDoc(destRef, snap.data());
+    //     }
+
+    //     console.log(`Business entity created for user: ${uid}`);
+    // };
+    const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invocies", "items"];
+
     const createBiz = async (uid: string) => {
         const seedRef = doc(db, "biz_seed", "biz_seed_doc");
         const seedSnap = await getDoc(seedRef);
-        if (!seedSnap.exists()) { throw new Error("Seed document not found."); }
-        const paymentMethodsRef = collection(seedRef, "payment_methods");
-        const paymentSnaps = await getDocs(paymentMethodsRef);
+        if (!seedSnap.exists()) {
+            throw new Error("Seed document not found.");
+        }
 
-        const taxRef = collection(seedRef, "tax_list");
-        const taxSnaps = await getDocs(taxRef);
-
+        // 1. Clone main document
         const biz_id = `be_${uid}`;
         const userBizRef = doc(db, "aai", biz_id);
         await setDoc(userBizRef, seedSnap.data());
 
-        for (const snap of paymentSnaps.docs) {
-            const destRef = doc(db, "aai", biz_id, "payment_methods", snap.id);
-            await setDoc(destRef, snap.data());
-        }
+        // 2. Loop through subcollections
+        for (const subCol of SUBCOLLECTIONS) {
+            const sourceColRef = collection(seedRef, subCol);
+            const sourceSnaps = await getDocs(sourceColRef);
 
-        for (const snap of taxSnaps.docs) {
-            const destRef = doc(db, "aai", biz_id, "tax_list", snap.id);
-            await setDoc(destRef, snap.data());
+            for (const docSnap of sourceSnaps.docs) {
+                const destDocRef = doc(db, "aai", biz_id, subCol, docSnap.id);
+                await setDoc(destDocRef, docSnap.data());
+            }
         }
 
         console.log(`Business entity created for user: ${uid}`);
