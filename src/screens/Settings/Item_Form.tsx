@@ -3,10 +3,9 @@ import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, P
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useItemStore } from '@/src/stores/useItemStore';
-import { useItemCrud } from '@/src/db/crud_item';
+import { useItemStore } from '@/src/stores/ItemStore';
+import { useItemCrud } from '@/src/firestore/fs_crud_item';
 
-import styles from "@/src/constants/styles";
 import { s_global, } from "@/src/constants";
 import { ItemDB, DetailStackPara, RouteType } from "@/src/types";
 import { Ionicons } from '@expo/vector-icons';
@@ -23,6 +22,7 @@ const ItemForm: React.FC = () => {
     const [showConfirm, setShowConfirm] = React.useState(false);
     const [pendingAction, setPendingAction] = React.useState<any>(null);
     const [isProcessing, setIsProcessing] = React.useState(false);
+    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
 
     const { insertItem, updateItem } = useItemCrud();
 
@@ -51,7 +51,7 @@ const ItemForm: React.FC = () => {
         updateOItem({ [field]: value });
     };
 
-    const mode = useRoute<RouteType<'Tab2_Client_Form'>>().params?.mode ?? 'create_new';
+
     const handleSave = async () => {
         if (!oItem) return;
 
@@ -130,7 +130,7 @@ const ItemForm: React.FC = () => {
 
                             {/* Spacer -  Rate.*/}
                             <View style={{ height: 12 }} />
-                            <Text style={styles.label}>Rate</Text>
+                            <Text style={s_global.Label}>Rate</Text>
                             <TextInput
                                 style={s_global.Input}
                                 placeholder={

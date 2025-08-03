@@ -10,7 +10,7 @@ import { cameraB64, processB64Item, uploadB64 } from "@/src/utils/u_img64";
 
 import { Ionicons } from '@expo/vector-icons';
 
-import { useItemStore } from '@/src/stores/useItemStore';
+import { useItemStore } from '@/src/stores/ItemStore';
 import { s_global, colors } from "@/src/constants";
 
 import { RootStackPara, ItemDB } from '@/src/types';
@@ -155,7 +155,7 @@ const ItemsScreen: React.FC = () => {
                 onPress={() => {
                     setOItem(item)
                     navigation.navigate('DetailStack', {
-                        screen: 'Tab3_Item_Form',
+                        screen: 'Item_Form',
                         params: { mode: 'modify_existed' }
                     });
                 }}
@@ -198,7 +198,7 @@ const ItemsScreen: React.FC = () => {
                 onPress={() => {
                     createEmptyItem4New();
                     navigation.navigate('DetailStack', {
-                        screen: 'Tab3_Item_Form',
+                        screen: 'Item_Form',
                         params: { mode: 'create_new' }
                     });
                 }}

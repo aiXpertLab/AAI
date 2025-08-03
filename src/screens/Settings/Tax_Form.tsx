@@ -17,6 +17,7 @@ export const Tax_Form: React.FC = () => {
     const saveRef = useRef(() => { });
     const { oTax, updateOTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action
     const { insertTax, updateTax } = useTaxCrud();
+    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -41,7 +42,7 @@ export const Tax_Form: React.FC = () => {
         updateOTax({ [field]: value });
     };
 
-    const mode = useRoute<RouteType<'Tab2_Client_Form'>>().params?.mode ?? 'create_new';
+    
     const handleSave = async () => {
         if (!oTax) return;
 

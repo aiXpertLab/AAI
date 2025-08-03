@@ -10,7 +10,7 @@ import { cameraB64, processB64Item, uploadB64 } from "@/src/utils/u_img64";
 import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
-import { useItemStore } from '@/src/stores/useItemStore';
+import { useItemStore } from '@/src/stores/ItemStore';
 import { s_global, colors } from "@/src/constants";
 
 import { RootStackPara, ItemDB } from '@/src/types';
