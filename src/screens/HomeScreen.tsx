@@ -15,7 +15,7 @@ import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
 import { s_global, colors } from "@/src/constants";
-import { InvoiceCard } from "@/src/screens/Tab1_Home_List";
+import { InvoiceCard } from "@/src/screens/home/InvoiceCard";
 import { initNewInv } from "@/src/db/seedDemoInvoices";
 import { useTabSync } from '@/src/hooks/useTabSync';
 import { genInvNumber } from "@/src/utils/genInvNumber";
