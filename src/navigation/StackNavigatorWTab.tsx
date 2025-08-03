@@ -11,7 +11,7 @@ import { colors } from "@/src/constants/colors";
 import Drawer_Settings from "@/src/screens/drawer/DrawerSettings";
 
 import Tab2_Client_Form from '@/src/screens/settings/Client_Form';
-import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';
+import Tab3_Item_Form from '@/src/screens/settings/Item_Form';
 
 import Inv_Pay from "@/src/screens/invoice/Inv_Pay";
 import Inv_New from "@/src/screens/invoice/Inv_New";

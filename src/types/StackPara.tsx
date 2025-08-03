@@ -16,7 +16,8 @@ export type DetailStackPara = {
     Inv_Modify_Items: undefined;
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
-    Tab2_Client: undefined;
+    Client_List: undefined;
+    Item_List: undefined;
     SeedBizScreen: undefined;
     Tab3_Item: undefined;
     TestScreen: undefined;

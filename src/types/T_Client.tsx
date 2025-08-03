@@ -1,9 +1,9 @@
 export interface ClientDB {
-    id: number;
-    user_id: number;
-    biz_id: number;
+    client_id: string;
+    user_id: string;
+    biz_id: string;
 
-    client_number:string;
+    client_number: string;
     client_company_name: string;
     client_contact_name: string;
     client_contact_title: string;
@@ -24,7 +24,11 @@ export interface ClientDB {
 
     client_payment_term: number;
     client_payment_method: string;
-    
+
     is_deleted: number;
     is_locked: number;
+
+    created_at: any; // serverTimestamp()
+    updated_at: any; // serverTimestamp()
+
 }

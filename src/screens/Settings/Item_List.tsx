@@ -8,7 +8,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import { useModalStore } from '@/src/stores/ModalStore';
 import { cameraB64, processB64Item, uploadB64 } from "@/src/utils/u_img64";
 
-import { useSQLiteContext } from "expo-sqlite";
 import { Ionicons } from '@expo/vector-icons';
 
 import { useItemStore } from '@/src/stores/useItemStore';
@@ -17,13 +16,10 @@ import { s_global, colors } from "@/src/constants";
 import { RootStackPara, ItemDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useTabSync } from '@/src/hooks/useTabSync';
-import { useItemCrud } from "../db/crud_item";
+import { useItemCrud } from "@/src/firestore/fs_crud_item";
 import { M_Confirmation, M_Spinning } from "@/src/modals";
 
 const ItemsScreen: React.FC = () => {
-    useTabSync('items');
-    const db = useSQLiteContext();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
@@ -34,14 +30,7 @@ const ItemsScreen: React.FC = () => {
 
     const [previewItems, setPreviewItems] = useState<ItemDB[]>([]);
     const [showConfirm, setShowConfirm] = useState(false);
-    const { insertItem, updateItem } = useItemCrud();
-
-    const fetchItems = async () => {
-        try {
-            const activeItems = await db.getAllAsync<ItemDB>("SELECT * FROM Items where NOT is_deleted ORDER BY id DESC");
-            setItems(activeItems);
-        } catch (err) { console.error("Failed to load Items:", err); }
-    };
+    const { insertItem, updateItem, fetchItems } = useItemCrud();
 
     useFocusEffect(
         useCallback(() => {
@@ -53,8 +42,16 @@ const ItemsScreen: React.FC = () => {
     React.useEffect(() => { hideFilterIcon(); }, []);
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", fetchItems);
-        return unsubscribe;
+        const unsubscribeFocus = navigation.addListener("focus", async () => {
+            try {
+                const fetchedClients = await fetchItems();
+                setItems(fetchedClients);
+            } catch (err) {
+                console.error("❌ fetchClients error:", err);
+            }
+        });
+
+        return unsubscribeFocus;
     }, [navigation]);
 
 
@@ -112,7 +109,7 @@ const ItemsScreen: React.FC = () => {
     }, [navigation]);
 
 
-    const renderRightActions = (progress: any, dragX: any, clientId: number) => {
+    const renderRightActions = (progress: any, dragX: any, itemId: string) => {
         const trans = dragX.interpolate({
             inputRange: [0, 50, 100, 101],
             outputRange: [0, 0, 0, 1],
@@ -121,26 +118,35 @@ const ItemsScreen: React.FC = () => {
         return (
             <RectButton
                 style={s_global.deleteButton}
-                onPress={() => handleDelete(clientId)}
+                onPress={() => handleDelete(itemId)}
             >
                 <Ionicons name="trash-outline" size={24} color="white" />
             </RectButton>
         );
     };
 
-    const handleDelete = async (itemId: number) => {
-        try {
-            await db.runAsync("UPDATE Items SET is_deleted = 1 WHERE id = ?", [itemId]);
-            fetchItems(); // Refresh the list
-        } catch (err) {
-            console.error("Failed to delete client:", err);
-        }
+    const handleDelete = async (clientId: string) => {
+        await updateItem(
+            {
+                client_id: clientId,
+                is_deleted: 1,
+            },
+            async () => {
+                const updatedClients = await fetchItems();
+                setItems(updatedClients);  // update state
+            },
+            (err) => {
+                console.error("❌ Failed to delete client:", err);
+            }
+        );
+
     };
+
 
     const renderItem = ({ item }: { item: ItemDB }) => (
         <Swipeable
             renderRightActions={(progress, dragX) =>
-                renderRightActions(progress, dragX, item.id!)
+                renderRightActions(progress, dragX, item.item_id)
             }
         >
 
@@ -153,7 +159,7 @@ const ItemsScreen: React.FC = () => {
                         params: { mode: 'modify_existed' }
                     });
                 }}
-                onLongPress={() => console.log("Long Press - maybe show item options", item.id)}
+                onLongPress={() => console.log("Long Press - maybe show item options", item.item_id)}
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8 }}>
                     <Text style={s_global.Label_BoldLeft_RegularRight} numberOfLines={1}>{item.item_name}</Text>
@@ -183,7 +189,7 @@ const ItemsScreen: React.FC = () => {
             ) : (
                 <FlatList
                     data={items}
-                    keyExtractor={(item) => item.id!.toString()}
+                    keyExtractor={(item) => item.item_id}
                     renderItem={renderItem}
                 />
             )}

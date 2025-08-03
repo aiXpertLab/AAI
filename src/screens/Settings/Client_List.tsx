@@ -1,5 +1,12 @@
+// Firestore imports
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { app } from "@/src/config/firebaseConfig";
+import { useFirebaseUserStore } from '@/src/stores/'
+
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity, Animated } from "react-native";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,40 +17,23 @@ import { s_global } from "@/src/constants";
 import { useClientStore, useModalStore } from '@/src/stores';
 import { RootStackPara, ClientDB } from '@/src/types';
 
-
-import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { RectButton } from 'react-native-gesture-handler';
-import { useClientCrud } from "../../db/crud_client";
+import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
 
 const ClientsScreen: React.FC = () => {
+    const db = getFirestore(app);
+    const { FirebaseUser } = useFirebaseUserStore();
+    const uid = FirebaseUser?.uid;
+
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
 
     const [isFocused, setIsFocused] = useState(false);
     const [clients, setClients] = useState<ClientDB[]>([]);
-    const { insertClient, updateClient } = useClientCrud();
+    const { insertClient, updateClient, fetchClients } = useClientCrud();
 
-    const fetchClients = async () => {
-        try {
-            const activeClients = await db.getAllAsync<ClientDB>("SELECT * FROM Clients where NOT is_deleted ORDER BY id ASC");
-            setClients(activeClients);
-        } catch (err) {
-            console.error("Failed to load Clients:", err);
-        }
-    };
-
-    const handleDeleteClient = async (id: number) => {
-        try {
-            await db.runAsync("UPDATE Clients SET is_deleted = 1 WHERE id = ?", [id]);
-            fetchClients(); // Refresh the list
-        } catch (err) {
-            console.error("Failed to delete client:", err);
-        }
-    };
-
-    const renderRightActions = (progress: any, dragX: any, clientId: number) => {
+    const renderRightActions = (progress: any, dragX: any, clientId: string) => {
         const trans = dragX.interpolate({
             inputRange: [0, 50, 100, 101],
             outputRange: [0, 0, 0, 1],
@@ -56,30 +46,26 @@ const ClientsScreen: React.FC = () => {
             >
                 <Ionicons name="trash-outline" size={24} color="white" />
             </RectButton>
-            // <RectButton
-            //     style={s_global.deleteButton}
-            //     onPress={() => handleDeleteClient(clientId)}
-            // >
-            //     <Animated.Text
-            //         style={[
-            //             s_global.deleteButtonText,
-            //             { transform: [{ translateX: trans }] },
-            //         ]}
-            //     >
-            //         Delete
-            //     </Animated.Text>
-            // </RectButton>
         );
     };
 
-    const handleDelete = async (clientId: number) => {
-        try {
-            await db.runAsync("UPDATE Clients SET is_deleted = 1 WHERE id = ?", [clientId]);
-            fetchClients(); // Refresh the list
-        } catch (err) {
-            console.error("Failed to delete client:", err);
-        }
+    const handleDelete = async (clientId: string) => {
+        await updateClient(
+            {
+                client_id: clientId,
+                is_deleted: 1,
+            },
+            async () => {
+                const updatedClients = await fetchClients();
+                setClients(updatedClients);  // update state
+            },
+            (err) => {
+                console.error("❌ Failed to delete client:", err);
+            }
+        );
+
     };
+
     React.useLayoutEffect(() => {
         return () => {
             showFilterIcon(); // Hide filter icon when leaving the screen
@@ -96,9 +82,18 @@ const ClientsScreen: React.FC = () => {
     );      // this is for status bar color
 
     useEffect(() => {
-        const unsubscribeFocus = navigation.addListener("focus", fetchClients);
+        const unsubscribeFocus = navigation.addListener("focus", async () => {
+            try {
+                const fetchedClients = await fetchClients();
+                setClients(fetchedClients);
+            } catch (err) {
+                console.error("❌ fetchClients error:", err);
+            }
+        });
+
         return unsubscribeFocus;
     }, [navigation]);
+
 
     React.useEffect(() => {
         hideFilterIcon();
@@ -107,7 +102,7 @@ const ClientsScreen: React.FC = () => {
     const renderLineOfClient = ({ item: line_of_client }: { item: ClientDB }) => (
         <Swipeable
             renderRightActions={(progress, dragX) =>
-                renderRightActions(progress, dragX, line_of_client.id!)
+                renderRightActions(progress, dragX, line_of_client.client_id!)
             }
         >
             <TouchableOpacity style={s_global.Card}
@@ -137,7 +132,7 @@ const ClientsScreen: React.FC = () => {
             ) : (
                 <FlatList
                     data={clients}
-                    keyExtractor={(item) => item.id!.toString()}
+                    keyExtractor={(item) => item.client_id}
                     renderItem={renderLineOfClient}
                 />
             )}

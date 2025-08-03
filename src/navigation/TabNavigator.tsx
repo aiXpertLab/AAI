@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Tab1_HomeScreen from '@/src/screens/Tab1_Home';
 import Tab2_ClientScreen from '@/src/screens/settings/Client_List';
-import Tab3_ItemScreen from '@/src/screens/Tab3_Item';
+import Tab3_ItemScreen from '@/src/screens/settings/Item_List';
 
 const Tab = createBottomTabNavigator();
 

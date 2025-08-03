@@ -5,10 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { colors } from "@/src/constants";
 import Drawer_Settings from "@/src/screens/settings/SettingScreen";
 
-import Tab2_Client_Form from '@/src/screens/settings/Client_Form';
-import Tab3_Item_Form from '@/src/screens/Tab3_Item_Form';
-import Tab2_Client from '@/src/screens/settings/Client_List';
-import Tab3_Item from '@/src/screens/Tab3_Item';
+import Client_Form from '@/src/screens/settings/Client_Form';
+import Item_Form from '@/src/screens/settings/Item_Form';
+import Client_List from '@/src/screens/settings/Client_List';
+import Item_List from '@/src/screens/settings/Item_List';
 
 import { Inv_Form_New } from "@/src/screens/invoice/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
@@ -17,7 +17,6 @@ import { Inv_Pay, Inv4Total_TaxForm } from "@/src/screens/invoice";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
 import {  Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 import SeedBizScreen from '@/seed/SeedBizScreen';
-
 
 import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
 import TestScreen from '@/src/screens/drawer/TestScreen';
@@ -40,10 +39,10 @@ function StackNavigator() {
             <DetailStack.Screen name="Inv_Form" component={Inv_Form} options={{ title: 'Invoice' }} />
             <DetailStack.Screen name="Inv_Form_New" component={Inv_Form_New} options={{ title: 'New Invoice' }} />
             <DetailStack.Screen name="BizInfo" component={BizInfo} options={{ title: 'My Business' }} />
-            <DetailStack.Screen name="Tab2_Client" component={Tab2_Client} options={{ title: 'My Client' }} />
-            <DetailStack.Screen name="Tab2_Client_Form" component={Tab2_Client_Form} options={{ title: 'My Client' }} />
-            <DetailStack.Screen name="Tab3_Item" component={Tab3_Item} options={{ title: 'Item or Service' }} />
-            <DetailStack.Screen name="Tab3_Item_Form" component={Tab3_Item_Form} options={{ title: 'Edit Item or Service' }} />
+            <DetailStack.Screen name="Client_List" component={Client_List} options={{ title: 'My Client' }} />
+            <DetailStack.Screen name="Client_Form" component={Client_Form} options={{ title: 'My Client' }} />
+            <DetailStack.Screen name="Item_List" component={Item_List} options={{ title: 'Item or Service' }} />
+            <DetailStack.Screen name="Item_Form" component={Item_Form} options={{ title: 'Edit Item or Service' }} />
             <DetailStack.Screen name="Tax_List" component={Tax_List} options={{ title: 'Tax' }} />
             <DetailStack.Screen name="Tax_Form" component={Tax_Form} options={{ title: 'Tax' }} />
             <DetailStack.Screen name="PaymentMethod_List" component={PaymentMethod_List} options={{ title: 'Payment Method' }} />

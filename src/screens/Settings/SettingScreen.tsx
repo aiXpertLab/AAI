@@ -39,8 +39,8 @@ const Drawer_Settings_Screen: React.FC = () => {
 
             {/* Invoice Section */}
             <Section title="Invoice">
-                <SettingItem title="Clients" onPress={() => navigation.navigate("Tab2_Client")} />
-                <SettingItem title="Items & Services" onPress={() => navigation.navigate("Tab3_Item")} />
+                <SettingItem title="Clients" onPress={() => navigation.navigate("Client_List")} />
+                <SettingItem title="Items & Services" onPress={() => navigation.navigate("Item_List")} />
 
                 {/* <SettingItem title="Due Terms" subtitle="7 days" />
                 <SettingItem

@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from "@react-native-picker/picker";
 
-import { useClientStore } from '@/src/stores/useClientStore';
+import { useClientStore } from '@/src/stores/';
 import { useClientCrud } from '@/src/db/crud_client';
 
 import { s_global } from "@/src/constants";
