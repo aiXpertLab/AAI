@@ -1,4 +1,4 @@
-import { getDoc, getFirestore, doc, updateDoc, serverTimestamp, collection, getDocs, setDoc } from "firebase/firestore";
+import { getDoc, getFirestore, doc, updateDoc, serverTimestamp, Timestamp, collection, getDocs, setDoc, runTransaction } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
 import { getUserUid } from "@/src/utils/getFirebaseUid";
 import { BE_DB } from "@/src/types";
@@ -80,7 +80,7 @@ export const useBizCrud = () => {
 
     //     console.log(`Business entity created for user: ${uid}`);
     // };
-    const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invocies", "items"];
+    const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invs", "items"];
 
     const createBiz = async (uid: string) => {
         const seedRef = doc(db, "biz_seed", "biz_seed_doc");
@@ -100,17 +100,47 @@ export const useBizCrud = () => {
             const sourceSnaps = await getDocs(sourceColRef);
 
             for (const docSnap of sourceSnaps.docs) {
+                console.log('docsnamp', docSnap,)
                 const destDocRef = doc(db, "aai", biz_id, subCol, docSnap.id);
                 await setDoc(destDocRef, docSnap.data());
             }
         }
 
+
+        // 3. Adjust invoice dates after cloning
+        const invsRef = collection(db, "aai", biz_id, "invs");
+        const invsSnap = await getDocs(invsRef);
+
+        for (const invDoc of invsSnap.docs) {
+            const invData = invDoc.data();
+
+            // Base date = today - 20 days
+            const invDate = new Date();
+            const inv1Date = new Date();
+            invDate.setDate(invDate.getDate() - 20);
+            inv1Date.setDate(invDate.getDate() - 19);
+
+            // Due date = invDate + payment term
+            const termDays = invData.inv_payment_term || 0;
+            const dueDate = new Date(invDate);
+            dueDate.setDate(invDate.getDate() + termDays);
+
+            // Update payment dates to match invoice date
+            const updatedPayments = (invData.inv_payments || []).map((payment:any) => ({
+                ...payment,
+                pay_date: Timestamp.fromDate(inv1Date),
+            }));
+
+            // Write updates back
+            await setDoc(invDoc.ref, {
+                ...invData,
+                inv_date: Timestamp.fromDate(invDate),
+                inv_due_date: Timestamp.fromDate(dueDate),
+                inv_payments: updatedPayments
+            }, { merge: true });
+        }
         console.log(`Business entity created for user: ${uid}`);
     };
-
-
-
-
 
 
 

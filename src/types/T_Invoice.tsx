@@ -1,36 +1,9 @@
 export interface InvDB {
-    id: number; // Auto-increment ID in DB
-    user_id: number | null;
-    biz_id: number | null; // Link to biz table
-    me: string|"invoice"; // 'invoice' or 'receipt'
+    inv_id: string; // Auto-increment ID in DB
+    user_id: string | null;
+    be_id: string | null; // Link to biz table
+    client_id: string | null;
 
-    biz_bk: string; // 0 or 1
-    biz_logo: string;
-    biz_logo64: string;
-    biz_inv_template_id: string;
-    biz_name: string;
-    biz_address: string;
-    biz_email: string;
-    biz_phone: string;
-    biz_biz_number: string;
-    biz_tax_id: string;
-    biz_bank_info: string;
-
-    client_id: number | null;
-    client_company_name: string;
-    client_contact_name: string;
-    client_business_number: string;
-    client_address: string;
-    client_email: string;
-    client_mainphone: string;
-    client_secondphone: string;
-    client_fax: string;
-    client_currency: string;
-    client_payment_method: string;
-    client_terms_conditions: string;
-    client_notes: string;
-    client_tax_id: string;
-    
     inv_number: string;
     inv_title: string;
     inv_date: string; // Stored as TEXT
@@ -64,6 +37,10 @@ export interface InvDB {
     inv_terms_conditions: string;
     inv_notes: string;
     inv_status: string;
+
+    created_at: any; // serverTimestamp()
+    updated_at: any; // serverTimestamp()
+
 }
 
 
@@ -91,4 +68,8 @@ export interface InvPaymentDB {
     pay_method: string;
     pay_reference: string;
     pay_note: string;
+
+    created_at: any; // serverTimestamp()
+    updated_at: any; // serverTimestamp()
+
 }

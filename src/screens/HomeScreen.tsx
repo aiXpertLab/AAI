@@ -2,13 +2,10 @@ import React from "react";
 import { Pressable, View, FlatList, TouchableOpacity } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from "@react-navigation/native";
-import { StatusBar } from 'expo-status-bar';
+import { Ionicons } from '@expo/vector-icons';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
-
-import { useSQLiteContext } from "expo-sqlite";
-import { Ionicons } from '@expo/vector-icons';
 
 import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
@@ -17,16 +14,16 @@ import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 import { s_global, colors } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/home/InvoiceCard";
 import { initNewInv } from "@/src/db/seedDemoInvoices";
-import { useTabSync } from '@/src/hooks/useTabSync';
-import { genInvNumber } from "@/src/utils/genInvNumber";
+import { useInvCrud } from "@/src/firestore/fs_crud_inv";
+
+import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 
 const HomeScreen: React.FC = () => {
-    useTabSync('Invoices');
-    const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
+    const { fetchInvs } = useInvCrud();
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
@@ -45,40 +42,22 @@ const HomeScreen: React.FC = () => {
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
         // console.log(JSON.stringify(invoice, null, 4));
 
-        try {
-            const items = await db.getAllAsync<InvItemDB>("SELECT * FROM inv_items WHERE inv_id = ?", [invoice.id]);
-            setOInvItemList(items); // ✅ Store fetched items
-        } catch (err) {
-            console.error("Failed to fetch items for invoice", invoice.id, err);
-            setOInvItemList([]); // Optionally clear on failure
-        }
+        // try {
+        //     const items = await db.getAllAsync<InvItemDB>("SELECT * FROM inv_items WHERE inv_id = ?", [invoice.id]);
+        //     setOInvItemList(items); // ✅ Store fetched items
+        // } catch (err) {
+        //     console.error("Failed to fetch items for invoice", invoice.id, err);
+        //     setOInvItemList([]); // Optionally clear on failure
+        // }
     };
 
-    const fetchInvoices = async () => {
+    const fetchInvoicesFromModule = async () => {
         try {
-            let query = `SELECT * FROM invoices WHERE is_deleted != 1`;
-            const params = [];
-
-            if (hf_client !== "All") {
-                query += ` AND client_company_name = ?`;
-                params.push(hf_client);
-            }
-
-            // Add date range filter
-            query += ` AND inv_date BETWEEN ? AND ?`;
-            params.push(hf_fromDate.toISOString(), hf_toDate.toISOString());
-
-            query += ` ORDER BY updated_at DESC;`;
-
-            const result = await db.getAllAsync<any>(query, params);
-
-
-            const overdue = result
-                .filter(inv => inv.inv_payment_status === 'Overdue')
+            const result = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
+            const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);
 
-            const unpaid = result
-                .filter(inv => inv.inv_payment_status === 'Unpaid')
+            const unpaid = result.filter(inv => inv.inv_payment_status === 'Unpaid')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);
 
             setInvoices(result);
@@ -88,8 +67,7 @@ const HomeScreen: React.FC = () => {
         }
     };
 
-
-    const renderRightActions = (progress: any, dragX: any, invId: number) => {
+    const renderRightActions = (progress: any, dragX: any, invId: string) => {
         const trans = dragX.interpolate({
             inputRange: [0, 50, 100, 101],
             outputRange: [0, 0, 0, 1],
@@ -105,20 +83,20 @@ const HomeScreen: React.FC = () => {
         );
     };
 
-    const handleDelete = async (itemId: number) => {
+    const handleDelete = async (itemId: string) => {
         console.log("Deleting invoice with ID:", itemId);
-        try {
-            await db.runAsync("UPDATE invoices SET is_deleted = 1 WHERE id = ?", [itemId]);
-            fetchInvoices(); // Refresh the list
-        } catch (err) {
-            console.error("Failed to delete client:", err);
-        }
+        // try {
+        //     await db.runAsync("UPDATE invoices SET is_deleted = 1 WHERE id = ?", [itemId]);
+        //     fetchInvoices(); // Refresh the list
+        // } catch (err) {
+        //     console.error("Failed to delete client:", err);
+        // }
     };
 
     const renderItem = ({ item: invoice }: { item: InvDB }) => (
         <Swipeable
             renderRightActions={(progress, dragX) =>
-                renderRightActions(progress, dragX, invoice.id!)
+                renderRightActions(progress, dragX, invoice.inv_id!)
             }
         >
 
@@ -140,13 +118,13 @@ const HomeScreen: React.FC = () => {
     );
 
     React.useEffect(() => {
-        fetchInvoices();
+        fetchInvoicesFromModule();
     }, [selectedHeaderFilter]);
 
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
-            fetchInvoices();
+            fetchInvoicesFromModule();
         });
         return unsubscribe;
     }, []);
@@ -154,7 +132,6 @@ const HomeScreen: React.FC = () => {
     return (
 
         <View style={s_global.Container}>
-            <StatusBar style="light" />
             <View>
 
                 <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
@@ -169,7 +146,7 @@ const HomeScreen: React.FC = () => {
             {/* List Section - takes remaining space */}
             <FlatList<InvDB>
                 data={selectedFilter === "All" ? invoices : invoices.filter(inv => inv.inv_payment_status === selectedFilter)}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.inv_id}
 
                 renderItem={renderItem}
                 contentContainerStyle={
@@ -186,7 +163,7 @@ const HomeScreen: React.FC = () => {
             <TouchableOpacity
                 style={[s_global.FABSquare]}
                 onPress={async () => {
-                    const newNumber = await genInvNumber(db);
+                    const newNumber = await getInvoiceNumber();
                     const newInvoice = await initNewInv(newNumber); // wait for invoice
                     updateOInv(newInvoice); // zustand update
 

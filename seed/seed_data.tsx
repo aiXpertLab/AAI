@@ -2,12 +2,12 @@ import { serverTimestamp } from "firebase/firestore";
 
 const baseFlags = {
     status: "5 stars",
-
     is_active: 1,
     is_locked: 0,
     is_deleted: 0,
-
 };
+
+
 
 // Master seed data for new business entities
 export const seed_data = {
@@ -180,8 +180,6 @@ export const seed_data = {
     ],
 
 
-
-
     clients: [
         {
             client_id: "C001",
@@ -352,141 +350,17 @@ export const seed_data = {
     ],
 
 
-
-
-    invoices : [
+    invs: [
         {
-            inv_id: "inv_1001",
-            user_id: 1,
-            be_id: 1,
-            client_id: "C001",
-
-            inv_number: "INV-1001",
-            inv_title: "Invoice for Demo Client 1",
-            inv_date: "2025-04-01T10:00:00Z",
-            inv_due_date: "2025-04-08T10:00:00Z",
-            inv_payment_requirement: "Net 7 days",
-            inv_payment_term: 7,
-            inv_reference: "PO#-001",
-            inv_currency: "USD",
-
-            inv_subtotal: 240.00,
-            inv_discount: 0.0,
-            inv_tax_label: "Tax",
-            inv_tax_rate: 0.0,
-            inv_tax_amount: 0.0,
-            inv_shipping: 0.0,
-            inv_handling: 0.0,
-            inv_deposit: 0.0,
-            inv_adjustment: 0.0,
-            inv_total: 240.00,
-
-            inv_paid_total: 0.0,
-            inv_balance_due: 240.00,
-            inv_payment_status: "Unpaid",
-
-            inv_flag_word: "Unpaid",
-            inv_flag_emoji: "🟡",
-
-            inv_pdf_template: "default",
-            inv_notes: "Thank you for your business!",
-            inv_terms_conditions: "Thank you for your business!",
-
-            inv_items: [
-                {
-                    item_id: "T130",
-                    item_number: "T130",
-                    item_name: "Consulting Session",
-                    item_description: "Business strategy session (1hr)",
-                    item_sku: "SH123-BLK-8",
-                    item_rate: 120.00,
-                    item_unit: "hour",
-                    item_note: "notes",
-                    item_quantity: 2,
-                    item_amount: 240.00,
-                    item_status: "active",
-                },
-            ],
-
-            inv_payments: [],
-            ...baseFlags,
-        },
-
-        {
-            inv_id: "inv_1002",
-            user_id: 1,
-            be_id: 1,
-            client_id: "C002",
-
-            inv_number: "INV-1002",
-            inv_title: "Invoice for Demo Client 2",
-            inv_date: "2025-04-02T12:00:00Z",
-            inv_due_date: "2025-04-09T12:00:00Z",
-            inv_payment_requirement: "Net 7 days",
-            inv_payment_term: 7,
-            inv_reference: "PO#-002",
-            inv_currency: "CAD",
-
-            inv_subtotal: 1500.00,
-            inv_discount: 0.0,
-            inv_tax_label: "Tax",
-            inv_tax_rate: 0.13,
-            inv_tax_amount: 195.00,
-            inv_shipping: 0.0,
-            inv_handling: 0.0,
-            inv_deposit: 0.0,
-            inv_adjustment: 0.0,
-            inv_total: 1695.00,
-
-            inv_paid_total: 1695.00,
-            inv_balance_due: 0.00,
-            inv_payment_status: "Paid",
-
-            inv_flag_word: "Paid",
-            inv_flag_emoji: "🟢",
-
-            inv_pdf_template: "default",
-            inv_notes: "Thank you for your business!",
-            inv_terms_conditions: "Thank you for your business!",
-
-            inv_items: [
-                {
-                    item_id: "T120",
-                    item_number: "T120",
-                    item_name: "Product ",
-                    item_description: "Tangible goods or materials delivered",
-                    item_sku: "6IN-RD-CM-CO",
-                    item_rate: 1500.00,
-                    item_unit: "project",
-                    item_note: "Notes.",
-                    item_quantity: 1,
-                    item_amount: 1500.00,
-                    item_status: "active",
-                },
-            ],
-
-            inv_payments: [
-                {
-                    pay_date: "2025-04-05T10:00:00Z",
-                    pay_amount: 1695.00,
-                    pay_method: "bank transfer",
-                    pay_reference: "TRX001",
-                    pay_note: "Paid in full",
-                },
-            ],
-            ...baseFlags,
-        },
-
-        {
-            inv_id: "inv_1003",
+            inv_id: "inv_1000",
             user_id: 1,
             be_id: 1,
             client_id: "C003",
 
             inv_number: "INV-1003",
-            inv_title: "Invoice for Demo Client 3",
-            inv_date: "2025-04-03T15:00:00Z",
-            inv_due_date: "2025-04-10T15:00:00Z",
+            inv_title: "Invoice for Client 3",
+            inv_date: serverTimestamp(),
+            inv_due_date: serverTimestamp(),
             inv_payment_requirement: "Net 7 days",
             inv_payment_term: 7,
             inv_reference: "PO#-003",
@@ -532,11 +406,132 @@ export const seed_data = {
 
             inv_payments: [
                 {
-                    pay_date: "2025-04-06T12:00:00Z",
+                    pay_date: "",
+
                     pay_amount: 1.00,
                     pay_method: "credit card",
                     pay_reference: "TRX002",
                     pay_note: "First half",
+                },
+            ],
+            ...baseFlags,
+        },
+
+        {
+            inv_id: "inv_1001",
+            user_id: 1,
+            be_id: 1,
+            client_id: "C001",
+
+            inv_number: "INV-1001",
+            inv_title: "Invoice for Demo Client 1",
+            inv_date: serverTimestamp(),
+            inv_due_date: serverTimestamp(),
+            inv_payment_requirement: "Net 7 days",
+            inv_payment_term: 7,
+            inv_reference: "PO#-001",
+            inv_currency: "USD",
+
+            inv_subtotal: 240.00,
+            inv_discount: 0.0,
+            inv_tax_label: "Tax",
+            inv_tax_rate: 0.0,
+            inv_tax_amount: 0.0,
+            inv_shipping: 0.0,
+            inv_handling: 0.0,
+            inv_deposit: 0.0,
+            inv_adjustment: 0.0,
+            inv_total: 240.00,
+
+            inv_paid_total: 0.0,
+            inv_balance_due: 240.00,
+            inv_payment_status: "Unpaid",
+
+            inv_flag_word: "Unpaid",
+            inv_flag_emoji: "🟡",
+
+            inv_pdf_template: "default",
+            inv_notes: "Thank you for your business!",
+            inv_terms_conditions: "Thank you for your business!",
+
+            inv_items: [
+                {
+                    item_id: "T130",
+                    item_number: "T130",
+                    item_name: "Consulting Session",
+                    item_description: "Business strategy session (1hr)",
+                    item_sku: "SH123-BLK-8",
+                    item_rate: 120.00,
+                    item_unit: "hour",
+                    item_note: "notes",
+                    item_quantity: 2,
+                    item_amount: 240.00,
+                    item_status: "active",
+                },
+            ],
+            inv_payments: [],
+            ...baseFlags,
+        },
+        {
+            inv_id: "inv_1002",
+            user_id: 1,
+            be_id: 1,
+            client_id: "C002",
+
+            inv_number: "INV-1002",
+            inv_title: "Invoice for Demo Client 2",
+            inv_date: serverTimestamp(),
+            inv_due_date: serverTimestamp(),
+            inv_payment_requirement: "Net 10 days",
+            inv_payment_term: 10,
+            inv_reference: "PO#-002",
+            inv_currency: "CAD",
+
+            inv_subtotal: 1500.00,
+            inv_discount: 0.0,
+            inv_tax_label: "Tax",
+            inv_tax_rate: 0.13,
+            inv_tax_amount: 195.00,
+            inv_shipping: 0.0,
+            inv_handling: 0.0,
+            inv_deposit: 0.0,
+            inv_adjustment: 0.0,
+            inv_total: 1695.00,
+
+            inv_paid_total: 1695.00,
+            inv_balance_due: 0.00,
+            inv_payment_status: "Paid",
+
+            inv_flag_word: "Paid",
+            inv_flag_emoji: "🟢",
+
+            inv_pdf_template: "default",
+            inv_notes: "Thank you for your business!",
+            inv_terms_conditions: "Thank you for your business!",
+
+            inv_items: [
+                {
+                    item_id: "T120",
+                    item_number: "T120",
+                    item_name: "Product ",
+                    item_description: "Tangible goods or materials delivered",
+                    item_sku: "6IN-RD-CM-CO",
+                    item_rate: 1500.00,
+                    item_unit: "project",
+                    item_note: "Notes.",
+                    item_quantity: 1,
+                    item_amount: 1500.00,
+                    item_status: "active",
+                },
+            ],
+            inv_payments: [
+                {
+                    pay_date: "",
+
+                    pay_amount: 1695.00,
+                    pay_method: "bank transfer",
+                    pay_reference: "TRX001",
+                    pay_note: "Paid in full",
                 },
             ],
             ...baseFlags,
