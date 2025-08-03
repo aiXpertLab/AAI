@@ -43,7 +43,8 @@ export const useClientCrud = () => {
         try {
             const uid = getUserUid();
             if (!uid) throw new Error('Missing UID');
-            const client_id = Crypto.randomUUID();
+            const client_id = 'c_' + Crypto.randomUUID().replace(/-/g, '');
+
 
             const docRef = doc(db, `aai/be_${uid}/clients`, client_id);
 

@@ -16,8 +16,6 @@ export type DetailStackPara = {
     Inv_Modify_Items: undefined;
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
-    Client_List: undefined;
-    Item_List: undefined;
     SeedBizScreen: undefined;
     Tab3_Item: undefined;
     TestScreen: undefined;
@@ -26,8 +24,11 @@ export type DetailStackPara = {
     Restore: { mode?: 'restore_deleted' | 'restore_archived' };
     CreateModify: { mode?: 'create_new' | 'modify_existed' };
 
-    Tab2_Client_Form: { mode?: 'create_new' | 'modify_existed' };
-    Tab3_Item_Form: undefined;
+    Client_List: undefined;
+    Client_Form: { mode?: 'create_new' | 'modify_existed' };
+
+    Item_List: undefined;
+    Item_Form: undefined;
 
     Tax_List: undefined;
     Tax_Form: undefined;

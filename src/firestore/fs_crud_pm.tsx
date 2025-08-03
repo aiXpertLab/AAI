@@ -43,7 +43,8 @@ export const usePMCrud = () => {
         try {
             const uid = getUserUid();
             if (!uid) throw new Error('Missing UID');
-            const pm_id = Crypto.randomUUID();
+            const pm_id = 'p_' + Crypto.randomUUID().replace(/-/g, '');
+
 
             // const colRef = collection(db, `aai/be_${uid}/payment_methods`);
             const docRef = doc(db, `aai/be_${uid}/payment_methods`, pm_id);

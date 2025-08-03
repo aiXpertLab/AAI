@@ -21,11 +21,12 @@ import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
 
 const ClientsScreen: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+
     const db = getFirestore(app);
     const { FirebaseUser } = useFirebaseUserStore();
     const uid = FirebaseUser?.uid;
 
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
 
@@ -109,7 +110,7 @@ const ClientsScreen: React.FC = () => {
                 onPress={() => {
                     setOClient(line_of_client)
                     navigation.navigate('DetailStack', {
-                        screen: 'Tab2_Client_Form',
+                        screen: 'Client_Form',
                         params: { mode: 'modify_existed' }
                     });
                 }}
@@ -141,7 +142,7 @@ const ClientsScreen: React.FC = () => {
                 onPress={() => {
                     createEmptyClient4New();
                     navigation.navigate('DetailStack', {
-                        screen: 'Tab2_Client_Form',
+                        screen: 'Client_Form',
                         params: { mode: 'create_new' }
                     });
                 }}

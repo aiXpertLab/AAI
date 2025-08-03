@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Picker } from "@react-native-picker/picker";
 
 import { useClientStore } from '@/src/stores/';
-import { useClientCrud } from '@/src/db/crud_client';
+import { useClientCrud } from '@/src/firestore/fs_crud_client';
 
 import { s_global } from "@/src/constants";
 import { DetailStackPara, ClientDB, RouteType } from "@/src/types";
@@ -137,12 +137,7 @@ const ClientForm: React.FC = () => {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}        >
-            <TouchableWithoutFeedback
-                onPress={() => {
-                    Keyboard.dismiss();
-                    tip1.setVisible(false);
-                }}
-            >
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); tip1.setVisible(false); }}            >
 
                 <View style={{ flex: 1 }}>
                     <ScrollView

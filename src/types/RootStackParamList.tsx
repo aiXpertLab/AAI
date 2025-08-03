@@ -10,10 +10,12 @@ export type RootStackParamList = {
     Inv_Pay: undefined;
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
-    Tab2_Client_Form: undefined;
-    Tab3_Item_Form: undefined;
     Drawer_Settings: undefined;
+
+    Client_Form: undefined;
+    Item_Form: undefined;
     SeedBizScreen: undefined;
+
     DetailStack: NavigatorScreenParams<DetailStackParamList>;
 
     AddItem: undefined;

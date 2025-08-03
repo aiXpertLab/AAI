@@ -1,10 +1,11 @@
+// Firestore imports
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import { app } from "@/src/config/firebaseConfig";
+
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
-// Firestore imports
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-import { app } from "@/src/config/firebaseConfig";
 
 import { useModalStore, useFirebaseUserStore, useTaxStore } from '@/src/stores/'
 import { s_global, colors } from "@/src/constants";
@@ -13,12 +14,13 @@ import { RootStackPara, TaxDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export const Tax_List: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+
     const db = getFirestore(app);
     const { FirebaseUser } = useFirebaseUserStore();
     const uid = FirebaseUser?.uid;
 
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<TaxDB[]>([]);
     const { oTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action

@@ -43,7 +43,7 @@ export const useItemCrud = () => {
         try {
             const uid = getUserUid();
             if (!uid) throw new Error('Missing UID');
-            const item_id = Crypto.randomUUID();
+            const item_id = 'i_' + Crypto.randomUUID().replace(/-/g, '');
 
             const docRef = doc(db, `aai/be_${uid}/items`, item_id);
 

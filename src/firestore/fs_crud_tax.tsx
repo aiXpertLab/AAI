@@ -43,7 +43,8 @@ export const useTaxCrud = () => {
         try {
             const uid = getUserUid();
             if (!uid) throw new Error('Missing UID');
-            const tax_id = Crypto.randomUUID();
+            const tax_id = 't_' + Crypto.randomUUID().replace(/-/g, '');
+
 
             const docRef = doc(db, `aai/be_${uid}/tax_list`, tax_id);
 
