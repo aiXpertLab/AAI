@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useAuthBusiness } from './AuthBusinessProvider';
-import { useFirebaseUserStore } from '../stores/UserStore';
+import { useFirebaseUserStore } from '../stores/FirebaseUserStore';
 import { colors } from '../constants/colors';
 
 /**

@@ -11,26 +11,26 @@ import StackNavigator from './StackNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import SignScreen from '@/src/screens/user/SignScreen';
 
-import { useFirebaseUserStore } from '@/src/stores/UserStore';
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 const RootStack = createNativeStackNavigator();
 
 const AppNavigator = () => {
     console.log('AppNavigator function called'); // Log when component function runs
     const [initializing, setInitializing] = useState(true);
-    // const [user, setUser] = useState<any>(null);
-    const user = useFirebaseUserStore((state) => state.FirebaseUser);
-    const setUser = useFirebaseUserStore((state) => state.setFirebaseUser);
+
+    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
+    const setFirebaseUser = useFirebaseUserStore((state) => state.setFirebaseUser);
 
     useEffect(() => {
         console.log('AppNavigator useEffect for auth state runs'); // Log when useEffect runs
         const unsubscribe = onAuthStateChanged(auth, (usr) => {
             console.log('Auth state changed:', usr?.email);
-            setUser(usr);
+            setFirebaseUser(usr);
             setInitializing(false);
         });
         return unsubscribe;
-    }, [setUser]);
+    }, [setFirebaseUser]);
     
 
     // console.log('AppNavigator render, user:', user);
@@ -47,7 +47,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <RootStack.Navigator screenOptions={{ headerShown: false }}>
-                {user ? (
+                {firebaseUser ? (
                     <RootStack.Screen name="MainDrawer" component={DrawerNavigator} />
                 ) : (
                     <RootStack.Screen name="Sign" component={SignScreen} />

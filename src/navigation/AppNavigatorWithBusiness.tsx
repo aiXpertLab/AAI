@@ -8,7 +8,7 @@ import { AuthBusinessProvider, useAuthBusiness } from '@/src/components/AuthBusi
 import StackNavigator from './StackNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import SignScreen from '@/src/screens/user/SignScreen';
-import { useFirebaseUserStore } from '@/src/stores/UserStore';
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 const RootStack = createNativeStackNavigator();
 
