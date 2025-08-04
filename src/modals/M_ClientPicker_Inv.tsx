@@ -1,6 +1,6 @@
 // src/components/ClientPickerModal.tsx
 import React from "react";
-import { useSQLiteContext } from "expo-sqlite";
+
 import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ClientDB } from "@/src/types";
@@ -8,6 +8,7 @@ import { modalStyles } from "@/src/constants/styles";
 import { s_modal, s_global } from "@/src/constants";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawerHeaderStore, useClientStore } from '@/src/stores';
+import { useClientCrud } from "../firestore/fs_crud_client";
 
 interface ClientPickerModalProps {
     visible: boolean;
@@ -16,25 +17,24 @@ interface ClientPickerModalProps {
 }
 
 const ClientPickerModal: React.FC<ClientPickerModalProps> = ({ visible, onClose, onSelectClient }) => {
-    const db = useSQLiteContext();
     const navigation = useNavigation();
     const { oClient, updateOClient, createEmptyClient4New } = useClientStore();  // 🧠 Zustand action
     const [clients, setClients] = React.useState<ClientDB[]>([]);
+    const { insertClient, updateClient, fetchClients } = useClientCrud();
 
     React.useEffect(() => {
-        if (visible) {
-            fetchClients();
-        }
-    }, [visible]);
+        const unsubscribeFocus = navigation.addListener("focus", async () => {
+            try {
+                const fetchedClients = await fetchClients();
+                setClients(fetchedClients);
+            } catch (err) {
+                console.error("❌ fetchClients error:", err);
+            }
+        });
 
-    const fetchClients = async () => {
-        try {
-            const result = await db.getAllAsync<ClientDB>("SELECT * FROM Clients WHERE NOT is_deleted ORDER BY id ASC");
-            setClients(result);
-        } catch (err) {
-            console.error("Failed to load Clients:", err);
-        }
-    };
+        return unsubscribeFocus;
+    }, [navigation]);
+
 
     return (
         <Modal
@@ -46,13 +46,13 @@ const ClientPickerModal: React.FC<ClientPickerModalProps> = ({ visible, onClose,
             {/* <View style={modalStyles.overlay}>
                 <View style={modalStyles.modalContent}>
                     <Text style={modalStyles.modalTitle}>Select a Client</Text> */}
-            <View style={[s_modal.ModalOverlay,  { justifyContent: 'flex-end', paddingBottom: 40 },]}>
+            <View style={[s_modal.ModalOverlay, { justifyContent: 'flex-end', paddingBottom: 40 },]}>
                 <View style={[s_modal.ModalContainer, { justifyContent: 'flex-end' },]}>
                     <Text style={s_modal.ModalTitle}>Select a Client</Text>
 
                     <FlatList
                         data={clients}
-                        keyExtractor={(item) => item.id!.toString()}
+                        keyExtractor={(item) => item.client_id}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => onSelectClient(item)}

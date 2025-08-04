@@ -29,7 +29,7 @@ export const Inv2Client: React.FC = () => {
 
     const handleSelectClient = (client: ClientDB) => {
         updateOInv({
-            client_id: client.id,
+            client_id: client.client_id,
             client_company_name: client.client_company_name,
             client_contact_name: client.client_contact_name,
             client_address: client.client_address,
