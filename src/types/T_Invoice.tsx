@@ -4,6 +4,28 @@ export interface InvDB {
     be_id: string | null; // Link to biz table
     client_id: string | null;
 
+    client_number: string;
+    client_company_name: string;
+    client_contact_name: string;
+    client_contact_title: string;
+    client_address: string;
+    client_email: string;
+    client_secondphone: string;
+    client_mainphone: string;
+    client_fax: string;
+    client_website: string; // Optional website URL
+
+    client_business_number: string;
+
+    client_tax_id: string;
+    client_currency: string;
+    client_terms_conditions: string;
+    client_status: string;
+    client_note: string;
+
+    client_payment_term: number;
+    client_payment_method: string;
+
     inv_number: string;
     inv_title: string;
     inv_date: string; // Stored as TEXT

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { InvDB } from '@/src/types';
 import { s_global } from "@/src/constants/s_global";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { timestamp2us } from "@/src/utils/dateUtils";
 
 interface Props { item: InvDB; }
 
@@ -33,7 +33,7 @@ export const InvoiceCard: React.FC<Props> = ({ item }) => {
 
                 <View style={{ alignItems: 'flex-end' }}>
                     <Text style={{ fontWeight: 'bold' }}>${item.inv_total}</Text>
-                    <Text style={{ color: 'gray' }}>{formatDateForUI(item.inv_date)}</Text>
+                    <Text style={{ color: 'gray' }}>{timestamp2us(item.inv_date)}</Text>
                     <Text style={{ color: 'gray' }}>{item.inv_payment_status}</Text>
                 </View>
             </View>

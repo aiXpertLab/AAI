@@ -100,7 +100,6 @@ export const useBizCrud = () => {
             const sourceSnaps = await getDocs(sourceColRef);
 
             for (const docSnap of sourceSnaps.docs) {
-                console.log('docsnamp', docSnap,)
                 const destDocRef = doc(db, "aai", biz_id, subCol, docSnap.id);
                 await setDoc(destDocRef, docSnap.data());
             }

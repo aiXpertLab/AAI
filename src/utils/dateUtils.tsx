@@ -1,5 +1,39 @@
 // src/utils/dateUtils.ts
 
+import { Timestamp } from 'firebase/firestore';
+
+export function timestamp2us(date: Date | Timestamp | string | null | undefined): string {
+    if (!date) return '';
+
+    const jsDate =
+        date instanceof Timestamp
+            ? date.toDate()
+            : typeof date === 'string'
+            ? new Date(date)
+            : date;
+
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'short', // "May"
+        day: 'numeric', // "28"
+        year: 'numeric' // "2025"
+    }).format(jsDate);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Format an ISO date string for display in US format, e.g., "May 2, 2025"
  */
