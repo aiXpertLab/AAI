@@ -152,7 +152,6 @@ export const Inv_Form_New: React.FC = () => {
                         scrollEventThrottle={16}
                     >
                         <Inv1Me />
-                        {/* {showTip1 && <TooltipBubble />} */}
                         {tip1.visible && <TooltipBubble />}
 
                         <View style={{ borderBottomWidth: 1, borderColor: '#ddd', marginVertical: 18 }} />
@@ -174,7 +173,7 @@ export const Inv_Form_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.biz_inv_template_id || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

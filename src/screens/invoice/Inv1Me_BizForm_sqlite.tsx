@@ -9,7 +9,7 @@ import Toast from 'react-native-toast-message';
 import { useSQLiteContext } from "expo-sqlite";
 
 import { s_global, s_inv } from "@/src/constants";
-import { BizDB } from '@/src/types';
+import { BE_DB } from '@/src/types';
 import { updateBiz } from "@/src/db/crud_me";
 import { useBizStore, useInvStore } from '@/src/stores/InvStore';
 
@@ -80,7 +80,7 @@ export const Inv1Me_BizForm: React.FC = () => {
         await processB64Me(base64Image, updateOBiz, updateOInv, setIsProcessing);
     };
 
-    const handleChange = <K extends keyof BizDB>(key: K, value: BizDB[K]) => {
+    const handleChange = <K extends keyof BE_DB>(key: K, value: BE_DB[K]) => {
         updateOBiz({ [key]: value });
         updateOInv({ [key]: value });
     };

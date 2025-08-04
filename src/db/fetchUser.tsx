@@ -2,17 +2,17 @@
 
 import { SQLiteDatabase } from 'expo-sqlite';
 
-import { User, BizDB } from "@/src/types";
+import { User, BE_DB } from "@/src/types";
 
 export const fetchBiz = async (
     db: SQLiteDatabase,
     userMe: string = '888',
     bizMe: string = '666'
-): Promise<{ user: User | null; biz: BizDB | null }> => {
+): Promise<{ user: User | null; biz: BE_DB | null }> => {
     try {
         const [userResult, bizResult] = await Promise.all([
             db.getFirstAsync<User>('SELECT * FROM users WHERE user_me = ?', [userMe]),
-            db.getFirstAsync<BizDB>('SELECT * FROM biz WHERE biz_me = ?', [bizMe]),
+            db.getFirstAsync<BE_DB>('SELECT * FROM biz WHERE biz_me = ?', [bizMe]),
         ]);
 
         return {

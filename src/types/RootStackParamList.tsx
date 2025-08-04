@@ -1,4 +1,4 @@
-import { InvDB, ClientDB, ItemDB, BizDB } from '@/src/types';
+import { InvDB, ClientDB, ItemDB, BE_DB } from '@/src/types';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import type { DetailStackParamList } from './DetailStackParamList';  // we'll define this next
 
@@ -21,7 +21,7 @@ export type RootStackParamList = {
     AddItem: undefined;
     ItemForm: { item?: ItemDB; selectedItem?: ItemDB } | undefined;
     BizForm: {
-        onSave?: (biz: BizDB) => void;
+        onSave?: (biz: BE_DB) => void;
     };
     TaxForm: undefined;
     InvoiceForm: { invoice?: InvDB; selectedClient?: ClientDB } | undefined;

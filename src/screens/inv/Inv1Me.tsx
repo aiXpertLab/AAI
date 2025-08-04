@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useBizStore } from '@/src/stores/InvStore';
 import { useBizCrud } from '@/src/firestore/fs_crud_biz'
 
 import { DetailStackPara } from '@/src/types';
@@ -15,18 +15,17 @@ export const Inv1Me: React.FC = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
-    const { oInv, updateOInv } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
     const { updateBiz } = useBizCrud();
 
-    if (!oInv) return <Text>Loading...</Text>;
+    if (!oBiz) return <Text>Loading...</Text>;
 
     return (
         <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 5 }}>
-            <TouchableOpacity style={[s_inv.LogoBox,]} onPress={() => pickAndSaveLogo(db)}>
+            <TouchableOpacity style={[s_inv.LogoBox,]} onPress={() => pickAndSaveLogo()}>
                 <View style={{ alignItems: 'center' }}>
-                    {oBiz?.biz_logo ? (
-                        <Image source={{ uri: oBiz.biz_logo }} style={s_inv.LogoBox} resizeMode="cover" />
+                    {oBiz?.be_logo ? (
+                        <Image source={{ uri: oBiz.be_logo }} style={s_inv.LogoBox} resizeMode="cover" />
                     ) : (
                         <View style={s_inv.LogoBox}>
                             <Text style={{ color: "#999" }}>+ Logo here.</Text>
@@ -42,10 +41,10 @@ export const Inv1Me: React.FC = () => {
                 style={{ flex: 1 }}
             >
                 <View style={{ alignItems: "flex-end" }}>
-                    <Text style={{ fontWeight: "bold" }}>{oInv!.biz_name}</Text>
-                    <Text style={s_inv.SmallInfoText}>{oInv!.biz_address}</Text>
-                    <Text style={s_inv.SmallInfoText}>{oInv!.biz_phone}</Text>
-                    <Text style={s_inv.SmallInfoText}>{oInv!.biz_biz_number}</Text>
+                    <Text style={{ fontWeight: "bold" }}>{oBiz!.be_name}</Text>
+                    <Text style={s_inv.SmallInfoText}>{oBiz!.be_address}</Text>
+                    <Text style={s_inv.SmallInfoText}>{oBiz!.be_phone}</Text>
+                    <Text style={s_inv.SmallInfoText}>{oBiz!.be_biz_number}</Text>
                 </View>
             </TouchableOpacity>
         </View>

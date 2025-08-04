@@ -1,6 +1,6 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback } from 'react';
-import { BizDB } from '@/src/types'; // Make sure you define this type
+import { BE_DB } from '@/src/types'; // Make sure you define this type
 
 const db = useSQLiteContext();
 

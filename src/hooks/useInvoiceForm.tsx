@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Toast from 'react-native-toast-message';
 
 import { insertInvoice } from '@/src/db/crud_invoices';
-import { ClientDB, ItemDB, InvDB, BizDB, TaxDB, defaultInvoiceUI } from "@/src/types";
+import { ClientDB, ItemDB, InvDB, BE_DB, TaxDB, defaultInvoiceUI } from "@/src/types";
 import { SQLiteDatabase } from "expo-sqlite";
 
 import { useInvStore } from '@/src/stores/InvStore';
@@ -18,7 +18,7 @@ export function useInvoiceForm(db: SQLiteDatabase, navigation: any) {
     const [modalType, setModalType] = useState<'item' | 'client' | 'discount' | 'tax' | 'home_filter' | null>(null);
     const [discount, setDiscount] = useState<{ value: number; type: 'percent' | 'flat' } | null>(null);
 
-    const [biz, setBiz] = useState<BizDB | null>(null);
+    const [biz, setBiz] = useState<BE_DB | null>(null);
     const [logoUri, setLogoUri] = useState<string | null>(null);
     // const [oInv, setOInv] = useState<InvoiceUI>({ ...defaultInvoiceUI });
     const { oInv, setOInv, updateOInv } = useInvStore();

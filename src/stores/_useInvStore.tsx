@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { InvDB, InvItemDB, BizDB ,PMDB, TaxDB} from '@/src/types';
+import { InvDB, InvItemDB, BE_DB ,PMDB, TaxDB} from '@/src/types';
 import {createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 type OInvItemListStore = {
@@ -50,9 +50,9 @@ export const useInvStore = create<OInvStore>((set) => ({
 
 
 type OBizStore = {
-    oBiz: BizDB | null;
-    setOBiz: (biz: BizDB) => void;
-    updateOBiz: (biz: Partial<BizDB>) => void;
+    oBiz: BE_DB | null;
+    setOBiz: (biz: BE_DB) => void;
+    updateOBiz: (biz: Partial<BE_DB>) => void;
     clearOBiz: () => void;
 };
 

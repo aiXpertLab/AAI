@@ -3,6 +3,7 @@ export interface InvDB {
     user_id: string | null;
     be_id: string | null; // Link to biz table
     client_id: string | null;
+    inv_pdf_template: string| null;
 
     client_number: string;
     client_company_name: string;

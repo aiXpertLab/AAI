@@ -3,15 +3,15 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 
 // import { Biz, Tax } from "@/src/types";
-import { BizDB, TaxDB } from '@/src/types';
+import { BE_DB, TaxDB } from '@/src/types';
 
 export const fetchBiz = async (
     db: SQLiteDatabase,
     bizMe: string = '666'
-): Promise<{ biz: BizDB | null }> => {
+): Promise<{ biz: BE_DB | null }> => {
     try {
         const [bizResult] = await Promise.all([
-            db.getFirstAsync<BizDB>('SELECT * FROM biz WHERE biz_me = ?', [bizMe]),
+            db.getFirstAsync<BE_DB>('SELECT * FROM biz WHERE biz_me = ?', [bizMe]),
         ]);
 
         return {
@@ -28,7 +28,7 @@ export const fetchBiz = async (
 
 export const updateBiz = async (
     db: SQLiteDatabase,
-    biz: BizDB,
+    biz: BE_DB,
 ): Promise<boolean> => {
     try {
         console.log("Updating biz info...");

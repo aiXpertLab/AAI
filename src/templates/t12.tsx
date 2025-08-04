@@ -1,10 +1,10 @@
-import { InvDB, BizDB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, InvItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 // Template t12: Classic Styled Invoice (based on original HTML/CSS)
 export const t12 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BizDB>,
+    oBiz: Partial<BE_DB>,
     oInvItemList: Partial<InvItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {

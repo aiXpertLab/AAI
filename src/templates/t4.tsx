@@ -1,9 +1,9 @@
-import { InvDB, BizDB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, InvItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t4 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BizDB>,
+    oBiz: Partial<BE_DB>,
     oInvItemList: Partial<InvItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {

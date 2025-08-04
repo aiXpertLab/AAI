@@ -16,26 +16,6 @@ export interface BE_DB {
 }
 
 
-export interface BizDB {
-    id?: number;
-    me: string;
-    biz_name: string;
-    biz_address: string;
-    biz_tax_id: string;
-    biz_biz_number: string;
-    biz_bank_info: string;
-    biz_email: string;
-    biz_phone: string;
-    biz_website: string;
-    biz_currency: string;
-    biz_description: string;
-    biz_note: string;
-    biz_logo: string;
-    biz_logo64: string;
-    biz_64_square: string;
-    biz_inv_template_id: string;
-}
-
 export interface TaxDB {
     tax_id: string;
     user_id: string;
@@ -54,7 +34,7 @@ export interface TaxDB {
     updated_at: any; // serverTimestamp()
 }
 
-export interface BizWithTaxes extends BizDB {
+export interface BizWithTaxes extends BE_DB {
     taxes: TaxDB[];
 }
 
