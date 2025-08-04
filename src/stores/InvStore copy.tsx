@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { InvDB, InvItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
-import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
+import {createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 // Store for the list of invoice items
 type OInvItemListStore = {
@@ -39,21 +39,8 @@ type OBizStore = {
 export const useBizStore = create<OBizStore>((set) => ({
     oBiz: null,
     setOBiz: (Biz) => set({ oBiz: Biz }),
+    updateOBiz: (Biz) => set((state) => ({ oBiz: { ...state.oBiz!, ...Biz } })),
     clearOBiz: () => set({ oBiz: null }),
-
-    updateOBiz: (biz) => {
-        set((state) => {
-            const newBiz = { ...state.oBiz!, ...biz };
-
-            // Always link to oInv in memory
-            useInvStore.setState((invState) => ({
-                oInv: invState.oInv
-                    ? { ...invState.oInv, oBiz: newBiz }
-                    : { oInvItemList: [], oTax: null, oBiz: newBiz, oClient: null }
-            }));
-            return { oBiz: newBiz };
-        });
-    },
 }));
 
 
@@ -124,7 +111,7 @@ type ClientStore = {
     updateOClient: (client: Partial<ClientDB>) => void;
     createEmptyClient4New: () => void;
     clearOClient: () => void;
-};
+  };
 
 
 
@@ -136,7 +123,7 @@ export const useClientStore = create<ClientStore>((set) => ({
     clearOClient: () => set({ oClient: null }),
 
     createEmptyClient4New: () => set({ oClient: createEmptyClient4New() })
-
+    
 }));
 
 

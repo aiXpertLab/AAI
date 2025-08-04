@@ -4,21 +4,20 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useBizCrud } from '@/src/firestore/fs_crud_biz'
 
 import { DetailStackPara } from '@/src/types';
 import { s_inv } from "@/src/constants/s_inv";
-
-import { useSQLiteContext } from "expo-sqlite";
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 
 export const Inv1Me: React.FC = () => {
 
-    const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
     const { oInv, updateOInv } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
+    const { updateBiz } = useBizCrud();
 
     if (!oInv) return <Text>Loading...</Text>;
 

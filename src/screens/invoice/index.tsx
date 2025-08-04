@@ -1,4 +1,4 @@
-export * from '@/src/screens/invoice/Inv1Me';
+export * from '@/src/screens/inv/Inv1Me';
 export * from '@/src/screens/invoice/Inv2Client';
 export * from '@/src/screens/invoice/Inv3Items';    
 export * from '@/src/screens/invoice/Inv4Total';

@@ -14,7 +14,7 @@ import Tab2_Client_Form from '@/src/screens/settings/Client_Form';
 import Tab3_Item_Form from '@/src/screens/settings/Item_Form';
 
 import Inv_Pay from "@/src/screens/invoice/Inv_Pay";
-import Inv_New from "@/src/screens/invoice/Inv_New";
+import Inv_New from "@/src/screens/inv/Inv_New";
 
 import Inv1Me_BizForm from "@/src/screens/settings/BizInfo";
 import Inv4Total_TaxForm from '@/src/screens/invoice/Inv4Total_TaxForm';
