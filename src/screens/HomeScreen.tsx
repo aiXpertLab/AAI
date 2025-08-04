@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, View, FlatList, TouchableOpacity } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -11,7 +11,7 @@ import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
-import { s_global, colors } from "@/src/constants";
+import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/home/InvoiceCard";
 import { initNewInv } from "@/src/db/seedDemoInvoices";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
@@ -121,13 +121,18 @@ const HomeScreen: React.FC = () => {
         fetchInvoicesFromModule();
     }, [selectedHeaderFilter]);
 
-
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", () => {
+    useFocusEffect(
+        React.useCallback(() => {
             fetchInvoicesFromModule();
-        });
-        return unsubscribe;
-    }, []);
+        }, [])
+    );
+
+    // React.useEffect(() => {
+    //     const unsubscribe = navigation.addListener("focus", () => {
+    //         fetchInvoicesFromModule();
+    //     });
+    //     return unsubscribe;
+    // }, []);
 
     return (
 

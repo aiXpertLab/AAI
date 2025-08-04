@@ -6,7 +6,7 @@ import { useModalStore } from '@/src/stores/ModalStore';
 import { useTabStore } from '@/src/stores/useTabStore';
 
 import CustomDrawerContent from "@/src/navigation/DrawerContent";
-import Tab1_HomeScreen from '@/src/screens/HomeScreen';
+import HomeScreen from '@/src/screens/HomeScreen';
 import { colors } from "@/src/constants";
 
 const Drawer = createDrawerNavigator();
@@ -39,7 +39,7 @@ const DrawerNavigator = () => {
         >
             <Drawer.Screen
                 name="MainTabs"
-                component={Tab1_HomeScreen}
+                component={HomeScreen}
                 options={({ navigation }) => {
                     // Get the current tab route name
                     const state = navigation.getState();
