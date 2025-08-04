@@ -34,7 +34,15 @@ const DrawerNavigator = () => {
         <Drawer.Navigator
             drawerContent={(props) => <CustomDrawerContent {...props} />}
             screenOptions={({ route }) => {
-                return { drawerStyle: { width: 250 }, };
+                return {
+                    drawerStyle: { width: 250 },
+                    headerStyle: { backgroundColor: '#FAAB1A' },
+                    headerTintColor: '#fff',
+                    drawerActiveTintColor: '#FAAB1A',
+                    drawerLabelStyle: { fontSize: 16 },
+                    headerRight: getHeaderRightIcon,
+                };
+
             }}
         >
             <Drawer.Screen

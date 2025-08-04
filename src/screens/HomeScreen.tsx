@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, View, FlatList, TouchableOpacity } from "react-native";
+import { Pressable, View, FlatList, TouchableOpacity, StatusBar } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
@@ -15,10 +15,11 @@ import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/home/InvoiceCard";
 import { initNewInv } from "@/src/db/seedDemoInvoices";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
-
+import { useTabSync } from '@/src/hooks/useTabSync';
 import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 
 const HomeScreen: React.FC = () => {
+    useTabSync('Invoices');
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
@@ -136,7 +137,7 @@ const HomeScreen: React.FC = () => {
 
     return (
 
-        <View style={s_global.Container}>
+        <View style={s_global.Container}>            
             <View>
 
                 <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
