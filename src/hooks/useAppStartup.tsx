@@ -17,19 +17,16 @@ export const useAppStartup = () => {
     const db = useSQLiteContext();
     const { setOBiz } = useBizStore();  // 🧠 Zustand action
     const { fetchBiz } = useBizCrud();
-    const { setFirebaseUser } = useFirebaseUserStore();
+    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
 
     React.useEffect(() => {
         const init = async () => {
+            if (!firebaseUser) return;
+
             try {
                 // 1. Load business info
-                const user = await waitForFirebaseUser();
-                if (user) {
-                    setFirebaseUser(user);
-                    const uid = user.uid;
-                    const bizData = await fetchBiz(uid);
-                    setOBiz(bizData ?? null);
-                }
+                const bizData = await fetchBiz(firebaseUser.uid);
+                setOBiz(bizData ?? null);
 
                 // 2. Check overdue invoices
                 await checkOverdueInvoices(db);
@@ -48,8 +45,7 @@ export const useAppStartup = () => {
             }
         };
         init();
-
-    }, []);
+    }, [firebaseUser]); // run whenever firebaseUser changes
 };
 
 export type PaidStatus = 'Unpaid' | 'Partially Paid' | 'Paid' | 'Overdue';

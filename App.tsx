@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
 
-import StartupWrapper from "@/src/components/StartupWrapper"; // ✅ 
+import AppStartupWrapper from "@/src/navigation/AppStartupWrapper"; // ✅ 
 
 import "@/src/css/firebase.css"
 
@@ -40,7 +40,7 @@ function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <SQLiteProvider databaseName="db.db" onInit={migrateDbIfNeeded}>
                 {/* <SimpleErrorBoundary> */}
-                <StartupWrapper />
+                <AppStartupWrapper />
                 <AppNavigator />
                 <Toast />
                 {/* </SimpleErrorBoundary> */}
