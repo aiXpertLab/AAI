@@ -1,6 +1,6 @@
 export * from '@/src/screens/inv/Inv1Me';
 export * from '@/src/screens/inv/Inv2Client';
-export * from '@/src/screens/invoice/Inv3Items';    
+export * from '@/src/screens/inv/Inv3Items';    
 export * from '@/src/screens/invoice/Inv4Total';
 export * from '@/src/screens/invoice/Inv5Notes';
 export * from '@/src/screens/invoice/Inv_Pay';

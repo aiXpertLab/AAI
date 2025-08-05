@@ -10,6 +10,7 @@ import { RectButton } from 'react-native-gesture-handler';
 import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
+import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
 
 import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/HS_InvCard";
@@ -55,6 +56,7 @@ const HomeScreen: React.FC = () => {
     const fetchInvoicesFromModule = async () => {
         try {
             const result = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
+            const emptyInv = result.filter(inv => inv.inv_id === 'empty');
             const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);
 
@@ -176,7 +178,7 @@ const HomeScreen: React.FC = () => {
                     clearOInvItemList();
 
                     navigation.navigate('DetailStack', {
-                        screen: 'Inv_Form_New',
+                        screen: 'Inv_New',
                         params: { mode: 'create_new' }
                     });
                 }}

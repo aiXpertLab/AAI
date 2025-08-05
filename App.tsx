@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { SQLiteProvider } from 'expo-sqlite';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { migrateDbIfNeeded } from '@/src/db/db_i';
 import AppNavigator from '@/src/navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
 
@@ -38,13 +36,9 @@ function App() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <SQLiteProvider databaseName="db.db" onInit={migrateDbIfNeeded}>
-                {/* <SimpleErrorBoundary> */}
-                <AppStartupWrapper />
-                <AppNavigator />
-                <Toast />
-                {/* </SimpleErrorBoundary> */}
-            </SQLiteProvider>
+            <AppStartupWrapper />
+            <AppNavigator />
+            <Toast />
         </GestureHandlerRootView>
     );
 }

@@ -10,7 +10,7 @@ import Client_List from '@/src/screens/settings/Client_List';
 import Item_Form from '@/src/screens/settings/Item_Form';
 import Item_List from '@/src/screens/settings/Item_List';
 
-import { Inv_Form_New } from "@/src/screens/inv/Inv_New";
+import { Inv_New } from "@/src/screens/inv/Inv_New";
 import { Inv_Form } from "@/src/screens/invoice/Inv_Pay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
 import { Inv_Pay, Inv4Total_TaxForm } from "@/src/screens/invoice";
@@ -37,7 +37,7 @@ function StackNavigator() {
             <DetailStack.Screen name="Drawer_Settings" component={Drawer_Settings} options={{ title: 'Settings' }} />
             <DetailStack.Screen name="Inv_Pay" component={Inv_Pay} options={{ title: 'Invoice Payment', }} />
             <DetailStack.Screen name="Inv_Form" component={Inv_Form} options={{ title: 'Invoice' }} />
-            <DetailStack.Screen name="Inv_Form_New" component={Inv_Form_New} options={{ title: 'New Invoice' }} />
+            <DetailStack.Screen name="Inv_New" component={Inv_New} options={{ title: 'New Invoice' }} />
             <DetailStack.Screen name="BizInfo" component={BizInfo} options={{ title: 'My Business' }} />
             <DetailStack.Screen name="Client_List" component={Client_List} options={{ title: 'My Client' }} />
             <DetailStack.Screen name="Client_Form" component={Client_Form} options={{ title: 'My Client' }} />

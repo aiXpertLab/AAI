@@ -3,9 +3,7 @@ import React from "react";
 import { Platform } from 'react-native';
 import Purchases from 'react-native-purchases';
 
-import { useSQLiteContext } from "expo-sqlite";
 import { useBizStore } from '@/src/stores/InvStore';
-import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
 import { useBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import path as necessary
 import { BE_DB } from "../types";
 
@@ -14,7 +12,6 @@ import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 
 export const useAppStartup = () => {
-    const db = useSQLiteContext();
     const { setOBiz } = useBizStore();  // 🧠 Zustand action
     const { fetchBiz } = useBizCrud();
     const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
@@ -28,10 +25,7 @@ export const useAppStartup = () => {
                 const bizData = await fetchBiz(firebaseUser.uid);
                 setOBiz(bizData ?? null);
 
-                // 2. Check overdue invoices
-                await checkOverdueInvoices(db);
-
-                // 3. Initialize RevenueCat
+                // 2. Initialize RevenueCat
                 Purchases.configure({
                     apiKey: Platform.select({
                         android: 'goog_gGLCFVPFhfagEKmYklWjTaZeeoZ',
