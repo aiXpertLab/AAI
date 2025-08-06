@@ -88,6 +88,7 @@ export const useInvCrud = () => {
             const querySnap = await getDocs(q);
 
             const invoices: InvDB[] = querySnap.docs.map(doc => doc.data() as InvDB);
+            useFirebaseUserStore.getState().setIsBizCreated(true);
 
             return invoices;
 

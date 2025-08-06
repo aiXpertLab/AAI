@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Share, Linking, Alert } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global } from "@/src/constants";
@@ -13,6 +13,7 @@ import { auth } from '@/src/config/firebaseConfig';
 type IoniconName = "help-circle-outline" | "sync-outline" | "star-outline" | "gift-outline" | "cloud-upload-outline" | "share-social-outline" | "mail-outline" | "settings-outline";
 
 const CustomDrawerContent = (props: any) => {
+    const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
     const handleShareApp = async () => {
         try {
             await Share.share({
@@ -110,6 +111,7 @@ const CustomDrawerContent = (props: any) => {
                         const { signOut } = await import('firebase/auth');
                         const { auth } = await import('@/src/config/firebaseConfig');
                         await signOut(auth);
+                        setFirebaseUser(null);
                     } catch (error) {
                         // Optionally handle error
                     }

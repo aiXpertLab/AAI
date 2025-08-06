@@ -8,6 +8,7 @@ import DrawerNavigator from './DrawerNavigator';
 import SignScreen from '@/src/screens/user/SignScreen';
 
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
+import useAuthListener from '../hooks/useAuthListener';
 
 const RootStack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const AppNavigator = () => {
     console.log('AppNavigator.tsx function called'); // Log when component function runs
 
     const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
+    useAuthListener();
 
     return (
         <NavigationContainer>

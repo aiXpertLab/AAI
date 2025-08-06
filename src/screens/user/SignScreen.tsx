@@ -19,6 +19,7 @@ export default function SmartAuthScreen() {
     const [isLoading, setIsLoading] = useState(false);
     const { setOBiz, } = useBizStore();  // 🧠 Zustand action
     const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
+    const setIsNewUser = useFirebaseUserStore((s) => s.setIsNewUser);
 
     const handleForgotPassword = async () => {
         if (!email) return Alert.alert('Please enter your email to reset password.');
@@ -67,6 +68,7 @@ export default function SmartAuthScreen() {
                                     const bizData = await useBizCrud().fetchBiz(user.uid);
                                     setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
+                                    setIsNewUser(true);
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
                                 } finally {
