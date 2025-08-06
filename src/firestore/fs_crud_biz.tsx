@@ -80,7 +80,7 @@ export const useBizCrud = () => {
 
     //     console.log(`Business entity created for user: ${uid}`);
     // };
-    const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invs", "items"];
+    const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invs", "items", "inv_empty"];
 
     const createBiz = async (uid: string) => {
         const seedRef = doc(db, "biz_seed", "biz_seed_doc");

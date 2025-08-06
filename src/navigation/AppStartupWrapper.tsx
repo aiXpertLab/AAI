@@ -23,7 +23,7 @@ const AppStartupWrapper = () => {
     }, []);
 
 
-    useAppStartup(); // ✅ safe now because it's inside SQLiteProvider
+    useAppStartup(); 
     
     if (loading) {
         return (
