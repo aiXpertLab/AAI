@@ -1,6 +1,6 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppNavigator from '@/src/navigation/AppNavigator';
-import "@/src/css/firebase.css"
+import "@/src/constants/tailwind.css"
 
 function App() {
 
