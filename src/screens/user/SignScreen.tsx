@@ -60,6 +60,9 @@ export default function SmartAuthScreen() {
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
+                                    await useBizCrud().createBiz(user.uid);
+                                    const bizData = await useBizCrud().fetchBiz(user.uid);
+                                    setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
