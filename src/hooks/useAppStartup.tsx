@@ -5,9 +5,7 @@ import Purchases from 'react-native-purchases';
 
 import { useBizStore } from '@/src/stores/InvStore';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import path as necessary
-import { BE_DB } from "../types";
 
-import { waitForFirebaseUser } from "@/src/utils/getFirebaseUid"; // path as needed
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 
