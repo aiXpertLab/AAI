@@ -1,9 +1,8 @@
-import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
 import * as Crypto from 'expo-crypto';
+import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
 
 import { app } from "@/src/config/firebaseConfig";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-
 import { InvDB } from '@/src/types';
 
 
@@ -11,7 +10,6 @@ export const useInvCrud = () => {
     const db = getFirestore(app);
     const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
     const uid = firebaseUser?.uid;
-    if (!uid) { return; }
 
     const updateInv = async (
         Inv: Partial<InvDB>,
@@ -19,7 +17,7 @@ export const useInvCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            if (!Inv.client_id) throw new Error("Missing Client ID");
+            if (!uid || !Inv.client_id) throw new Error("Missing UID or Inv ID");
 
             const docRef = doc(db, `aai/be_${uid}/clients`, Inv.client_id);
             const { client_id, ...updateFields } = Inv; // remove id from payload
@@ -69,7 +67,6 @@ export const useInvCrud = () => {
     const fetchInvs = async (hf_client: string, hf_fromDate: Date, hf_toDate: Date): Promise<InvDB[]> => {
         try {
             const invRef = collection(db, `aai/be_${uid}/invs`);
-
             const conditions = [where("is_deleted", "!=", 1)];
             if (hf_client !== "All") {
                 conditions.push(where("client_company_name", "==", hf_client));
