@@ -13,7 +13,7 @@ import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
 
 import { s_global } from "@/src/constants";
-import { InvoiceCard } from "@/src/screens/HS_InvCard";
+import { InvoiceCard } from "@/src/screens/HomeInvCard";
 import { initNewInv } from "@/src/db/seedDemoInvoices";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useTabSync } from '@/src/hooks/useTabSync';

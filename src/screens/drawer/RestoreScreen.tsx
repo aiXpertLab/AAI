@@ -12,7 +12,7 @@ import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { RouteType } from "@/src/types";
 
 import { s_global, colors } from "@/src/constants";
-import { InvoiceCard } from "@/src/screens/HS_InvCard";
+import { InvoiceCard } from "@/src/screens/HomeInvCard";
 import { useTabSync } from '@/src/hooks/useTabSync';
 import { useInvoiceCrud } from "@/src/db/useInvoiceCrud";
 
