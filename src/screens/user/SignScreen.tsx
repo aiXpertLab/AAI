@@ -9,12 +9,14 @@ import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { useBizStore } from '@/src/stores/InvStore';
+import { M_Spinning } from '@/src/modals/M_Spinning';
 
 export default function SmartAuthScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { setOBiz, } = useBizStore();  // 🧠 Zustand action
     const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
 
@@ -57,6 +59,7 @@ export default function SmartAuthScreen() {
                             text: 'Create Account',
                             onPress: async () => {
                                 try {
+                                    setIsLoading(true);
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
@@ -66,6 +69,8 @@ export default function SmartAuthScreen() {
                                     setFirebaseUser(user);
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
+                                } finally {
+                                    setIsLoading(false);
                                 }
                             },
                         },
@@ -82,6 +87,7 @@ export default function SmartAuthScreen() {
     const handleAnonymous = async () => {
         try {
             if (!auth.currentUser) {
+                setIsLoading(true);
                 const userCredential = await signInAnonymously(auth);
                 const user = userCredential.user;
 
@@ -94,11 +100,14 @@ export default function SmartAuthScreen() {
                 } catch (businessError) {
                     console.error('Business creation failed for anonymous user:', businessError);
                     setMessage('✅ Continuing as guest! Business setup will be completed shortly.');
+                } finally {
+                    setIsLoading(false);
                 }
             } else {
                 setMessage('✅ Already signed in as guest!');
             }
         } catch (error: any) {
+            setIsLoading(false);
             Alert.alert('Error', error.message || 'Failed to sign in as guest.');
         }
     };
@@ -161,6 +170,7 @@ export default function SmartAuthScreen() {
                                 className="mt-6 mb-8 rounded-full py-4 items-center"
                                 style={{ backgroundColor: colors.main }}
                                 onPress={handleAuth}
+                                disabled={isLoading}
                             >
                                 <Text className="text-white font-bold text-base tracking-wide">LOGIN / REGISTER</Text>
                             </TouchableOpacity>
@@ -170,15 +180,16 @@ export default function SmartAuthScreen() {
                         </View>
                     </ScrollView>
                     <View className="absolute bottom-8 flex-row justify-between items-center w-full mb-8 px-6">
-                        <TouchableOpacity onPress={handleAnonymous}>
+                        <TouchableOpacity onPress={handleAnonymous} disabled={isLoading}>
                             <Text className="text-gray-400  text-sm">Continue as Guest</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleForgotPassword}>
+                        <TouchableOpacity onPress={handleForgotPassword} disabled={isLoading}>
                             <Text className="text-right text-sm" style={{ color: colors.main }}>Forgot password?</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
+            <M_Spinning visible={isLoading} />
         </KeyboardAvoidingView>
     );
 }
