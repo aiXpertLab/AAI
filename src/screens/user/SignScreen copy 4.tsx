@@ -3,20 +3,22 @@ import { View, TextInput, Text, TouchableOpacity, Image, Alert, KeyboardAvoiding
 import { ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signInAnonymously } from 'firebase/auth';
 import { auth } from '@/src/config/firebaseConfig';
-import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { useBizStore } from '@/src/stores/InvStore';
 
 export default function SmartAuthScreen() {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const { setOBiz, } = useBizStore();  // 🧠 Zustand action
-    const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
+
 
     const handleForgotPassword = async () => {
         if (!email) return Alert.alert('Please enter your email to reset password.');
@@ -39,9 +41,7 @@ export default function SmartAuthScreen() {
         const trimmedPassword = password.trim();
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
-            const user = userCredential.user;
-            setFirebaseUser(user);
+            await signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
             setMessage('✅ Signed in successfully!');
         } catch (signInError: any) {
             if (
@@ -60,7 +60,20 @@ export default function SmartAuthScreen() {
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
-                                    setFirebaseUser(user);
+
+                                    try {
+                                        await useBizCrud().createBiz(user.uid);
+                                        const bizData = await useBizCrud().fetchBiz(user.uid);
+                                        setOBiz(bizData ?? null);
+
+                                        setMessage('✅ New account created with business setup!');
+                                    } catch (businessError) {
+                                        console.error('Business creation failed:', businessError);
+                                        setMessage('✅ Account created! Business setup will be completed shortly.');
+                                    }
+
+                                    setMessage('✅ Account created! Business setup will be completed shortly.');
+
                                 } catch (signUpError: any) {
                                     setMessage(`❌ Sign-up failed: ${signUpError.message}`);
                                 }

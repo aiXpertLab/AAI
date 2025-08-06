@@ -1,8 +1,7 @@
 // AppNavigator.tsx
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, View } from 'react-native';
 
 import StackNavigator from './StackNavigator';
 import DrawerNavigator from './DrawerNavigator';
@@ -13,8 +12,7 @@ import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 const RootStack = createNativeStackNavigator();
 
 const AppNavigator = () => {
-    console.log('AppNavigator function called'); // Log when component function runs
-    const [initializing, setInitializing] = useState(true);
+    console.log('AppNavigator.tsx function called'); // Log when component function runs
 
     const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
 
