@@ -56,7 +56,7 @@ const HomeScreen: React.FC = () => {
     const fetchInvoicesFromModule = async () => {
         try {
             const result = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
-            const emptyInv = result.filter(inv => inv.inv_id === 'empty');
+            
             const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);
 

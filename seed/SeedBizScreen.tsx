@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { getFirestore, doc, setDoc, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
-import { seed_data, seed_empty } from "./seed_data";
+import { seed_data,  } from "./seed_data";
 
 const db = getFirestore(app);
 
@@ -50,25 +50,15 @@ const SeedBizScreen = () => {
                 await setDoc(invDoc, inv);
             }
 
-        })();
-    }, []);
-
-
-    useEffect(() => {
-        (async () => {
-            // 1. empty
-            const bizRef = doc(db, 'biz_seed', 'biz_empty');
-            await setDoc(bizRef, {});
-
-            // 2. empty invoice
-            for (const inv of seed_empty.inv_empty) {
-                const invDoc = doc(collection(bizRef, "invs"), inv.inv_id);
-                console.log("empty 6.invoices", invDoc)
+            // 7. inv_empty
+            for (const inv of seed_data.inv_empty) {
+                const invDoc = doc(collection(bizRef, "inv_empty"), inv.inv_id);
+                console.log("7.empty invoices", invDoc)
                 await setDoc(invDoc, inv);
             }
-
         })();
     }, []);
+
 
 
     return (

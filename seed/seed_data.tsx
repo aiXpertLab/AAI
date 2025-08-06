@@ -352,94 +352,6 @@ export const seed_data = {
 
     invs: [
         {
-            inv_id: "empty",
-            user_id: 1,
-            be_id: 1,
-            client_id: "",
-
-            client_company_name: "",
-            client_contact_name: "",
-            client_contact_title: "",
-            client_business_number: "",
-            client_tax_id: "",
-            client_address: "",
-            client_email: "",
-            client_mainphone: "",
-            client_secondphone: "",
-            client_fax: "",
-            client_website: "",
-            client_currency: "",
-            client_template_id: "",
-
-            client_status: "",
-            client_note: "",
-
-            client_payment_method: "",
-            client_payment_term: 7,
-            client_terms_conditions: "",
-
-
-            inv_number: "empty",
-            inv_title: "",
-            inv_date: serverTimestamp(),
-            inv_due_date: serverTimestamp(),
-            inv_payment_requirement: "",
-            inv_payment_term: 7,
-            inv_reference: "",
-            inv_currency: "",
-
-            inv_subtotal: 0.00,
-            inv_discount: 0.0,
-            inv_tax_label: "Tax",
-            inv_tax_rate: 0.0,
-            inv_tax_amount: 0.0,
-            inv_shipping: 0.0,
-            inv_handling: 0.0,
-            inv_deposit: 0.0,
-            inv_adjustment: 0.0,
-            inv_total: 0.00,
-
-            inv_paid_total: 0.00,
-            inv_balance_due: 0.00,
-            inv_payment_status: "",
-
-            inv_flag_word: "",
-            inv_flag_emoji: "🟠",
-
-            inv_pdf_template: "default",
-            inv_notes: "Thank you for your business!",
-            inv_terms_conditions: "Thank you for your business!",
-
-            inv_items: [
-                {
-                    item_id: "",
-                    item_number: "",
-                    item_name: "",
-                    item_description: "",
-                    item_sku: "",
-                    item_rate: 0.00,
-                    item_unit: "",
-                    item_note: "",
-                    item_quantity: 0,
-                    item_amount: 0.00,
-                    item_status: "",
-                },
-            ],
-
-            inv_payments: [
-                {
-                    pay_date: "",
-                    pay_amount: 0.00,
-                    pay_method: "",
-                    pay_reference: "",
-                    pay_note: "",
-                },
-            ],
-            ...baseFlags,
-            status: "empty",
-        },
-
-        {
             inv_id: "inv_1001",
             user_id: 1,
             be_id: 1,
@@ -690,16 +602,9 @@ export const seed_data = {
     ],
 
 
-    
-};
-
-
-
-
-export const seed_empty = {
     inv_empty: [
         {
-            inv_id: "inv_id_empty",
+            inv_id: "inv_empty",
             user_id: 1,
             be_id: 1,
             client_id: "",
@@ -786,5 +691,6 @@ export const seed_empty = {
             status: "empty",
         },
     ],
-   
+
+
 };

@@ -1,17 +1,13 @@
 import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
+import { app } from "@/src/config/firebaseConfig";
 import * as Crypto from 'expo-crypto';
 
-import { app } from "@/src/config/firebaseConfig";
-import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-
+import { getUserUid } from "@/src/utils/getFirebaseUid";
+const db = getFirestore(app);
 import { InvDB } from '@/src/types';
 
 
 export const useInvCrud = () => {
-    const db = getFirestore(app);
-    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
-    const uid = firebaseUser?.uid;
-    if (!uid) { return; }
 
     const updateInv = async (
         Inv: Partial<InvDB>,
@@ -19,9 +15,11 @@ export const useInvCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            if (!Inv.client_id) throw new Error("Missing Client ID");
+            const uid = getUserUid();
+            if (!uid || !Inv.client_id) throw new Error("Missing UID or Inv ID");
 
             const docRef = doc(db, `aai/be_${uid}/clients`, Inv.client_id);
+
             const { client_id, ...updateFields } = Inv; // remove id from payload
 
             await updateDoc(docRef, {
@@ -43,7 +41,11 @@ export const useInvCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
+            const uid = getUserUid();
+            if (!uid) throw new Error('Missing UID');
             const client_id = 'c_' + Crypto.randomUUID().replace(/-/g, '');
+
+
             const docRef = doc(db, `aai/be_${uid}/clients`, client_id);
 
             const newInv: Partial<InvDB> = {
@@ -66,8 +68,11 @@ export const useInvCrud = () => {
     };
 
 
+
     const fetchInvs = async (hf_client: string, hf_fromDate: Date, hf_toDate: Date): Promise<InvDB[]> => {
         try {
+            const uid = getUserUid();
+            if (!uid) throw new Error("Missing UID");
             const invRef = collection(db, `aai/be_${uid}/invs`);
 
             const conditions = [where("is_deleted", "!=", 1)];
@@ -91,7 +96,7 @@ export const useInvCrud = () => {
             const querySnap = await getDocs(q);
 
             const invoices: InvDB[] = querySnap.docs.map(doc => doc.data() as InvDB);
-
+           
             return invoices;
 
         } catch (err) {
@@ -99,7 +104,6 @@ export const useInvCrud = () => {
             return [];
         }
     };
-
 
 
     return { insertInv, updateInv, fetchInvs };
