@@ -17,6 +17,7 @@ const showToast = (type: 'success' | 'error', title: string, message: string) =>
 
 
 export const pickAndSaveLogo = async () => {
+    console.log("pickAndSaveLogo called1");
     const { updateOBiz } = useBizStore.getState();
     const { updateBiz } = useBizCrud();
 
@@ -25,6 +26,7 @@ export const pickAndSaveLogo = async () => {
         alert("Permission to access media library is required!");
         return;
     }
+    console.log("pickAndSaveLogo called12");
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

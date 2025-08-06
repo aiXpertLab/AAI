@@ -19,17 +19,16 @@ const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 export const BizInfo: React.FC = () => {
     const navigation = useNavigation();
+    const { initOBiz, updateBiz } = useBizCrud();
 
-    const { oBiz, } = useBizStore();  // 🧠 Zustand action
+    const { oBiz, updateOBiz, } = useBizStore();  // 🧠 Zustand action
     const { setIsDirty, updateOInv } = useInvStore();
     const [isProcessing, setIsProcessing] = React.useState(false);
 
-    const logo = useBizStore((s) => s.oBiz?.be_logo);
-    const updateOBiz = useBizStore((s) => s.updateOBiz);
-    const { updateBiz } = useBizCrud();
-
     console.log("BizInfo: oBiz:", oBiz);
-    if (!oBiz) return <Text>Loading...</Text>;
+    if (!oBiz) {
+        initOBiz();
+    }
 
     console.log("Inv1Me_BizForm: oBiz:");
 
@@ -128,7 +127,7 @@ export const BizInfo: React.FC = () => {
                         <View style={[s_global.Container, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
                             <TouchableOpacity style={[s_inv.LogoBoxBig,]} onPress={() => pickAndSaveLogo()}>
                                 {oBiz?.be_logo ? (
-                                    <Image source={{ uri: logo }} style={s_inv.LogoBoxBig} resizeMode="cover" />
+                                    <Image source={{ uri: oBiz.be_logo }} style={s_inv.LogoBoxBig} resizeMode="cover" />
                                 ) : (
                                     <View style={s_inv.LogoBoxBig}>
                                         <Text style={{ color: "#999" }}>+ Logo here.</Text>

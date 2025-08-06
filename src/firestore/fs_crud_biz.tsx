@@ -2,10 +2,15 @@ import { getDoc, getFirestore, doc, updateDoc, serverTimestamp, Timestamp, colle
 import { app } from "@/src/config/firebaseConfig";
 import { getUserUid } from "@/src/utils/getFirebaseUid";
 import { BE_DB } from "@/src/types";
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
+import { useBizStore } from '@/src/stores/InvStore';
 
 const db = getFirestore(app);
 
 export const useBizCrud = () => {
+    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
+    const uid = firebaseUser?.uid;
+    const { setOBiz } = useBizStore();  // 🧠 Zustand action
 
     const updateBiz = async (
         biz: Partial<BE_DB>,
@@ -13,11 +18,7 @@ export const useBizCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
-            if (!uid) throw new Error("Missing UID");
-
             const docRef = doc(db, `aai/be_${uid}`);
-
 
             await updateDoc(docRef, {
                 ...biz,
@@ -33,10 +34,8 @@ export const useBizCrud = () => {
     };
 
 
-    const fetchBiz = async (uid: string) => {
+    const fetchBiz = async () => {
         try {
-            if (!uid) throw new Error("Missing UID");
-
             const docRef = doc(db, "aai", `be_${uid}`);
             const docSnap = await getDoc(docRef);
 
@@ -53,33 +52,6 @@ export const useBizCrud = () => {
     };
 
 
-    // const createBiz = async (uid: string) => {
-    //     const seedRef = doc(db, "biz_seed", "biz_seed_doc");
-    //     const seedSnap = await getDoc(seedRef);
-    //     if (!seedSnap.exists()) { throw new Error("Seed document not found."); }
-
-    //     const paymentMethodsRef = collection(seedRef, "payment_methods");
-    //     const paymentSnaps = await getDocs(paymentMethodsRef);
-
-    //     const taxRef = collection(seedRef, "tax_list");
-    //     const taxSnaps = await getDocs(taxRef);
-
-    //     const biz_id = `be_${uid}`;
-    //     const userBizRef = doc(db, "aai", biz_id);
-    //     await setDoc(userBizRef, seedSnap.data());
-
-    //     for (const snap of paymentSnaps.docs) {
-    //         const destRef = doc(db, "aai", biz_id, "payment_methods", snap.id);
-    //         await setDoc(destRef, snap.data());
-    //     }
-
-    //     for (const snap of taxSnaps.docs) {
-    //         const destRef = doc(db, "aai", biz_id, "tax_list", snap.id);
-    //         await setDoc(destRef, snap.data());
-    //     }
-
-    //     console.log(`Business entity created for user: ${uid}`);
-    // };
     const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invs", "items", "inv_empty"];
 
     const createBiz = async (uid: string) => {
@@ -125,7 +97,7 @@ export const useBizCrud = () => {
             dueDate.setDate(invDate.getDate() + termDays);
 
             // Update payment dates to match invoice date
-            const updatedPayments = (invData.inv_payments || []).map((payment:any) => ({
+            const updatedPayments = (invData.inv_payments || []).map((payment: any) => ({
                 ...payment,
                 pay_date: Timestamp.fromDate(inv1Date),
             }));
@@ -142,10 +114,15 @@ export const useBizCrud = () => {
     };
 
 
+    const initOBiz = async () => {
+        try {
+            // 1. Load business info
+            const bizData = await fetchBiz();
+            setOBiz(bizData ?? null);
+        } catch (error) {
+            console.error("Startup: Failed to fetch oBiz", error);
+        }
+    }
 
-    return { updateBiz, fetchBiz, createBiz };
-
-
-
-
+    return { updateBiz, fetchBiz, createBiz, initOBiz};
 }
