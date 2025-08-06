@@ -8,7 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@/src/types/RootStackParamList';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
-import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+import { getBizCrud } from '@/src/firestore/fs_crud_biz';
 import { useBizStore } from '@/src/stores/InvStore';
 
 export default function SmartAuthScreen() {
@@ -62,8 +62,8 @@ export default function SmartAuthScreen() {
                                     const user = userCredential.user;
 
                                     try {
-                                        await useBizCrud().createBiz(user.uid);
-                                        const bizData = await useBizCrud().fetchBiz(user.uid);
+                                        await getBizCrud().createBiz(user.uid);
+                                        const bizData = await getBizCrud().fetchBiz(user.uid);
                                         setOBiz(bizData ?? null);
 
                                         setMessage('✅ New account created with business setup!');
@@ -97,8 +97,8 @@ export default function SmartAuthScreen() {
 
                 // Create business entity for anonymous user
                 try {
-                    await useBizCrud().createBiz(user.uid);
-                    const bizData = await useBizCrud().fetchBiz(user.uid);
+                    await getBizCrud().createBiz(user.uid);
+                    const bizData = await getBizCrud().fetchBiz(user.uid);
                     setOBiz(bizData ?? null);
                     setMessage('✅ Continuing as guest with business setup!');
                 } catch (businessError) {

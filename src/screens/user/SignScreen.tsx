@@ -7,7 +7,7 @@ import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
-import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+import { getBizCrud } from '@/src/firestore/fs_crud_biz';
 import { useBizStore } from '@/src/stores/InvStore';
 import { M_Spinning } from '@/src/modals/M_Spinning';
 
@@ -64,8 +64,8 @@ export default function SmartAuthScreen() {
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
-                                    await useBizCrud().createBiz(user.uid);
-                                    const bizData = await useBizCrud().fetchBiz(user.uid);
+                                    await getBizCrud().createBiz(user.uid);
+                                    const bizData = await getBizCrud().fetchBiz(user.uid);
                                     setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
                                     setIsNewUser(true);
@@ -95,8 +95,8 @@ export default function SmartAuthScreen() {
 
                 // Create business entity for anonymous user
                 try {
-                    await useBizCrud().createBiz(user.uid);
-                    const bizData = await useBizCrud().fetchBiz(user.uid);
+                    await getBizCrud().createBiz(user.uid);
+                    const bizData = await getBizCrud().fetchBiz(user.uid);
                     setOBiz(bizData ?? null);
                     setMessage('✅ Continuing as guest with business setup!');
                 } catch (businessError) {

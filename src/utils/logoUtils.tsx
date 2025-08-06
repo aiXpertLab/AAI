@@ -5,8 +5,8 @@ import Toast from 'react-native-toast-message';
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from 'expo-image-picker';
 
-import { useBizStore, } from '@/src/stores/InvStore';
-import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+import { useBizStore } from '@/src/stores/InvStore';
+import { updateBiz } from '@/src/firestore/fs_crud_biz';
 
 const CLOUD_NAME = 'dbysasiob';
 const UPLOAD_PRESET = 'aailogo';
@@ -15,13 +15,12 @@ const showToast = (type: 'success' | 'error', title: string, message: string) =>
     Toast.show({ type, text1: title, text2: message, position: 'bottom' });
 };
 
-
 export const pickAndSaveLogo = async () => {
-    console.log("pickAndSaveLogo called1");
     const { updateOBiz } = useBizStore.getState();
-    const { updateBiz } = useBizCrud();
 
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    console.log("pickAndSaveLogo called23");
+    console.log("permissionResult:", permissionResult);
     if (!permissionResult.granted) {
         alert("Permission to access media library is required!");
         return;

@@ -4,14 +4,14 @@ import { Platform } from 'react-native';
 import Purchases from 'react-native-purchases';
 
 import { useBizStore } from '@/src/stores/InvStore';
-import { useBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import path as necessary
+import { getBizCrud } from "@/src/firestore/fs_crud_biz"; // Adjust the import path as necessary
 
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 
 export const useAppStartup = () => {
     const { setOBiz } = useBizStore();  // 🧠 Zustand action
-    const { fetchBiz } = useBizCrud();
+    const { fetchBiz } = getBizCrud();
     const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
 
     React.useEffect(() => {

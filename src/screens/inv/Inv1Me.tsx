@@ -4,7 +4,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useBizStore } from '@/src/stores/InvStore';
-import { useBizCrud } from '@/src/firestore/fs_crud_biz'
+import { getBizCrud } from '@/src/firestore/fs_crud_biz'
 
 import { DetailStackPara } from '@/src/types';
 import { s_inv } from "@/src/constants/s_inv";
@@ -16,7 +16,7 @@ export const Inv1Me: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
-    const { updateBiz } = useBizCrud();
+    const { updateBiz } = getBizCrud();
 
     if (!oBiz) return <Text>Loading...</Text>;
 
