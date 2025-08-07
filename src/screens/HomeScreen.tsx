@@ -41,6 +41,13 @@ const HomeScreen: React.FC = () => {
     const { hf_client, hf_fromDate, hf_toDate } = selectedHeaderFilter;
 
     const handleSelectInvoice = async (invoice: InvDB) => {
+        if (!oBiz) {
+            const data = await fetchBiz();
+            console.log('Fetched bizData:', data?.be_address);
+            setOBiz(data || null);
+            console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
+        }
+
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
     };
 
