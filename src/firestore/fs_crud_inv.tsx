@@ -1,9 +1,10 @@
 import * as Crypto from 'expo-crypto';
-import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
+import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp, getDoc } from "firebase/firestore";
 
 import { app } from "@/src/config/firebaseConfig";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { InvDB } from '@/src/types';
+import { useInvStore } from '../stores';
 
 
 export const useInvCrud = () => {
@@ -35,18 +36,21 @@ export const useInvCrud = () => {
     };
 
 
-    const insertInv = async (
-        Inv: Partial<InvDB>,
-        onSuccess: () => void,
-        onError: (err: any) => void
-    ) => {
+    const insertInv = async (onSuccess: () => void, onError: (err: any) => void) => {
         try {
-            const client_id = 'c_' + Crypto.randomUUID().replace(/-/g, '');
-            const docRef = doc(db, `aai/be_${uid}/clients`, client_id);
+            // ✅ Get current invoice from zustand
+            const oInv = useInvStore.getState().oInv;
 
-            const newInv: Partial<InvDB> = {
-                ...Inv,
-                client_id: client_id,
+            if (!oInv) {
+                throw new Error("No oInv found in zustand store.");
+            }
+
+            const inv_id = 'i_' + Crypto.randomUUID().replace(/-/g, '');
+            const docRef = doc(db, `aai/be_${uid}/invs`, inv_id);
+
+            const newInv = {
+                ...oInv,
+                inv_id,
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp(),
                 is_deleted: 0,
@@ -56,10 +60,12 @@ export const useInvCrud = () => {
             await setDoc(docRef, newInv);
             console.log("✅ Inserted Inv:", docRef.id);
 
-            onSuccess();
+            onSuccess?.();
+            return true;
         } catch (err) {
             console.error("❌ insertInv error:", err);
-            onError(err);
+            onError?.(err);
+            return false;
         }
     };
 
@@ -91,6 +97,23 @@ export const useInvCrud = () => {
     };
 
 
+    const initInv = async (invNumber: string) => {
+        try {
+            const invDocRef = doc(db, "aai", `be_${uid}`, "inv_empty", "inv_empty");
+            const invDocSnap = await getDoc(invDocRef);
 
-    return { insertInv, updateInv, fetchInvs };
+            if (invDocSnap.exists()) {
+                const data = invDocSnap.data() as InvDB; // optional type cast
+                const updatedData = { ...data, inv_number: invNumber };
+                console.log("Fetched inv_empty:", data);
+                useInvStore.getState().setOInv(data);
+            } else {
+                console.warn("No inv_empty doc found in Firestore.");
+            }
+        } catch (err) {
+            console.error("Error initializing invoice:", err);
+        }
+    };
+
+    return { insertInv, updateInv, fetchInvs, initInv };
 };

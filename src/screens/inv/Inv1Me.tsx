@@ -4,7 +4,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useBizStore } from '@/src/stores/InvStore';
-import { getBizCrud } from '@/src/firestore/fs_crud_biz'
+import { useBizCrud } from '@/src/firestore/fs_crud_biz'
 
 import { DetailStackPara } from '@/src/types';
 import { s_inv } from "@/src/constants/s_inv";
@@ -15,14 +15,14 @@ export const Inv1Me: React.FC = () => {
 
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
 
-    const { oBiz, } = useBizStore();  // 🧠 Zustand action
-    const { updateBiz } = getBizCrud();
+    const { oBiz,updateOBiz } = useBizStore();  // 🧠 Zustand action
+    const { updateBiz } = useBizCrud();
 
     if (!oBiz) return <Text>Loading...</Text>;
 
     return (
         <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 5 }}>
-            <TouchableOpacity style={[s_inv.LogoBox,]} onPress={() => pickAndSaveLogo()}>
+            <TouchableOpacity style={[s_inv.LogoBox,]} onPress={() => pickAndSaveLogo(updateBiz, updateOBiz)}>
                 <View style={{ alignItems: 'center' }}>
                     {oBiz?.be_logo ? (
                         <Image source={{ uri: oBiz.be_logo }} style={s_inv.LogoBox} resizeMode="cover" />

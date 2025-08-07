@@ -14,7 +14,6 @@ import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the i
 
 import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/HomeInvCard";
-import { initNewInv } from "@/src/db/seedDemoInvoices";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useTabSync } from '@/src/hooks/useTabSync';
 import { getInvoiceNumber } from "@/src/utils/genInvNumber";
@@ -25,7 +24,7 @@ const HomeScreen: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
-    const { fetchInvs } = useInvCrud();
+    const { fetchInvs, initInv } = useInvCrud();
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
@@ -172,10 +171,7 @@ const HomeScreen: React.FC = () => {
                 style={[s_global.FABSquare]}
                 onPress={async () => {
                     const newNumber = await getInvoiceNumber();
-                    const newInvoice = await initNewInv(newNumber); // wait for invoice
-                    updateOInv(newInvoice); // zustand update
-
-                    clearOInvItemList();
+                    const newInvoice = await initInv(newNumber); // wait for invoice
 
                     navigation.navigate('DetailStack', {
                         screen: 'Inv_New',

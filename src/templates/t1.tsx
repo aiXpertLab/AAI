@@ -13,18 +13,18 @@ export const t1 = (
     
     <div class="invoice-header">
       <div class="company-details" style="text-align: left;">
-        ${oBiz.biz_logo64 ? `
+        ${oBiz.be_logo ? `
           <div class="logo-section" style="margin-bottom: 10px;">
-            <img src="${oBiz.biz_logo64}" alt="Logo" class="logo"
+            <img src="${oBiz.be_logo}" alt="Logo" class="logo"
               style="width: 150px; height: 100px; object-fit: cover; display: block;" />
           </div>` : ""
         }
-        <h1 style="margin: 0;">${oInv.biz_name}</h1>
+        <h1 style="margin: 0;">${oBiz.be_name}</h1>
         <p style="margin: 5px 0;">
-          ${oInv.biz_address || ""}<br/>
-          ${oInv.biz_phone || ""}<br/>
-          ${oInv.biz_email || ""}<br/>
-          ${oInv.biz_biz_number || ""}
+          ${oBiz.be_address || ""}<br/>
+          ${oBiz.be_phone || ""}<br/>
+          ${oBiz.be_email || ""}<br/>
+          ${oBiz.be_biz_number || ""}
         </p>
       </div>
       <div class="invoice-info">

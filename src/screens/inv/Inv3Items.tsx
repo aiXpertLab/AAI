@@ -3,29 +3,27 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB } from "@/src/types";
-import { useSQLiteContext } from "expo-sqlite";
 import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { s_inv } from "@/src/constants";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
+import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const Inv3Items: React.FC = () => {
-    const db = useSQLiteContext();
     const { oInv, setIsDirty, updateOInv } = useInvStore();
     const { oInvItemList, setOInvItemList, removeOInvItemList } = useInvItemListStore();
+    const { fetchItems } = useItemCrud()
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<InvItemDB[]>([]);
 
-    const fetchItems = async () => {
-        try {
-            const result = await db.getAllAsync<InvItemDB>("SELECT * FROM Items WHERE NOT is_deleted");
-            setItemList(result);
-        } catch (err) { console.error("Failed to load Items:", err); }
-    };
 
     React.useEffect(() => {
-        fetchItems();
-    }, []);// empty dependency array -> only runs once when mounted
+        const fetchData = async () => {
+            const result = await fetchItems();
+            setItemList(result);
+        };
 
+        fetchData();
+    }, []);
 
     const onSelectItem = (newItem: InvItemDB) => {
 

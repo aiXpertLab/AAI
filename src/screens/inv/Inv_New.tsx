@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
-import { DetailStackPara,  InvDB } from "@/src/types";
+import { DetailStackPara, InvDB } from "@/src/types";
 import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
@@ -109,7 +109,9 @@ export const Inv_New: React.FC = () => {
     const handleSave = async () => {
         isSavingRef.current = true;
         setIsDirty(false);
-        const success = await insertInv();
+        const success = await insertInv(
+            () => console.log("Invoice saved successfully."),
+            (err) => console.error("Failed to save invoice:", err));
         isSavingRef.current = false; // reset if failed
         if (success) { navigation.goBack(); }
     };
