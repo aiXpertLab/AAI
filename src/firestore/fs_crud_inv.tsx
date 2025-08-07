@@ -76,14 +76,6 @@ export const useInvCrud = () => {
             conditions.push(where("inv_date", "<=", Timestamp.fromDate(new Date(hf_toDate.setHours(23, 59, 59, 999)))));
 
             console.log(hf_fromDate, ' ', hf_client, '---', hf_toDate)
-            // console.log(
-            //     'conditions:',
-            //     conditions.map((c: any) => ({
-            //         field: c._field?.segments?.[0],
-            //         op: c._op,
-            //         value: c._value?.toDate ? c._value.toDate().toISOString() : c._value
-            //     }))
-            // );
             const q = query(invRef, ...conditions, orderBy("inv_due_date", "desc"));
             const querySnap = await getDocs(q);
 

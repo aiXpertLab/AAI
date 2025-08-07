@@ -19,19 +19,12 @@ const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 export const BizInfo: React.FC = () => {
     const navigation = useNavigation();
-    const { initOBiz, updateBiz } = useBizCrud();
+    const { updateBiz } = useBizCrud();
 
     const { oBiz, updateOBiz, } = useBizStore();  // 🧠 Zustand action
     const { setIsDirty, updateOInv } = useInvStore();
     const [isProcessing, setIsProcessing] = React.useState(false);
-    
-
-    console.log("BizInfo: oBiz:", oBiz);
-    if (!oBiz) {
-        initOBiz();
-    }
-
-    console.log("Inv1Me_BizForm: oBiz:");
+    console.log("BizInfo: oBiz:", oBiz?.be_website);
 
     const saveRef = React.useRef(() => { });
     const [isFocused, setIsFocused] = React.useState(false);
