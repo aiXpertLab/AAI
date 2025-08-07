@@ -1,12 +1,13 @@
 // src/utils/logoUtils.ts
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-
+import { BE_DB } from '@/src/types';
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from 'expo-image-picker';
 
 import { useBizStore } from '@/src/stores/InvStore';
-import { updateBiz } from '@/src/firestore/fs_crud_biz';
+import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+import { use } from 'react';
 
 const CLOUD_NAME = 'dbysasiob';
 const UPLOAD_PRESET = 'aailogo';
@@ -15,17 +16,19 @@ const showToast = (type: 'success' | 'error', title: string, message: string) =>
     Toast.show({ type, text1: title, text2: message, position: 'bottom' });
 };
 
-export const pickAndSaveLogo = async () => {
-    const { updateOBiz } = useBizStore.getState();
-
+export const pickAndSaveLogo = async (
+    updateBiz: (biz: Partial<BE_DB>,
+        onSuccess: () => void,
+        onError: (err: any) => void) => Promise<void>,
+    updateOBiz: (biz: Partial<BE_DB>) => void
+) => {
+    console.log("pickAndSaveLogo called1");
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    console.log("pickAndSaveLogo called23");
-    console.log("permissionResult:", permissionResult);
+    console.log("pickAndSaveLogo called12");
     if (!permissionResult.granted) {
         alert("Permission to access media library is required!");
         return;
     }
-    console.log("pickAndSaveLogo called12");
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

@@ -24,6 +24,7 @@ export const BizInfo: React.FC = () => {
     const { oBiz, updateOBiz, } = useBizStore();  // 🧠 Zustand action
     const { setIsDirty, updateOInv } = useInvStore();
     const [isProcessing, setIsProcessing] = React.useState(false);
+    
 
     console.log("BizInfo: oBiz:", oBiz);
     if (!oBiz) {
@@ -125,7 +126,7 @@ export const BizInfo: React.FC = () => {
                         keyboardShouldPersistTaps="handled"                    >
 
                         <View style={[s_global.Container, { justifyContent: 'center', alignItems: 'center', flex: 1 }]}>
-                            <TouchableOpacity style={[s_inv.LogoBoxBig,]} onPress={() => pickAndSaveLogo()}>
+                            <TouchableOpacity style={[s_inv.LogoBoxBig,]} onPress={() => pickAndSaveLogo(updateBiz, updateOBiz)}>
                                 {oBiz?.be_logo ? (
                                     <Image source={{ uri: oBiz.be_logo }} style={s_inv.LogoBoxBig} resizeMode="cover" />
                                 ) : (
