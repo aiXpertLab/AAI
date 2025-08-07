@@ -35,10 +35,12 @@ const Drawer_Settings_Screen: React.FC = () => {
             {/* Business Section */}
             <Section title="My Business">
                 <SettingItem title="Business Info" onPress={async () => {
-                    const data = await fetchBiz();
-                    console.log('Fetched bizData:', data?.be_address);
-                    setOBiz(data || null);
-                    console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
+                    if (!oBiz) {
+                        const data = await fetchBiz();
+                        console.log('Fetched bizData:', data?.be_address);
+                        setOBiz(data || null);
+                        console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
+                    }
                     navigation.navigate("BizInfo");
                 }} />
                 <SettingItem title="Tax" onPress={() => navigation.navigate("Tax_List")} />

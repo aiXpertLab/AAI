@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { useInvStore, } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
@@ -16,10 +16,13 @@ import { InvoiceCard } from "@/src/screens/HomeInvCard";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useTabSync } from '@/src/hooks/useTabSync';
 import { getInvoiceNumber } from "@/src/utils/genInvNumber";
+import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 
 const HomeScreen: React.FC = () => {
     useTabSync('Invoices');
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const { fetchBiz } = useBizCrud();
+    const { oBiz, setOBiz } = useBizStore();
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
@@ -159,6 +162,12 @@ const HomeScreen: React.FC = () => {
             <TouchableOpacity
                 style={[s_global.FABSquare]}
                 onPress={async () => {
+                    if (!oBiz) {
+                        const data = await fetchBiz();
+                        console.log('Fetched bizData:', data?.be_address);
+                        setOBiz(data || null);
+                        console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
+                    }
                     const newNumber = await getInvoiceNumber();
                     const newInvoice = await initInv(newNumber); // wait for invoice
 
