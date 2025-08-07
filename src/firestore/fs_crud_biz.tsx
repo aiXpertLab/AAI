@@ -10,7 +10,7 @@ const db = getFirestore(app);
 export const useBizCrud = () => {
     const firebaseUser = useFirebaseUserStore.getState().FirebaseUser;
     const uid = firebaseUser?.uid;
-    const { setOBiz } = useBizStore();  // 🧠 Zustand action
+    const {oBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
 
     const updateBiz = async (
         biz: Partial<BE_DB>,
@@ -36,6 +36,7 @@ export const useBizCrud = () => {
 
     const fetchBiz = async () => {
         try {
+            console.log("fetchBiz", uid);
             const docRef = doc(db, "aai", `be_${uid}`);
             const docSnap = await getDoc(docRef);
 
@@ -116,9 +117,11 @@ export const useBizCrud = () => {
 
     const initOBiz = async () => {
         try {
-            // 1. Load business info
+            // 1. Load business inf oBiz
             const bizData = await fetchBiz();
-            setOBiz(bizData ?? null);
+            console.log("initOBiz bizData", bizData?.be_address);
+            setOBiz(bizData || null);
+            console.log("initOBiz setOBiz", oBiz?.be_biz_number);
         } catch (error) {
             console.error("Startup: Failed to fetch oBiz", error);
         }

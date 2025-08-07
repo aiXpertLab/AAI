@@ -29,9 +29,23 @@ export const BizInfo: React.FC = () => {
     const saveRef = React.useRef(() => { });
     const [isFocused, setIsFocused] = React.useState(false);
 
+    // Add function to fetch and set business data
+    const fetchAndSetBiz = async () => {
+        const { fetchBiz } = useBizCrud();
+        const { setOBiz } = useBizStore();
+        try {
+            const bizData = await fetchBiz();
+            setOBiz(bizData || null);
+        } catch (error) {
+            console.error("Failed to fetch business data:", error);
+        }
+    };
+
     useFocusEffect(
         React.useCallback(() => {
             setIsFocused(true);
+            // Fetch business data when screen is focused
+            fetchAndSetBiz();
             return () => setIsFocused(false);
         }, [])
     );

@@ -1,4 +1,7 @@
 // src/screens/Drawer_Settings_Screen.tsx
+import Constants from 'expo-constants';
+const version = Constants.expoConfig?.version ?? '18.8.30';
+
 import React from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 
@@ -6,14 +9,16 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { s_global } from "@/src/constants";
-import Constants from 'expo-constants';
-const version = Constants.expoConfig?.version ?? '1.0.0';
 
 import { DetailStackPara } from "@/src/types";
 import SettingItem from "./SettingItem";
+import { useBizCrud } from '@/src/firestore/fs_crud_biz';
+import { useBizStore } from '@/src/stores/InvStore';
 
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const { fetchBiz } = useBizCrud();
+    const { setOBiz, oBiz } = useBizStore();
 
     React.useLayoutEffect(() => {
         const parent = navigation.getParent();
@@ -29,7 +34,13 @@ const Drawer_Settings_Screen: React.FC = () => {
         <ScrollView style={s_global.SettingsContainer}>
             {/* Business Section */}
             <Section title="My Business">
-                <SettingItem title="Business Info" onPress={() => navigation.navigate("BizInfo")} />
+                <SettingItem title="Business Info" onPress={async () => {
+                    const data = await fetchBiz();
+                    console.log('Fetched bizData:', data?.be_address);
+                    setOBiz(data || null);
+                    console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
+                    navigation.navigate("BizInfo");
+                }} />
                 <SettingItem title="Tax" onPress={() => navigation.navigate("Tax_List")} />
                 <SettingItem title="Payment Method" onPress={() => navigation.navigate("PaymentMethod_List")} />
                 {/* <SettingItem title="Payment Method" />

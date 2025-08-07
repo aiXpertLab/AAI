@@ -10,7 +10,6 @@ import { RectButton } from 'react-native-gesture-handler';
 import { useInvStore, } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
-import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
 
 import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/HomeInvCard";
