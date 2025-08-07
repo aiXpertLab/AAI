@@ -32,7 +32,7 @@ const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClo
 
                     <FlatList
                         data={items}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item.item_id}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 onPress={() => onSelectItem(item)}

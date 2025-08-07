@@ -19,8 +19,6 @@ export const Inv3Items: React.FC = () => {
 
     const onSelectItem = (newItem: ItemDB) => {
         if (!oInv) return;
-
-        const inv_items = oInv.inv_items || [];
         const existing = inv_items.find(item => item.item_id === newItem.item_id);
         setIsDirty(true);
 

@@ -83,7 +83,10 @@ const ItemsScreen: React.FC = () => {
 
     const confirmInsert = async () => {
         for (const item of previewItems) {
-            await insertItem(item);  // insertItem already has defaults
+            const success = await insertItem(item,
+                () => console.log("Item saved successfully."),
+                (err) => console.error("Failed to save item:", err));
+
         }
         setPreviewItems([]);
         setShowConfirm(false);
@@ -125,10 +128,10 @@ const ItemsScreen: React.FC = () => {
         );
     };
 
-    const handleDelete = async (clientId: string) => {
+    const handleDelete = async (itemId: string) => {
         await updateItem(
             {
-                client_id: clientId,
+                item_id: itemId,
                 is_deleted: 1,
             },
             async () => {
