@@ -30,7 +30,7 @@ export const Inv_New: React.FC = () => {
     const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
-    const { oInvItemList } = useInvItemListStore();
+    const { oInv!.inv_items } = useInvItemListStore();
     const { insertInv, updateInv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
@@ -98,7 +98,7 @@ export const Inv_New: React.FC = () => {
 
     const onPDF = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
+            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
             await viewPDF(uri);
             // await openWithExternalPDFViewer(uri);
         } catch (err) {
@@ -175,7 +175,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

@@ -1,5 +1,4 @@
 import React from "react";
-import { useSQLiteContext } from 'expo-sqlite';
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { modalStyles, invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global";
@@ -9,7 +8,6 @@ import DiscountModal from "@/src/modals/DiscountModal";
 import M_TaxPicker from "@/src/modals/M_TaxPicker";
 
 export const Inv4Total: React.FC = () => {
-    const db = useSQLiteContext();
     const { oInv, isDirty, setIsDirty, updateOInv } = useInvStore();  // 🧠 Zustand action
     const [discount, setDiscount] = React.useState<{ value: number; type: 'percent' | 'flat' } | null>(null);
     const [oTax, setOTax] = React.useState<TaxDB | null>(null);
@@ -22,10 +20,10 @@ export const Inv4Total: React.FC = () => {
 
     const subtotal = React.useMemo(() => {
         // return oInvItems.reduce((sum, item) => sum + (item.item_quantity ?? 1) * (item.item_rate ?? 0), 0);
-        const raw = oInvItemList.reduce((sum, item) =>
+        const raw = oInv!.inv_items.reduce((sum, item) =>
             sum + (item.item_quantity ?? 1) * (item.item_rate ?? 0), 0);
         return Math.round(raw * 100) / 100;
-    }, [oInvItemList]);
+    }, [oInv!.inv_items]);
 
 
     const discountAmount = React.useMemo(() => {

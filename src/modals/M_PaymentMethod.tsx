@@ -1,6 +1,5 @@
 // src/components/ClientPickerModal.tsx
 import React from "react";
-import { useSQLiteContext } from "expo-sqlite";
 import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { PMDB } from "@/src/types";
 import { modalStyles } from "@/src/constants/styles";
@@ -15,7 +14,7 @@ interface PickerModalProps {
 }
 
 const M_PaymentMethod: React.FC<PickerModalProps> = ({ visible, onClose, onSelectPaymentMethod: onSelectPaymentMethod }) => {
-    const db = useSQLiteContext();
+    
     const [paymentMethods, setPaymentMethods] = React.useState<PMDB[]>([]);
 
     React.useEffect(() => {

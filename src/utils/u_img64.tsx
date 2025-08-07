@@ -145,7 +145,7 @@ export const processB64Inv = async (
             }));
 
         if (formattedItems.length > 0) {
-            setOInvItemList(formattedItems);
+            setoInv!.inv_items(formattedItems);
         }
 
     } catch (err) {

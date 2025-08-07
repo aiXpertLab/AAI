@@ -10,7 +10,7 @@ import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const Inv3Items: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
-    const { oInvItemList, setOInvItemList, removeOInvItemList } = useInvItemListStore();
+    const { oInv!.inv_items, setoInv!.inv_items, removeoInv!.inv_items } = useInvItemListStore();
     const { fetchItems } = useItemCrud()
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<InvItemDB[]>([]);
@@ -27,12 +27,12 @@ export const Inv3Items: React.FC = () => {
 
     const onSelectItem = (newItem: InvItemDB) => {
 
-        const existing = oInvItemList.find(item => item.item_id === newItem.id);
+        const existing = oInv!.inv_items.find(item => item.item_id === newItem.id);
         setIsDirty(true);
 
         if (existing) {
 
-            const updatedList = oInvItemList.map(item =>
+            const updatedList = oInv!.inv_items.map(item =>
                 item.item_id === newItem.id
                     ? {
                         ...item,
@@ -41,7 +41,7 @@ export const Inv3Items: React.FC = () => {
                     : item
             );
 
-            setOInvItemList(updatedList);
+            setoInv!.inv_items(updatedList);
         } else {
             // console.log("[onSelectItem] No match found — adding new item:", newItem);
 
@@ -55,7 +55,7 @@ export const Inv3Items: React.FC = () => {
                 item_amount: newItem.item_rate * 1,
                 item_status: newItem.item_status,
             };
-            setOInvItemList([...oInvItemList, newLine]);
+            setoInv!.inv_items([...oInv!.inv_items, newLine]);
         }
 
         setModalVisible(false);
@@ -63,8 +63,8 @@ export const Inv3Items: React.FC = () => {
 
     return (
         <View style={[s_inv.ItemBox, { alignItems: "flex-start" }]}>
-            {oInvItemList.length > 0 ? (
-                oInvItemList.map((item, index) => (
+            {oInv!.inv_items.length > 0 ? (
+                oInv!.inv_items.map((item, index) => (
                     <View key={index} style={{ marginBottom: 12, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
                         {/* Left Column: Item Info */}
                         <View style={{ flex: 1 }}>
@@ -84,7 +84,7 @@ export const Inv3Items: React.FC = () => {
 
                         {/* Right Column: Trash Icon vertically centered */}
                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                            <TouchableOpacity onPress={() => removeOInvItemList(item!.id!)}>
+                            <TouchableOpacity onPress={() => removeoInv!.inv_items(item!.id!)}>
                                 <Ionicons name="trash-outline" size={14} color="#e74c3c" />
                             </TouchableOpacity>
                         </View>

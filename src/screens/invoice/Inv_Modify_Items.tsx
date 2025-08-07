@@ -2,13 +2,13 @@ import React from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB, ItemDB } from "@/src/types";
-import { useSQLiteContext } from "expo-sqlite";
+// import { useSQLiteContext } from "expo-sqlite";
 import { invoiceStyles } from "@/src/constants/styles";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 import { useNavigation, } from "@react-navigation/native";
 
 const LineItemsList: React.FC = () => {
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<ItemDB[]>([]);
     const navigation = useNavigation();
@@ -16,14 +16,14 @@ const LineItemsList: React.FC = () => {
 
     React.useEffect(() => {
         // Snapshot the list when the screen is mounted
-        setInitialList(JSON.parse(JSON.stringify(oInvItemList)));
+        setInitialList(JSON.parse(JSON.stringify(oInv!.inv_items)));
     }, []);
 
-    const hasUnsavedChanges = JSON.stringify(oInvItemList) !== JSON.stringify(initialList);
+    const hasUnsavedChanges = JSON.stringify(oInv!.inv_items) !== JSON.stringify(initialList);
 
     const resetToInitialState = () => {
-        setOInvItemList(initialList);
-      };
+        setOInv(initialList);
+    };
 
     React.useEffect(() => {
         const unsubscribe = navigation.addListener("beforeRemove", (e) => {
@@ -40,9 +40,9 @@ const LineItemsList: React.FC = () => {
                         text: "Discard",
                         style: "destructive",
                         onPress: () => {
-                            resetToInitialState(); // 👈 Restore original oInvItemList before leaving
+                            resetToInitialState(); // 👈 Restore original oInv!.inv_items before leaving
                             navigation.dispatch(e.data.action); // Proceed with navigation
-                          }
+                        }
                     },
                 ]
             );
@@ -76,7 +76,7 @@ const LineItemsList: React.FC = () => {
                 text: "Delete",
                 style: "destructive",
                 onPress: async () => {
-                    removeOInvItemList(id);                    
+                    removeOInv(id);
                 },
             },
         ]);
@@ -88,14 +88,14 @@ const LineItemsList: React.FC = () => {
     }, []);
 
     const onSelectItem = (item: InvItemDB) => {
-        addOInvItemList(item);
+        addOInv(item);
         setModalVisible(false);
     };
 
     return (
         <View style={[invoiceStyles.sectionBox, { alignItems: "flex-start" }]}>
-            {oInvItemList.length > 0 ? (
-                oInvItemList.map((item, index) => (
+            {oInv!.inv_items.length > 0 ? (
+                oInv!.inv_items.map((item, index) => (
                     <View key={index} style={{ marginBottom: 16, width: "100%", flexDirection: "row" }}>
                         {/* Left: Text Info (flex: 1 to take up space) */}
                         <View style={{ flex: 1 }}>

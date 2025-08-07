@@ -1,6 +1,6 @@
 // src/components/ClientPickerModal.tsx
 import React from "react";
-import { useSQLiteContext } from "expo-sqlite";
+
 import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { ClientDB } from "@/src/types";
 import { modalStyles } from "@/src/constants/styles";
@@ -13,7 +13,6 @@ interface ClientPickerModalProps {
 }
 
 const M_HeaderClientPicker: React.FC<ClientPickerModalProps> = ({ visible, onClose, onSelectClient }) => {
-    const db = useSQLiteContext();
     const [clients, setClients] = React.useState<ClientDB[]>([]);
 
     React.useEffect(() => {

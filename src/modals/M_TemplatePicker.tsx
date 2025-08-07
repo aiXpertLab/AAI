@@ -18,7 +18,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     const { oInv, updateOInv, } = useInvStore();
     const { updateOBiz, oBiz } = useBizStore();
     
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
 
     const saveTemplate2DB = async (template_id: string) => {
         try {
@@ -105,7 +105,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                                 >
                                     <WebView
                                         originWhitelist={['*']}
-                                        source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "picker", key) }}
+                                        source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "picker", key) }}
                                         style={{
                                             width: '100%',
                                             height: '100%',

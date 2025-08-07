@@ -2,7 +2,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Alert, Modal, View, Text, TouchableOpacity, FlatList, } from 'react-native';
-import { useSQLiteContext } from "expo-sqlite";
+// import { useSQLiteContext } from "expo-sqlite";
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,7 +13,7 @@ import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose, onSelectTax, }) => {
     const navigation = useNavigation();
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
     const [selectedTaxes, setSelectedTaxes] = React.useState<TaxDB[]>([]);
 
     const handleDeleteTax = async (id: number) => {

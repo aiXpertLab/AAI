@@ -39,15 +39,6 @@ const HomeScreen: React.FC = () => {
 
     const handleSelectInvoice = async (invoice: InvDB) => {
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
-        // console.log(JSON.stringify(invoice, null, 4));
-
-        // try {
-        //     const items = await db.getAllAsync<InvItemDB>("SELECT * FROM inv_items WHERE inv_id = ?", [invoice.id]);
-        //     setOInvItemList(items); // ✅ Store fetched items
-        // } catch (err) {
-        //     console.error("Failed to fetch items for invoice", invoice.id, err);
-        //     setOInvItemList([]); // Optionally clear on failure
-        // }
     };
 
     const fetchInvoicesFromModule = async () => {

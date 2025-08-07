@@ -23,7 +23,7 @@ interface InvoiceStore {
 
   // --- Current invoice ---
   oInv: Partial<InvDB> & {
-    oInvItemList: Partial<InvItemDB>[];
+    oInv!.inv_items: Partial<InvItemDB>[];
     payments: Partial<PMDB>[];
     oTax: Partial<TaxDB> | null;
     oBiz: Partial<BE_DB> | null;
@@ -66,7 +66,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
   oTax: null,
 
   oInv: {
-    oInvItemList: [],
+    oInv!.inv_items: [],
     payments: [],
     oTax: null,
     oBiz: null,
@@ -96,7 +96,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
 
   setItemCatalog: (items) => {
     const { linkItemsToCatalog, oInv } = get();
-    let updatedItems = oInv.oInvItemList;
+    let updatedItems = oInv.oInv!.inv_items;
     if (linkItemsToCatalog) {
       updatedItems = updatedItems.map(invItem => {
         const src = items.find(i => i.item_id === invItem.item_id);
@@ -105,7 +105,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
     }
     set({
       oItemCatalog: items,
-      oInv: { ...oInv, oInvItemList: updatedItems }
+      oInv: { ...oInv, oInv!.inv_items: updatedItems }
     });
   },
 
@@ -135,12 +135,12 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
   updateInv: (inv) => set((state) => ({ oInv: { ...state.oInv, ...inv } })),
 
   addInvItem: (item) => set((state) => ({
-    oInv: { ...state.oInv, oInvItemList: [...state.oInv.oInvItemList, item] }
+    oInv: { ...state.oInv, oInv!.inv_items: [...state.oInv.oInv!.inv_items, item] }
   })),
   updateInvItem: (id, updates) => set((state) => ({
     oInv: {
       ...state.oInv,
-      oInvItemList: state.oInv.oInvItemList.map(item =>
+      oInv!.inv_items: state.oInv.oInv!.inv_items.map(item =>
         item.id === id ? { ...item, ...updates } : item
       )
     }
@@ -148,7 +148,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
   removeInvItem: (id) => set((state) => ({
     oInv: {
       ...state.oInv,
-      oInvItemList: state.oInv.oInvItemList.filter(item => item.id !== id)
+      oInv!.inv_items: state.oInv.oInv!.inv_items.filter(item => item.id !== id)
     }
   })),
 
@@ -181,7 +181,7 @@ export const useInvoiceStore = create<InvoiceStore>((set, get) => ({
     oPaymentMethods: [],
     oTax: null,
     oInv: {
-      oInvItemList: [],
+      oInv!.inv_items: [],
       payments: [],
       oTax: null,
       oBiz: null,

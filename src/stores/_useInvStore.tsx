@@ -2,31 +2,31 @@ import { create } from 'zustand';
 import { InvDB, InvItemDB, BE_DB ,PMDB, TaxDB} from '@/src/types';
 import {createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
-type OInvItemListStore = {
-    oInvItemList: Partial<InvItemDB>[];
-    updateOInvItemList: (id: number, updates: Partial<InvItemDB>) => void;
-    removeOInvItemList: (id: number) => void;
-    clearOInvItemList: () => void;
-    setOInvItemList: (items: Partial<InvItemDB>[]) => void;
+type oInv!.inv_itemsStore = {
+    oInv!.inv_items: Partial<InvItemDB>[];
+    updateoInv!.inv_items: (id: number, updates: Partial<InvItemDB>) => void;
+    removeoInv!.inv_items: (id: number) => void;
+    clearoInv!.inv_items: () => void;
+    setoInv!.inv_items: (items: Partial<InvItemDB>[]) => void;
 };
 
-export const useInvItemListStore = create<OInvItemListStore>((set) => ({
-    oInvItemList: [],
+export const useInvItemListStore = create<oInv!.inv_itemsStore>((set) => ({
+    oInv!.inv_items: [],
         
-    updateOInvItemList: (id, updates) =>
+    updateoInv!.inv_items: (id, updates) =>
         set((state) => ({
-            oInvItemList: state.oInvItemList.map(item =>
+            oInv!.inv_items: state.oInv!.inv_items.map(item =>
                 item.id === id ? { ...item, ...updates } : item
             ),
         })),
         
-    clearOInvItemList: () => set({ oInvItemList: [] }),
+    clearoInv!.inv_items: () => set({ oInv!.inv_items: [] }),
 
-    removeOInvItemList: (id: number) => set(state => ({
-        oInvItemList: state.oInvItemList.filter(item => item.id !== id)
+    removeoInv!.inv_items: (id: number) => set(state => ({
+        oInv!.inv_items: state.oInv!.inv_items.filter(item => item.id !== id)
       })),
 
-    setOInvItemList: (items) => set({ oInvItemList: items }),  // ✅ NEW
+    setoInv!.inv_items: (items) => set({ oInv!.inv_items: items }),  // ✅ NEW
 }));
 
 

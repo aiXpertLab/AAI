@@ -4,7 +4,7 @@ import Toast from 'react-native-toast-message';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
-import { useSQLiteContext } from "expo-sqlite";
+// import { useSQLiteContext } from "expo-sqlite";
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
@@ -13,7 +13,7 @@ import { TaxDB } from '@/src/types';
 import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 export const Inv4Total_TaxForm: React.FC = () => {
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
     const navigation = useNavigation();
     const saveRef = useRef(() => { });
 

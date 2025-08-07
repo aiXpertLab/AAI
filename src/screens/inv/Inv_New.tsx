@@ -98,8 +98,8 @@ export const Inv_New: React.FC = () => {
 
     const onPDF = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
-            await viewPDF(uri);
+            // const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
+            // await viewPDF(uri);
             // await openWithExternalPDFViewer(uri);
         } catch (err) {
             console.error("Error viewing PDF:", err);
@@ -177,7 +177,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

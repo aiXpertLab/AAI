@@ -5,7 +5,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 export const t7 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    oInvItemList: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<InvItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
@@ -33,7 +33,7 @@ export const t7 = (
         </tr>
       </thead>
       <tbody>
-        ${oInvItemList.map(item => `
+        ${oInv!.inv_items.map(item => `
           <tr>
             <td style="padding: 8px;">${item.item_name}</td>
             <td style="text-align: right; padding: 8px;">${item.item_quantity}</td>

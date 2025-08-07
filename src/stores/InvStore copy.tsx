@@ -3,27 +3,27 @@ import { InvDB, InvItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
 import {createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 // Store for the list of invoice items
-type OInvItemListStore = {
-    oInvItemList: Partial<InvItemDB>[]; // List of items in the invoice
-    updateOInvItemList: (id: number, updates: Partial<InvItemDB>) => void;
-    removeOInvItemList: (id: number) => void;
-    clearOInvItemList: () => void;
-    setOInvItemList: (items: Partial<InvItemDB>[]) => void;
+type oInv!.inv_itemsStore = {
+    oInv!.inv_items: Partial<InvItemDB>[]; // List of items in the invoice
+    updateoInv!.inv_items: (id: number, updates: Partial<InvItemDB>) => void;
+    removeoInv!.inv_items: (id: number) => void;
+    clearoInv!.inv_items: () => void;
+    setoInv!.inv_items: (items: Partial<InvItemDB>[]) => void;
 };
 
-export const useInvItemListStore = create<OInvItemListStore>((set) => ({
-    oInvItemList: [],
-    updateOInvItemList: (id, updates) =>
+export const useInvItemListStore = create<oInv!.inv_itemsStore>((set) => ({
+    oInv!.inv_items: [],
+    updateoInv!.inv_items: (id, updates) =>
         set((state) => ({
-            oInvItemList: state.oInvItemList.map(item =>
+            oInv!.inv_items: state.oInv!.inv_items.map(item =>
                 item.id === id ? { ...item, ...updates } : item
             ),
         })),
-    clearOInvItemList: () => set({ oInvItemList: [] }),
-    removeOInvItemList: (id: number) => set(state => ({
-        oInvItemList: state.oInvItemList.filter(item => item.id !== id),
+    clearoInv!.inv_items: () => set({ oInv!.inv_items: [] }),
+    removeoInv!.inv_items: (id: number) => set(state => ({
+        oInv!.inv_items: state.oInv!.inv_items.filter(item => item.id !== id),
     })),
-    setOInvItemList: (items) => set({ oInvItemList: items }),
+    setoInv!.inv_items: (items) => set({ oInv!.inv_items: items }),
 }));
 
 
@@ -62,10 +62,10 @@ export const useTaxStore = create<OTaxStore>((set) => ({
 }));
 
 
-// Store for invoice (oInv) that includes oInvItemList, oTax, oBiz
+// Store for invoice (oInv) that includes oInv!.inv_items, oTax, oBiz
 type OInvStore = {
     oInv: Partial<InvDB> & {
-        oInvItemList: Partial<InvItemDB>[];
+        oInv!.inv_items: Partial<InvItemDB>[];
         oTax: Partial<TaxDB> | null;
         oBiz: Partial<BE_DB> | null;
         oClient: Partial<ClientDB> | null;
@@ -79,7 +79,7 @@ type OInvStore = {
 
 export const useInvStore = create<OInvStore>((set) => ({
     oInv: null,
-    setOInv: (inv) => set({ oInv: { ...inv, oInvItemList: [], oTax: null, oBiz: null, oClient: null } }), // Initialize with empty sub-states
+    setOInv: (inv) => set({ oInv: { ...inv, oInv!.inv_items: [], oTax: null, oBiz: null, oClient: null } }), // Initialize with empty sub-states
     updateOInv: (inv) => set((state) => ({ oInv: { ...state.oInv!, ...inv } })),
     clearOInv: () => set({ oInv: null }),
     isDirty: false,

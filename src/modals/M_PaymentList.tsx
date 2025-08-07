@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, Platform, } from 'react-native';
 import { Ionicons } from "@expo/vector-icons";
-import { useSQLiteContext } from "expo-sqlite";
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { PMDB } from "@/src/types";
@@ -17,7 +17,6 @@ interface AddPaymentModalProps {
 }
 
 export const M_PaymentList: React.FC<AddPaymentModalProps> = ({ visible, onCancel, onSave }) => {
-    const db = useSQLiteContext();
     const { oInv } = useInvStore();  // 🧠 Zustand action
     const [amount, setAmount] = useState('');
     const [date, setDate] = useState(new Date());

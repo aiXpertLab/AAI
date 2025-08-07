@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, TextInput, Button, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
-import { useSQLiteContext } from "expo-sqlite";
+// import { useSQLiteContext } from "expo-sqlite";
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import { WebView } from "react-native-webview";
 
@@ -19,7 +19,7 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 export const Inv_Pay: React.FC = () => {
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
     
@@ -64,7 +64,7 @@ export const Inv_Pay: React.FC = () => {
 
     const onPDF = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
+            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
             await viewPDF(uri);
             // await openWithExternalPDFViewer(uri);
         } catch (err) {
@@ -106,14 +106,14 @@ export const Inv_Pay: React.FC = () => {
 
     const sendEmail = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
+            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
             await emailPDF(uri, oInv);
         } catch (err) { console.error("Error Email:", err); }
     };
 
     const handleShare = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
+            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
             await sharePDF(uri);
         } catch (err) { console.error("Error sharing PDF:", err); }
     };
@@ -236,8 +236,8 @@ export const Inv_Pay: React.FC = () => {
                         <View style={{ minHeight: 600, flexShrink: 0 }}>
                             <WebView
                                 originWhitelist={["*"]}
-                                // source={{ html: genHTML(oInv!, oBiz!, oInvItemList, true) }}
-                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.biz_inv_template_id || 't1') }}
+                                
+                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

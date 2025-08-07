@@ -3,7 +3,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export function t2(
     oInv: Partial<InvDB>,
-    oInvItemList: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<InvItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
     const bodyContent = `
@@ -49,7 +49,7 @@ export function t2(
             <th style="width: 15%; text-align: right;">RATE</th>
             <th style="width: 15%; text-align: right;">AMOUNT</th>
         </tr>
-        ${oInvItemList.map(item => `
+        ${oInv!.inv_items.map(item => `
             <tr>
                 <td style="word-wrap: break-word;">${item.item_name}</td>
                 <td style="text-align: right;">${item.item_quantity}</td>

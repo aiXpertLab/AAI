@@ -5,49 +5,49 @@ import { t11,t12,t13,t14,t15,t16,t17,t18} from "@/src/templates";
 export const genHTML = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    oInvItemList: Partial<InvItemDB>[],
+    oInvItems: Partial<InvItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
     templateName: string = "t1"
 ) => {
     switch (templateName) {
         case "t1":
-            return t1(oInv, oBiz, oInvItemList, previewMode);
+            return t1(oInv, oBiz, oInv!.inv_items, previewMode);
         case "t2":
-            return t2(oInv, oInvItemList, previewMode);
+            return t2(oInv, oInv!.inv_items, previewMode);
         case "t3":
-            return t3(oInv, oInvItemList, previewMode);
+            return t3(oInv, oInv!.inv_items, previewMode);
         case "t4":
-            return t4(oInv,oBiz, oInvItemList, previewMode);
+            return t4(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t5":
-            return t5(oInv,oBiz, oInvItemList, previewMode);
+            return t5(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t6":
-            return t6(oInv,oBiz, oInvItemList, previewMode);
+            return t6(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t7":
-            return t7(oInv, oBiz,oInvItemList, previewMode);
+            return t7(oInv, oBiz,oInv!.inv_items, previewMode);
         case "t8":
-            return t8(oInv, oBiz, oInvItemList, previewMode);
+            return t8(oInv, oBiz, oInv!.inv_items, previewMode);
         case "t9":
-            return t9(oInv,oBiz, oInvItemList, previewMode);
+            return t9(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t10":
-            return t10(oInv,oBiz, oInvItemList, previewMode);
+            return t10(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t11":
-            return t11(oInv,oBiz, oInvItemList, previewMode);
+            return t11(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t12":
-            return t12(oInv,oBiz, oInvItemList, previewMode);
+            return t12(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t13":
-            return t13(oInv,oBiz, oInvItemList, previewMode);
+            return t13(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t14":
-            return t14(oInv,oBiz, oInvItemList, previewMode);
+            return t14(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t15":
-            return t15(oInv,oBiz, oInvItemList, previewMode);
+            return t15(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t16":
-            return t16(oInv,oBiz, oInvItemList, previewMode);
+            return t16(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t17":
-            return t17(oInv,oBiz, oInvItemList, previewMode);
+            return t17(oInv,oBiz, oInv!.inv_items, previewMode);
         case "t18":
-            return t18(oInv,oBiz, oInvItemList, previewMode);
+            return t18(oInv,oBiz, oInv!.inv_items, previewMode);
         default:
-            return t1(oInv, oBiz, oInvItemList, previewMode);
+            return t1(oInv, oBiz, oInv!.inv_items, previewMode);
     }
 };
 

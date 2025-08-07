@@ -7,10 +7,10 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
 import { genHTML } from './genHTML'; // Adjust path to your HTML generator
 
-export const genPDF = async (oInv: any, oBiz: any, oInvItemList: any) => {
+export const genPDF = async (oInv: any, oBiz: any, oInvItems: any) => {
     if (!oInv) throw new Error("Missing invoice data");
 
-    const htmlContent = genHTML(oInv, oBiz, oInvItemList, "pdf", oInv.biz_inv_template_id || "t1");
+    const htmlContent = genHTML(oInv, oBiz, oInv!.inv_items, "pdf", oInv.biz_inv_template_id || "t1");
     const { uri } = await Print.printToFileAsync({ html: htmlContent });
 
     return uri;

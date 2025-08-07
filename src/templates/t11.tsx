@@ -4,7 +4,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 export const t11 = (
   oInv: Partial<InvDB>,
   oBiz: Partial<BE_DB>,
-  oInvItemList: Partial<InvItemDB>[],
+  // oInv!.inv_items: Partial<InvItemDB>[],
   previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
   const bodyContent = `
@@ -111,7 +111,7 @@ export const t11 = (
                   <th align="right">Subtotal</th>
                 </tr>
                 <tr><td height="10" colspan="4"></td></tr>
-                ${oInvItemList.map(item => `
+                ${oInv!.inv_items.map(item => `
                   <tr>
                     <td style="padding:10px 0;">${item.item_name || "Item"}</td>
                     <td><small>${item.item_sku || "SKU"}</small></td>

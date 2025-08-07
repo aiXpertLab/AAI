@@ -6,7 +6,7 @@ import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from "expo-file-system";
-import { useSQLiteContext } from "expo-sqlite";
+// import { useSQLiteContext } from "expo-sqlite";
 import Toast from "react-native-toast-message";
 
 import { useTaxStore } from '@/src/stores/InvStore';
@@ -19,7 +19,7 @@ import { useTabSync } from '@/src/hooks/useTabSync';
 
 export const Biz_Logo: React.FC = () => {
     useTabSync('items');
-    const db = useSQLiteContext();
+    // const db = useSQLiteContext();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const [isFocused, setIsFocused] = useState(false);
