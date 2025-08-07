@@ -1,6 +1,6 @@
 // src/db/saveInvoiceAndItems.ts
 import { insertInvoice } from "./crud_invoices";
-import { ItemUI } from "@/src/types/T_Item";
+import { ItemUI } from "@/src/types";
 
 export const saveInvoiceAndItems = async (db: any, invoice: any, items: ItemUI[]) => {
   try {

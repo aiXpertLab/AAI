@@ -2,12 +2,16 @@ import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, quer
 import { app } from "@/src/config/firebaseConfig";
 import * as Crypto from 'expo-crypto';
 
-import { getUserUid } from "@/src/utils/getFirebaseUid";
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 const db = getFirestore(app);
 import { ItemDB } from '@/src/types';
 
 
 export const useItemCrud = () => {
+    const db = getFirestore(app);
+    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
+    const uid = firebaseUser?.uid;
+    if (!uid) throw new Error("Missing UID");
 
     const updateItem = async (
         Item: Partial<ItemDB>,
@@ -15,11 +19,8 @@ export const useItemCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
             if (!uid || !Item.item_id) throw new Error("Missing UID or Item ID");
-
             const docRef = doc(db, `aai/be_${uid}/items`, Item.item_id);
-
             const { item_id, ...updateFields } = Item; // remove id from payload
 
             await updateDoc(docRef, {
@@ -41,8 +42,6 @@ export const useItemCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
-            if (!uid) throw new Error('Missing UID');
             const item_id = 'i_' + Crypto.randomUUID().replace(/-/g, '');
 
             const docRef = doc(db, `aai/be_${uid}/items`, item_id);
@@ -69,9 +68,6 @@ export const useItemCrud = () => {
 
     const fetchItems = async (): Promise<ItemDB[]> => {
         try {
-            const uid = getUserUid();
-            if (!uid) throw new Error("Missing UID");
-
             const itemsRef = collection(db, `aai/be_${uid}/items`);
             const q = query(itemsRef,where("is_deleted", "==", 0),);
             const querySnap = await getDocs(q);

@@ -1,7 +1,12 @@
-import { InvDB, ClientDB, ItemDB, BE_DB } from '@/src/types';
+import { InvDB, ClientDB, ItemDB, BE_DB } from './index';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import type { DetailStackParamList } from './DetailStackParamList';  // we'll define this next
 
+export type DetailStackParamList = {
+    Inv_New: undefined;
+    Inv_Pay: undefined;
+    Inv1Me_BizForm: undefined;
+    Inv4Total_TaxForm: undefined;
+};
 
 export type RootStackParamList = {
     Home: undefined;

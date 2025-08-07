@@ -2,16 +2,16 @@
 import React from "react";
 import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { InvItemDB } from "@/src/types";
+import { ItemDB } from "@/src/types";
 import { modalStyles } from "@/src/constants/styles";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawerHeaderStore, useItemStore } from '@/src/stores';
 
 interface ItemPickerModalProps {
     visible: boolean;
-    items: InvItemDB[];
+    items: ItemDB[];
     onClose: () => void;
-    onSelectItem: (item: InvItemDB) => void;
+    onSelectItem: (item: ItemDB) => void;
 }
 
 const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClose, onSelectItem, }) => {

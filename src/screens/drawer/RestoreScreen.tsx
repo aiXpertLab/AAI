@@ -8,7 +8,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { M_Confirmation, } from "@/src/modals";
 
 import { useInvStore, useBizStore,  } from '@/src/stores/InvStore';
-import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
+import { RootStackPara, InvDB, ItemDB } from '@/src/types';
 import { RouteType } from "@/src/types";
 
 import { s_global, colors } from "@/src/constants";

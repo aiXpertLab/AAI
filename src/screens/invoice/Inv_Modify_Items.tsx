@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { InvItemDB, ItemDB } from "@/src/types";
+import { ItemDB } from "@/src/types";
 // import { useSQLiteContext } from "expo-sqlite";
 import { invoiceStyles } from "@/src/constants/styles";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
@@ -12,7 +12,7 @@ const LineItemsList: React.FC = () => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<ItemDB[]>([]);
     const navigation = useNavigation();
-    const [initialList, setInitialList] = React.useState<InvItemDB[]>([]);
+    const [initialList, setInitialList] = React.useState<any[]>([]); // Changed from InvItemDB to any[]
 
     React.useEffect(() => {
         // Snapshot the list when the screen is mounted
@@ -87,7 +87,7 @@ const LineItemsList: React.FC = () => {
         fetchItems();
     }, []);
 
-    const onSelectItem = (item: InvItemDB) => {
+    const onSelectItem = (item: any) => { // Changed from InvItemDB to any
         addOInv(item);
         setModalVisible(false);
     };

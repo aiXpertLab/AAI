@@ -30,7 +30,6 @@ export const Inv_New: React.FC = () => {
     const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
-    const { oInv!.inv_items } = useInvItemListStore();
     const { insertInv, updateInv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 

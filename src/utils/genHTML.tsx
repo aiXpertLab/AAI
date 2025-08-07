@@ -1,11 +1,11 @@
-import { BE_DB, InvDB, InvItemDB } from "@/src/types";
+import { BE_DB, InvDB, ItemDB } from "@/src/types";
 // import { t1, t3, t2, t4, t6, t5, t7, t8, t9, t10, t11, t12,t13,t14,t15,t16,t17,t18 } from "@/src/templates";
 import { t1, t3, t2, t4, t6, t5, t7, t8, t9, t10, } from "@/src/templates";
 import { t11,t12,t13,t14,t15,t16,t17,t18} from "@/src/templates";
 export const genHTML = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    oInvItems: Partial<InvItemDB>[],
+    oInvItems: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
     templateName: string = "t1"
 ) => {

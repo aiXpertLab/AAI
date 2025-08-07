@@ -1,8 +1,7 @@
-export * from '@/src/types/StackPara';
-
-export * from '@/src/types/T_Client';
-export * from '@/src/types/T_Invoice'
-export * from '@/src/types/T_Item';
-export * from '@/src/types/T_Biz';
-export * from '@/src/types/T_User';
-export * from '@/src/types/Payment';
+export * from './T_Invoice';
+export * from './T_Client';
+export * from './T_Biz';
+export * from './T_User';
+export * from './Payment';
+export * from './RootStackParamList';
+export * from './StackPara';

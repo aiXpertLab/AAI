@@ -1,4 +1,4 @@
-import { ItemDB, ItemUI } from '@/src/types/T_Item';
+import { ItemDB, ItemUI } from '@/src/types';
 
 export const convertUIToDB = (ui: ItemUI): ItemDB => ({
     id: ui.id,

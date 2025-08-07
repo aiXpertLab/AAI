@@ -2,7 +2,7 @@ import React from "react";
 
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { InvItemDB } from "@/src/types";
+import { ItemDB } from "@/src/types";
 import { useInvStore, } from '@/src/stores/InvStore';
 import { s_inv } from "@/src/constants";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
@@ -12,23 +12,23 @@ export const Inv3Items: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
     const { fetchItems } = useItemCrud()
     const [modalVisible, setModalVisible] = React.useState(false);
-    const [itemList, setItemList] = React.useState<InvItemDB[]>([]);
+    const [itemList, setItemList] = React.useState<ItemDB[]>([]);
 
     const inv_items = oInv?.inv_items || [];
 
 
-    const onSelectItem = (newItem: InvItemDB) => {
+    const onSelectItem = (newItem: ItemDB) => {
         if (!oInv) return;
 
         const inv_items = oInv.inv_items || [];
-        const existing = inv_items.find(item => item.item_id === newItem.id);
+        const existing = inv_items.find(item => item.item_id === newItem.item_id);
         setIsDirty(true);
 
         let updatedItems;
 
         if (existing) {
             updatedItems = inv_items.map(item =>
-                item.item_id === newItem.id
+                item.item_id === newItem.item_id
                     ? {
                         ...item,
                         item_quantity: (item.item_quantity ?? 1) + (newItem.item_quantity ?? 1),
@@ -37,8 +37,8 @@ export const Inv3Items: React.FC = () => {
                     : item
             );
         } else {
-            const newLine: Partial<InvItemDB> = {
-                item_id: newItem.id,
+            const newLine: Partial<ItemDB> = {
+                item_id: newItem.item_id,
                 item_number: newItem.item_number,
                 item_name: newItem.item_name,
                 item_description: newItem.item_description,

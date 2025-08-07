@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { InvDB, InvItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
+import { InvDB, ItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
 import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
 type OInvStore = {
     oInv: Partial<InvDB> & {
-        inv_items?: Partial<InvItemDB>[] | null; // ✅ Optional to match Firestore flexibility
+        inv_items?: Partial<ItemDB>[] | null; // ✅ Optional to match Firestore flexibility
         oTax: Partial<TaxDB> | null;
         oBiz: Partial<BE_DB> | null;
         oClient: Partial<ClientDB> | null;
@@ -22,7 +22,7 @@ export const useInvStore = create<OInvStore>((set) => ({
         set({
             oInv: {
                 ...inv,
-                inv_items: inv.inv_items ? inv.inv_items.filter((item): item is Partial<InvItemDB> => !!item) : [],
+                inv_items: inv.inv_items ? inv.inv_items.filter((item): item is Partial<ItemDB> => !!item) : [],
                 oTax: null,
                 oBiz: null,
                 oClient: null,

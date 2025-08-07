@@ -8,7 +8,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
-import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
+import { RootStackPara, InvDB, ItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
 import { s_global } from "@/src/constants";
