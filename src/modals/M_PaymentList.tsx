@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { PMDB } from "@/src/types";
 import { s_global, s_modal } from '@/src/constants';
-import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
+import { useInvStore,  } from '@/src/stores/InvStore';
 import { formatDateForUI } from "@/src/utils/dateUtils";
 import M_PaymentMethod from './M_PaymentMethod';
 

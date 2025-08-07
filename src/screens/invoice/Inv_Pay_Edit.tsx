@@ -11,11 +11,11 @@ import { sharePDF, emailPDF, viewPDF, openWithExternalPDFViewer, genPDF } from '
 import { Ionicons } from '@expo/vector-icons';
 
 import { genHTML } from "@/src/utils/genHTML";
-import { useInvoiceCrud } from '@/src/db/useInvoiceCrud';
+import { useInvCrud } from '@/src/firestore/fs_crud_inv';
 import { s_global, s_fab, colors } from "@/src/constants";
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, ClientDB, RouteType, InvDB } from "@/src/types";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
@@ -26,7 +26,7 @@ import * as Sharing from 'expo-sharing';
 
 export const Inv_Form: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
-    const mode = useRoute<RouteType<'Tab2_Client_Form'>>().params?.mode ?? 'create_new';
+    const mode = 'create_new';
     const isSavingRef = React.useRef(false);
 
     const [tip2Trigger, setTip2Trigger] = React.useState(false);
@@ -38,8 +38,7 @@ export const Inv_Form: React.FC = () => {
     const { oInv, setOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
-    const { oInvItemList } = useInvItemListStore();
-    const { saveInvoice, updateInvoice } = useInvoiceCrud();
+    const { insertInv, updateInv } = useInvCrud();
 
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -57,7 +56,7 @@ export const Inv_Form: React.FC = () => {
 
     const onPDF = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInvItemList);
+            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
             await viewPDF(uri);
             // await openWithExternalPDFViewer(uri);
         } catch (err) {
@@ -92,11 +91,11 @@ export const Inv_Form: React.FC = () => {
         isSavingRef.current = true;
         setIsDirty(false);
         if (mode === 'create_new') {
-            const success = await saveInvoice();
+            const success = await insertInv();
             isSavingRef.current = false; // reset if failed
             if (success) { navigation.goBack(); }
         } else {
-            const success = await updateInvoice();
+            const success = await updateInv();
             isSavingRef.current = false; // reset if failed
             if (success) { navigation.goBack(); }
         }
@@ -154,7 +153,7 @@ export const Inv_Form: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInvItemList, "view", oInv!.biz_inv_template_id || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.biz_inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

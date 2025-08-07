@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
 
 import { TaxDB } from '@/src/types';
-import { insertTax } from "@/src/db/crud_me";
+import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 export const Inv4Total_TaxForm: React.FC = () => {
     const db = useSQLiteContext();

@@ -6,7 +6,7 @@ import { s_global, s_modal } from '@/src/constants';
 
 import { useSQLiteContext } from 'expo-sqlite';
 import { genHTML } from "@/src/utils/genHTML";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import Purchases from 'react-native-purchases';
 
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
 export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     const { oInv, updateOInv, } = useInvStore();
     const { updateOBiz, oBiz } = useBizStore();
-    const { oInvItemList } = useInvItemListStore();
+    
     const db = useSQLiteContext();
 
     const saveTemplate2DB = async (template_id: string) => {

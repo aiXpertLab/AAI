@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
+import { useInvStore, } from '@/src/stores/InvStore';
 import { RootStackPara, InvDB, InvItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 import { checkOverdueInvoices } from "@/src/utils/invoiceUtils"; // Adjust the import path as necessary
@@ -29,7 +29,6 @@ const HomeScreen: React.FC = () => {
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
     const { setOInv, updateOInv } = useInvStore();  // 🧠 Zustand action
-    const { clearOInvItemList, setOInvItemList } = useInvItemListStore();
 
     const [selectedHeaderFilter, setSelectedHeaderFilter] = React.useState({
         hf_client: "All",

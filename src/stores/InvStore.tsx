@@ -1,11 +1,10 @@
 import { create } from 'zustand';
 import { InvDB, InvItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
-import {createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
+import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
 
-// Store for invoice (oInv) that includes oInvItemList, oTax, oBiz
 type OInvStore = {
     oInv: Partial<InvDB> & {
-        oInvItemList: Partial<InvItemDB>[];
+        inv_items?: Partial<InvItemDB>[] | null; // ✅ Optional to match Firestore flexibility
         oTax: Partial<TaxDB> | null;
         oBiz: Partial<BE_DB> | null;
         oClient: Partial<ClientDB> | null;
@@ -13,45 +12,35 @@ type OInvStore = {
     setOInv: (inv: Partial<InvDB>) => void;
     updateOInv: (inv: Partial<InvDB>) => void;
     clearOInv: () => void;
-    isDirty: boolean; // 🧠 Zustand action
-    setIsDirty: (flag: boolean) => void; // 🧠 Zustand action
+    isDirty: boolean;
+    setIsDirty: (flag: boolean) => void;
 };
 
 export const useInvStore = create<OInvStore>((set) => ({
     oInv: null,
-    setOInv: (inv) => set({ oInv: { ...inv, oInvItemList: [], oTax: null, oBiz: null, oClient: null } }), // Initialize with empty sub-states
-    updateOInv: (inv) => set((state) => ({ oInv: { ...state.oInv!, ...inv } })),
+    setOInv: (inv) =>
+        set({
+            oInv: {
+                ...inv,
+                inv_items: inv.inv_items ? inv.inv_items.filter((item): item is Partial<InvItemDB> => !!item) : [],
+                oTax: null,
+                oBiz: null,
+                oClient: null,
+            },
+        }),
+    updateOInv: (inv) =>
+        set((state) => ({
+            oInv: {
+                ...state.oInv!,
+                ...inv,
+            },
+        })),
     clearOInv: () => set({ oInv: null }),
     isDirty: false,
     setIsDirty: (flag) => set({ isDirty: flag }),
 }));
 
 
-
-
-// Store for the list of invoice items
-type OInvItemListStore = {
-    oInvItemList: Partial<InvItemDB>[]; // List of items in the invoice
-    updateOInvItemList: (id: number, updates: Partial<InvItemDB>) => void;
-    removeOInvItemList: (id: number) => void;
-    clearOInvItemList: () => void;
-    setOInvItemList: (items: Partial<InvItemDB>[]) => void;
-};
-
-export const useInvItemListStore = create<OInvItemListStore>((set) => ({
-    oInvItemList: [],
-    updateOInvItemList: (id, updates) =>
-        set((state) => ({
-            oInvItemList: state.oInvItemList.map(item =>
-                item.id === id ? { ...item, ...updates } : item
-            ),
-        })),
-    clearOInvItemList: () => set({ oInvItemList: [] }),
-    removeOInvItemList: (id: number) => set(state => ({
-        oInvItemList: state.oInvItemList.filter(item => item.id !== id),
-    })),
-    setOInvItemList: (items) => set({ oInvItemList: items }),
-}));
 
 
 
@@ -114,7 +103,7 @@ type ClientStore = {
     updateOClient: (client: Partial<ClientDB>) => void;
     createEmptyClient4New: () => void;
     clearOClient: () => void;
-  };
+};
 
 
 
@@ -126,7 +115,7 @@ export const useClientStore = create<ClientStore>((set) => ({
     clearOClient: () => set({ oClient: null }),
 
     createEmptyClient4New: () => set({ oClient: createEmptyClient4New() })
-    
+
 }));
 
 

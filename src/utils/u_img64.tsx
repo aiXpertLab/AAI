@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 import { fetchAPIUrl } from "@/src/utils/fetchAPIUrl"; // Adjust the import path as needed
-import { useInvItemListStore, useInvStore } from '@/src/stores/InvStore';
+import { useInvStore } from '@/src/stores/InvStore';
 import { ItemDB } from '../types';
 
 
@@ -98,7 +98,6 @@ export const processB64Inv = async (
     if (!base64Image) { alert("Error: No image data available."); return; }
 
     const updateOInv = useInvStore.getState().updateOInv;
-    const setOInvItemList = useInvItemListStore.getState().setOInvItemList;
 
     const apiBase = await fetchAPIUrl();
     const apiUrl = apiBase + 'aai/image_invoice_json';

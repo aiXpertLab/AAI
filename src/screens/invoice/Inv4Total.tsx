@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { modalStyles, invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global";
 import { TaxDB } from "@/src/types";
-import { useInvItemListStore, useInvStore } from '@/src/stores/InvStore';
+import {  useInvStore } from '@/src/stores/InvStore';
 import DiscountModal from "@/src/modals/DiscountModal";
 import M_TaxPicker from "@/src/modals/M_TaxPicker";
 
@@ -17,9 +17,8 @@ export const Inv4Total: React.FC = () => {
     const [showTaxModal, setShowTaxModal] = React.useState(false);
 
     const [taxRows, setTaxRows] = React.useState<TaxDB[]>([]);
-    const { oInvItemList } = useInvItemListStore();
 
-    if (!oInvItemList) return "loading total..."
+    if (!oInv!.inv_items) return "loading total..."
 
     const subtotal = React.useMemo(() => {
         // return oInvItems.reduce((sum, item) => sum + (item.item_quantity ?? 1) * (item.item_rate ?? 0), 0);

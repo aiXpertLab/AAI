@@ -4,13 +4,13 @@ import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView,
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
 import { useSQLiteContext } from "expo-sqlite";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import { WebView } from "react-native-webview";
 
 import { genHTML } from "@/src/utils/genHTML";
 import { DetailStackPara, InvPaymentDB } from "@/src/types";
 import { s_inv } from "@/src/constants";
-import { useInvoiceCrud } from "@/src/db/useInvoiceCrud";
+import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import {viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { s_global, s_fab, colors } from "@/src/constants";
 
@@ -22,7 +22,7 @@ export const Inv_Pay: React.FC = () => {
     const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
-    const { oInvItemList } = useInvItemListStore();
+    
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);

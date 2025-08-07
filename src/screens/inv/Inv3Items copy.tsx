@@ -3,40 +3,48 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB } from "@/src/types";
-import { useInvStore, } from '@/src/stores/InvStore';
+import { useInvStore, useInvItemListStore } from '@/src/stores/InvStore';
 import { s_inv } from "@/src/constants";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const Inv3Items: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
+    const { oInvItemList, setOInvItemList, removeOInvItemList } = useInvItemListStore();
     const { fetchItems } = useItemCrud()
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<InvItemDB[]>([]);
 
-    const inv_items = oInv?.inv_items || [];
 
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const result = await fetchItems();
+            setItemList(result);
+        };
+
+        fetchData();
+    }, []);
 
     const onSelectItem = (newItem: InvItemDB) => {
-        if (!oInv) return;
 
-        const inv_items = oInv.inv_items || [];
-        const existing = inv_items.find(item => item.item_id === newItem.id);
+        const existing = oInvItemList.find(item => item.item_id === newItem.id);
         setIsDirty(true);
 
-        let updatedItems;
-
         if (existing) {
-            updatedItems = inv_items.map(item =>
+
+            const updatedList = oInvItemList.map(item =>
                 item.item_id === newItem.id
                     ? {
                         ...item,
                         item_quantity: (item.item_quantity ?? 1) + (newItem.item_quantity ?? 1),
-                        item_amount: ((item.item_quantity ?? 1) + (newItem.item_quantity ?? 1)) * (item.item_rate ?? 0),
                     }
                     : item
             );
+
+            setOInvItemList(updatedList);
         } else {
+            // console.log("[onSelectItem] No match found — adding new item:", newItem);
+
             const newLine: Partial<InvItemDB> = {
                 item_id: newItem.id,
                 item_number: newItem.item_number,
@@ -44,20 +52,19 @@ export const Inv3Items: React.FC = () => {
                 item_description: newItem.item_description,
                 item_quantity: 1,
                 item_rate: newItem.item_rate,
-                item_amount: newItem.item_rate,
+                item_amount: newItem.item_rate * 1,
                 item_status: newItem.item_status,
             };
-            updatedItems = [...inv_items, newLine];
+            setOInvItemList([...oInvItemList, newLine]);
         }
 
-        updateOInv({ inv_items: updatedItems });
         setModalVisible(false);
     };
 
     return (
         <View style={[s_inv.ItemBox, { alignItems: "flex-start" }]}>
-            {inv_items.length > 0 ? (
-                inv_items.map((item, index) => (
+            {oInvItemList.length > 0 ? (
+                oInvItemList.map((item, index) => (
                     <View key={index} style={{ marginBottom: 12, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
                         {/* Left Column: Item Info */}
                         <View style={{ flex: 1 }}>
@@ -77,13 +84,7 @@ export const Inv3Items: React.FC = () => {
 
                         {/* Right Column: Trash Icon vertically centered */}
                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                            <TouchableOpacity onPress={() => {
-                                if (!oInv?.inv_items) return;
-                                const updatedItems = oInv.inv_items.filter(i => i.item_id !== item.item_id);
-                                updateOInv({ inv_items: updatedItems });
-                                setIsDirty(true);
-                            }}>
-
+                            <TouchableOpacity onPress={() => removeOInvItemList(item!.id!)}>
                                 <Ionicons name="trash-outline" size={14} color="#e74c3c" />
                             </TouchableOpacity>
                         </View>
@@ -112,6 +113,6 @@ export const Inv3Items: React.FC = () => {
                 onClose={() => setModalVisible(false)}
                 onSelectItem={onSelectItem}
             />
-        </View >
+        </View>
     );
 };

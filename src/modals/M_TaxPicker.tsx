@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { modalStyles } from '@/src/constants/styles';
 import { TaxDB, TaxPickerModalProps } from '@/src/types';
-import { updateTaxStatus } from "@/src/db/crud_me";
+import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 
 const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose, onSelectTax, }) => {

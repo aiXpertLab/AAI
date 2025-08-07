@@ -11,7 +11,7 @@ import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, InvDB } from "@/src/types";
-import { useInvStore, useInvItemListStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 
@@ -30,7 +30,7 @@ export const Inv_New: React.FC = () => {
     const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
-    const { oInvItemList } = useInvItemListStore();
+    
     const { insertInv, updateInv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 

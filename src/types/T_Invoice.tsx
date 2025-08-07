@@ -64,35 +64,28 @@ export interface InvDB {
     created_at: any; // serverTimestamp()
     updated_at: any; // serverTimestamp()
 
+    inv_items: Partial<InvItemDB>[] | null;
+    inv_payments: Partial<InvPaymentDB>[] | null;
 }
 
 
 export interface InvItemDB {
-    id: number;         // Auto ID
-    inv_id: number;     // Link to invoice
-    item_id: number;   //  item id
-    item_number: string; // Item number (SKU) useless
+    item_id: string;   
+    item_number: string; 
     item_name: string;
     item_description: string;
-    item_sku: string;   // Unit of measurement (e.g., hour, piece)
+    item_sku: string;   
     item_quantity: number;
     item_rate: number;
     item_amount: number;
-    item_status: 'active' | 'cancelled';
-    created_at: string;
-    updated_at: string;
+    item_status: string;
 }
 
 export interface InvPaymentDB {
-    id: number;
-    inv_id: number;
+    pay_id: string;
     pay_date: string; // ISO timestamp text
     pay_amount: number;
     pay_method: string;
     pay_reference: string;
     pay_note: string;
-
-    created_at: any; // serverTimestamp()
-    updated_at: any; // serverTimestamp()
-
 }

@@ -3,14 +3,12 @@ import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { InvItemDB, ItemDB } from "@/src/types";
 import { useSQLiteContext } from "expo-sqlite";
-import { useInvItemListStore } from '@/src/stores/InvStore';
 import { invoiceStyles } from "@/src/constants/styles";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 import { useNavigation, } from "@react-navigation/native";
 
 const LineItemsList: React.FC = () => {
     const db = useSQLiteContext();
-    const { oInvItemList, setOInvItemList, addOInvItemList, removeOInvItemList } = useInvItemListStore();
     const [modalVisible, setModalVisible] = React.useState(false);
     const [itemList, setItemList] = React.useState<ItemDB[]>([]);
     const navigation = useNavigation();
