@@ -97,7 +97,7 @@ export const useInvCrud = () => {
     };
 
 
-    const initInv = async (invNumber: string) => {
+    const fetchEmptyInv = async (invNumber: string) => {
         try {
             const invDocRef = doc(db, "aai", `be_${uid}`, "inv_empty", "inv_empty");
             const invDocSnap = await getDoc(invDocRef);
@@ -105,15 +105,17 @@ export const useInvCrud = () => {
             if (invDocSnap.exists()) {
                 const data = invDocSnap.data() as InvDB; // optional type cast
                 const updatedData = { ...data, inv_number: invNumber };
-                console.log("Fetched inv_empty:", data);
-                useInvStore.getState().setOInv(data);
+                
+                return updatedData                
             } else {
                 console.warn("No inv_empty doc found in Firestore.");
+                return null
             }
         } catch (err) {
             console.error("Error initializing invoice:", err);
+            return null
         }
     };
 
-    return { insertInv, updateInv, fetchInvs, initInv };
+    return { insertInv, updateInv, fetchInvs, fetchEmptyInv };
 };

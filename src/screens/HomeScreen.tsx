@@ -26,7 +26,7 @@ const HomeScreen: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
-    const { fetchInvs, initInv } = useInvCrud();
+    const { fetchInvs, fetchEmptyInv } = useInvCrud();
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
@@ -47,14 +47,13 @@ const HomeScreen: React.FC = () => {
             setOBiz(data || null);
             console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
         }
-
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
     };
 
     const fetchInvoicesFromModule = async () => {
         try {
             const result = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
-            
+
             const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);
 
@@ -86,12 +85,6 @@ const HomeScreen: React.FC = () => {
 
     const handleDelete = async (itemId: string) => {
         console.log("Deleting invoice with ID:", itemId);
-        // try {
-        //     await db.runAsync("UPDATE invoices SET is_deleted = 1 WHERE id = ?", [itemId]);
-        //     fetchInvoices(); // Refresh the list
-        // } catch (err) {
-        //     console.error("Failed to delete client:", err);
-        // }
     };
 
     const renderItem = ({ item: invoice }: { item: InvDB }) => (
@@ -128,20 +121,10 @@ const HomeScreen: React.FC = () => {
         }, [])
     );
 
-    // React.useEffect(() => {
-    //     const unsubscribe = navigation.addListener("focus", () => {
-    //         fetchInvoicesFromModule();
-    //     });
-    //     return unsubscribe;
-    // }, []);
-
     return (
-
-        <View style={s_global.Container}>            
+        <View style={s_global.Container}>
             <View>
-
                 <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
-
 
                 {/* filter tabs */}
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
@@ -171,12 +154,16 @@ const HomeScreen: React.FC = () => {
                 onPress={async () => {
                     if (!oBiz) {
                         const data = await fetchBiz();
-                        console.log('Fetched bizData:', data?.be_address);
                         setOBiz(data || null);
-                        console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
                     }
                     const newNumber = await getInvoiceNumber();
-                    const newInvoice = await initInv(newNumber); // wait for invoice
+                    const emptyInvoice = await fetchEmptyInv(newNumber); // wait for invoice
+                    console.log('*---', emptyInvoice)
+
+                    if (emptyInvoice) {
+                        console.log('99999999999')
+                        useInvStore.getState().setOInv(emptyInvoice);
+                    }
 
                     navigation.navigate('DetailStack', {
                         screen: 'Inv_New',

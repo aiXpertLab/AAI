@@ -42,7 +42,6 @@ export const Inv_New: React.FC = () => {
     const [pendingAction, setPendingAction] = React.useState<any>(null);
 
     const [initItem, setInitItem] = React.useState<InvDB | null>(null);
-    const resetToInitialState = () => { if (initItem) { setOInv(initItem); } };
 
     const tip1 = useTipVisibility('tip1_count', true, 800);
     const [tip2Trigger, setTip2Trigger] = React.useState(false);
@@ -76,7 +75,6 @@ export const Inv_New: React.FC = () => {
 
 
     React.useEffect(() => { setIsDirty(false); }, []);
-    console.log("Invoice Form ----  ", isDirty);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

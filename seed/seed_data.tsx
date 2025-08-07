@@ -650,7 +650,7 @@ export const seed_data = {
             inv_due_date: serverTimestamp(),
             inv_payment_requirement: "",
             inv_payment_term: 7,
-            inv_reference: "",
+            inv_reference: "po#",
             inv_currency: "",
 
             inv_subtotal: 0.00,

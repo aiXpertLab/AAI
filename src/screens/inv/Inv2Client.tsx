@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from "@expo/vector-icons";
-import { formatDateForUI, addDateDays } from "@/src/utils/dateUtils";
+import { timestamp2us } from "@/src/utils/dateUtils";
 
 import { ClientDB, InvDB } from "@/src/types";
 import { invoiceStyles } from "@/src/constants/styles";
@@ -54,10 +54,10 @@ export const Inv2Client: React.FC = () => {
             const term = parseInt(text);
             if (!isNaN(term)) {  // This will now properly accept 0
                 const issueDate = oInv.inv_date ? new Date(oInv.inv_date) : new Date();
-                const newDueDate = addDateDays(issueDate, term);
+                // const newDueDate = addDateDays(issueDate, term);
                 updateOInv({
                     inv_payment_term: term,
-                    inv_due_date: newDueDate.toISOString(),
+                    // inv_due_date: newDueDate.toISOString(),
                 });
             }
         }
@@ -122,7 +122,7 @@ export const Inv2Client: React.FC = () => {
                         <TouchableOpacity
                             onPress={() => setShowIssueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                            <Text style={s_global.InputRightAAA}>{formatDateForUI(oInv.inv_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>
@@ -133,7 +133,7 @@ export const Inv2Client: React.FC = () => {
                             onPress={() => setShowDueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}
                         >
-                            <Text style={s_global.InputRightAAA}>{formatDateForUI(oInv.inv_due_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_due_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>
@@ -186,10 +186,10 @@ export const Inv2Client: React.FC = () => {
                         if (selectedDate) {
                             setIsDirty(true);
                             const term = oInv.inv_payment_term ?? 7;
-                            const newDueDate = addDateDays(selectedDate, term);
+                            // const newDueDate = addDateDays(selectedDate, term);
                             updateOInv({
                                 inv_date: selectedDate.toISOString(),
-                                inv_due_date: newDueDate.toISOString(),
+                                // inv_due_date: newDueDate.toISOString(),
                             });
                         }
                     }}
