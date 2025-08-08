@@ -1,13 +1,15 @@
-import { getFirestore, setDoc, updateDoc, doc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, query, collection, where, getDocs } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
 import * as Crypto from 'expo-crypto';
 
-import { getUserUid } from "@/src/utils/getFirebaseUid";
-const db = getFirestore(app);
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { TaxDB } from '@/src/types';
 
-
 export const useTaxCrud = () => {
+    const db = getFirestore(app);
+    const firebaseUser = useFirebaseUserStore((state) => state.FirebaseUser);
+    const uid = firebaseUser?.uid;
+    if (!uid) throw new Error("Missing UID");
 
     const updateTax = async (
         tax: Partial<TaxDB>,
@@ -15,7 +17,6 @@ export const useTaxCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
             if (!uid || !tax.tax_id) throw new Error("Missing UID or Tax ID");
 
             const docRef = doc(db, `aai/be_${uid}/tax_list`, tax.tax_id);
@@ -41,7 +42,6 @@ export const useTaxCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
             if (!uid) throw new Error('Missing UID');
             const tax_id = 't_' + Crypto.randomUUID().replace(/-/g, '');
 
@@ -67,5 +67,20 @@ export const useTaxCrud = () => {
         }
     };
 
-    return { insertTax, updateTax };
+
+    const fetchTaxList = async (): Promise<TaxDB[]> => {
+        try {
+            const itemsRef = collection(db, `aai/be_${uid}/tax_list`);
+            const q = query(itemsRef, where("is_deleted", "==", 0),);
+            const querySnap = await getDocs(q);
+
+            const tax_list: TaxDB[] = querySnap.docs.map(doc => doc.data() as TaxDB);
+            return tax_list;
+        } catch (err) {
+            console.error("❌ fetchItems error:", err);
+            throw err;
+        }
+    };
+
+    return { insertTax, updateTax, fetchTaxList };
 };

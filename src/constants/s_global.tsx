@@ -139,6 +139,11 @@ export const s_global = StyleSheet.create({
         color: "#333",
         marginBottom: 3,
     },
+    slimInputRight: {
+        textAlign: "right",
+        color: "#aaa",
+        paddingVertical: 2, // same vertical space as date text
+    },
     Label_BoldLeft_RegularRight: {
         flex: 1,
         fontSize: 16,

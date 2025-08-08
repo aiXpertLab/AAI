@@ -42,7 +42,7 @@ export const Tax_Form: React.FC = () => {
         updateOTax({ [field]: value });
     };
 
-    
+
     const handleSave = async () => {
         if (!oTax) return;
 
@@ -87,14 +87,22 @@ export const Tax_Form: React.FC = () => {
                         {/* Card 1: Basic Info: tax_name,  */}
                         <View style={s_global.Card} >
                             <Text style={s_global.Label}>Tax Name <Text style={{ color: "red" }}>*</Text></Text>
-                            <TextInput style={s_global.InputGreyBackground} placeholder="e.g. HST" placeholderTextColor="#999" multiline
+                            <TextInput style={s_global.InputGreyBackground} placeholder="e.g. HST" placeholderTextColor="#999"
                                 value={oTax?.tax_name} onChangeText={(text) => handleChange("tax_name", text)} />
 
                             <View style={{ marginTop: 12 }}>
-                                <Text style={s_global.Label}>Tax Rate</Text>
+                                <Text style={s_global.Label}>Tax Rate <Text style={{ color: "red" }}>*</Text></Text>
                                 <View style={[s_global.InputGreyBackground, { flexDirection: 'row', alignItems: 'center', paddingRight: 10 }]}>
                                     <TextInput
-                                        style={{ flex: 1, color: "#333", fontSize: 16 }}
+                                        style={{
+                                            flex: 1,
+                                            height: 24,               // <- pick a value that matches your InputGreyBackground
+                                            fontSize: 16,
+                                            color: "#999",
+                                            paddingVertical: 0,       // remove extra vertical padding
+                                            textAlignVertical: "center", // center text on Android
+                                            includeFontPadding: false    // Android: removes extra font padding
+                                        }}
                                         placeholder="e.g. 13"
                                         placeholderTextColor="#999"
                                         keyboardType="numeric"
@@ -111,9 +119,9 @@ export const Tax_Form: React.FC = () => {
                             </View>
 
                             <View style={{ height: 12 }} />
-                            <Text style={s_global.Label}>Tax number (optional) </Text>
-                            <TextInput style={[s_global.InputGreyBackground]} placeholder="e.g. 1234567RT001" placeholderTextColor="#999"
-                                value={oTax?.tax_number} onChangeText={(text) => handleChange("tax_number", text)} />
+                            <Text style={s_global.Label}>Tax type (optional) </Text>
+                            <TextInput style={[s_global.InputGreyBackground]} placeholder="e.g. Federal" placeholderTextColor="#999"
+                                value={oTax?.tax_type} onChangeText={(text) => handleChange("tax_type", text)} />
 
                         </View>
 
@@ -141,8 +149,6 @@ export const Tax_Form: React.FC = () => {
                             </View>
                         </View>
                         }
-
-
                     </ScrollView>
                 </View>
             </TouchableWithoutFeedback>

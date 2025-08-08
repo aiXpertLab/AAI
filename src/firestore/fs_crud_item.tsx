@@ -2,7 +2,6 @@ import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, quer
 import { app } from "@/src/config/firebaseConfig";
 
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-const db = getFirestore(app);
 import { ItemDB } from '@/src/types';
 
 

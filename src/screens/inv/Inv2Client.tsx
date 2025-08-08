@@ -103,11 +103,11 @@ export const Inv2Client: React.FC = () => {
                 {/* Invoice Metadata */}
                 <View style={{ flex: 1, alignItems: "flex-end" }}>
 
-
                     {/* Invoice No. & Dates */}
-                    <View style={{ marginBottom: 6, width: "100%" }}>
+                    <View style={{ marginBottom: 4, width: "100%" }}>
                         <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Invoice No.</Text>
-                        <TextInput style={s_global.InputRightAAA}
+                        <TextInput
+                            style={s_global.slimInputRight}
                             value={oInv.inv_number ?? ""}
                             onChangeText={(text) => {
                                 setIsDirty(true);
@@ -117,7 +117,7 @@ export const Inv2Client: React.FC = () => {
                     </View>
 
                     {/* Invoice Date & Due Date */}
-                    <View style={{ marginBottom: 6, width: "100%" }}> 
+                    <View style={{ marginBottom: 6, width: "100%" }}>
                         <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Date of Issue</Text>
                         <TouchableOpacity
                             onPress={() => setShowIssueDatePicker(true)}
@@ -127,7 +127,7 @@ export const Inv2Client: React.FC = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ marginBottom: 6, width: "100%" }}> 
+                    <View style={{ marginBottom: 6, width: "100%" }}>
                         <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Due Date</Text>
                         <TouchableOpacity
                             onPress={() => setShowDueDatePicker(true)}
@@ -149,7 +149,7 @@ export const Inv2Client: React.FC = () => {
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Text style={[s_global.Label, { textAlign: "left", marginBottom: 0, fontSize: 14 }]}>Payment Term:</Text>
                             <Text style={{ color: "#222", marginLeft: 4 }}>Net</Text>
-                            
+
                             <TextInput
                                 style={{ color: "#aaa", textAlign: "left", width: 60, paddingVertical: 4, paddingHorizontal: 8 }}
                                 value={oInv.inv_payment_term !== undefined ? `${oInv.inv_payment_term}` : ""}
@@ -163,7 +163,7 @@ export const Inv2Client: React.FC = () => {
                 {/* Reference */}
                 <View style={{ flex: 1 }}>
                     <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Reference</Text>
-                    <TextInput style={s_global.InputRightAAA}
+                    <TextInput style={s_global.slimInputRight}
                         value={oInv.inv_reference ?? ""}
                         onChangeText={(text) => {
                             updateOInv({ inv_reference: text });

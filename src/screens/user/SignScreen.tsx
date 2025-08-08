@@ -7,7 +7,7 @@ import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
-import { getBizCrud } from '@/src/firestore/fs_crud_biz';
+import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { useBizStore } from '@/src/stores/InvStore';
 import { M_Spinning } from '@/src/modals/M_Spinning';
 

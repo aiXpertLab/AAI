@@ -18,20 +18,12 @@ export interface BE_DB {
 
 export interface TaxDB {
     tax_id: string;
-    user_id: string;
-    biz_id: string;
-
     tax_name: string;
     tax_rate: number;
-    tax_number: string;
-    tax_type: string;
-    tax_note: string;
-    tax_status: string;
-    is_deleted: number;
-    is_locked: number;
-
-    created_at: any; // serverTimestamp()
-    updated_at: any; // serverTimestamp()
+    tax_type?: string;
+    tax_note?: string;
+    
+    is_deleted?: number;
 }
 
 export interface BizWithTaxes extends BE_DB {

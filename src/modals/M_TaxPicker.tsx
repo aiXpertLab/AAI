@@ -2,7 +2,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Alert, Modal, View, Text, TouchableOpacity, FlatList, } from 'react-native';
-// import { useSQLiteContext } from "expo-sqlite";
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,10 +12,10 @@ import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose, onSelectTax, }) => {
     const navigation = useNavigation();
-    // const db = useSQLiteContext();
+    const {updateTax} = useTaxCrud()
     const [selectedTaxes, setSelectedTaxes] = React.useState<TaxDB[]>([]);
 
-    const handleDeleteTax = async (id: number) => {
+    const handleDeleteTax = async (id: string) => {
         const confirmed = await new Promise<boolean>((resolve) => {
             Alert.alert(
                 "Delete Tax?",
@@ -30,7 +29,7 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
 
         if (!confirmed) return;
 
-        const success = await updateTaxStatus(db, id, 1, 'deleted');
+        const success = await updateTax(tax_id, 1, 'deleted');
         onClose();
     };
 
@@ -46,7 +45,7 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
                     <Text style={modalStyles.modalTitle}>Select Tax Rate</Text>
                     <FlatList
                         data={taxRows}
-                        keyExtractor={(t) => t.id!.toString()}
+                        keyExtractor={(t) => t.tax_id}
                         renderItem={({ item }) => (
                             <View
                                 style={{
@@ -59,9 +58,9 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
                                 {/* Selection area */}
                                 <TouchableOpacity
                                     onPress={() => {
-                                        const alreadySelected = selectedTaxes.find(t => t.id === item.id);
+                                        const alreadySelected = selectedTaxes.find(t => t.tax_id === item.tax_id);
                                         if (alreadySelected) {
-                                            setSelectedTaxes(prev => prev.filter(t => t.id !== item.id));
+                                            setSelectedTaxes(prev => prev.filter(t => t.tax_id !== item.tax_id));
                                         } else {
                                             setSelectedTaxes(prev => [...prev, item]);
                                         }
@@ -69,7 +68,7 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
                                     style={[
                                         modalStyles.itemRow,
                                         { flex: 1 },
-                                        selectedTaxes.some(t => t.id === item.id) && { backgroundColor: '#e6f7ff' },
+                                        selectedTaxes.some(t => t.tax_id === item.tax_id) && { backgroundColor: '#e6f7ff' },
                                     ]}
                                 >
                                     <View
@@ -88,7 +87,7 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
 
                                 {/* Trash icon on the right */}
                                 <TouchableOpacity
-                                    onPress={() => handleDeleteTax(item.id!)}
+                                    onPress={() => handleDeleteTax(item.tax_id!)}
                                     style={{ paddingLeft: 12, paddingVertical: 6 }}
                                 >
                                     <Ionicons name="trash-outline" size={18} color="red" />

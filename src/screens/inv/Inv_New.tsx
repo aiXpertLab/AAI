@@ -16,7 +16,7 @@ import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 
 import { s_global, s_fab, } from "@/src/constants";
-import { M_TemplatePicker, M_Confirmation } from "@/src/modals";
+import { M_Spinning, M_TemplatePicker, M_Confirmation } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
@@ -30,7 +30,7 @@ export const Inv_New: React.FC = () => {
     const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
-    
+
     const { insertInv, updateInv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
@@ -211,31 +211,7 @@ export const Inv_New: React.FC = () => {
                         visible={showTemplateModal}
                         onClose={() => setShowTemplateModal(false)}
                     />
-                    {isProcessing && (
-                        <Modal
-                            transparent={true}
-                            animationType="fade"
-                            visible={isProcessing}
-                            onRequestClose={() => { }}
-                        >
-                            <View style={{
-                                flex: 1,
-                                backgroundColor: 'rgba(0,0,0,0.5)',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <View style={{
-                                    backgroundColor: '#fff',
-                                    padding: 20,
-                                    borderRadius: 10,
-                                    alignItems: 'center',
-                                }}>
-                                    <ActivityIndicator size="large" color="#0000ff" />
-                                    <Text style={{ marginTop: 10 }}>Processing...</Text>
-                                </View>
-                            </View>
-                        </Modal>
-                    )}
+                    <M_Spinning visible={isProcessing} />
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

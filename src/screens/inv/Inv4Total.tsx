@@ -3,9 +3,10 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { modalStyles, invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global";
 import { TaxDB } from "@/src/types";
-import {  useInvStore } from '@/src/stores/InvStore';
+import { useInvStore } from '@/src/stores/InvStore';
 import DiscountModal from "@/src/modals/DiscountModal";
 import M_TaxPicker from "@/src/modals/M_TaxPicker";
+import { useTaxCrud } from "@/src/firestore/fs_crud_tax"
 
 export const Inv4Total: React.FC = () => {
     const { oInv, isDirty, setIsDirty, updateOInv } = useInvStore();  // 🧠 Zustand action
@@ -13,6 +14,7 @@ export const Inv4Total: React.FC = () => {
     const [oTax, setOTax] = React.useState<TaxDB | null>(null);
     const [discountModalVisible, setDiscountModalVisible] = React.useState(false);
     const [showTaxModal, setShowTaxModal] = React.useState(false);
+    const { fetchTaxList } = useTaxCrud()
 
     const [taxRows, setTaxRows] = React.useState<TaxDB[]>([]);
 
@@ -20,7 +22,7 @@ export const Inv4Total: React.FC = () => {
 
     const subtotal = React.useMemo(() => {
         // return oInvItems.reduce((sum, item) => sum + (item.item_quantity ?? 1) * (item.item_rate ?? 0), 0);
-        const raw = oInv!.inv_items.reduce((sum, item) =>
+        const raw = oInv!.inv_items!.reduce((sum, item) =>
             sum + (item.item_quantity ?? 1) * (item.item_rate ?? 0), 0);
         return Math.round(raw * 100) / 100;
     }, [oInv!.inv_items]);
@@ -38,21 +40,6 @@ export const Inv4Total: React.FC = () => {
 
         return oInv?.inv_discount ?? 0;
     }, [discount, subtotal, oInv?.inv_discount]);
-
-    const fetchTaxes = async () => {
-        try {
-            const resultTax = await db.getAllAsync<TaxDB>("SELECT * FROM Tax where is_deleted=0 ");
-            console.log(JSON.stringify(resultTax, null, 4));
-            setTaxRows(resultTax);
-        } catch (err) {
-            console.error("Failed to load Taxes:", err);
-        }
-    };
-
-    const onPressTax = () => {
-        fetchTaxes(); // Fetch taxes from the database
-        setShowTaxModal(true);
-    }
 
     const onSelectTax = (tax: TaxDB) => {
         setOTax(tax); // tax_rate is already SUM of selected ones
@@ -113,7 +100,13 @@ export const Inv4Total: React.FC = () => {
             </TouchableOpacity>
 
             {/* Tax */}
-            <TouchableOpacity onPress={onPressTax}>
+            <TouchableOpacity
+                onPress={async () => {
+                    const fetchedTaxList = await fetchTaxList();
+                    setTaxRows(fetchedTaxList);
+                    setShowTaxModal(true);
+                }}
+            >
                 <View style={invoiceStyles.totalRow}>
                     <Text
                         style={[s_global.Label, { color: "#007AFF", flexWrap: "wrap", maxWidth: 150, }]}
