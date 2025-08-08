@@ -603,3 +603,110 @@ export const s_global = StyleSheet.create({
 });
 
 
+export const modalStyles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        justifyContent: 'flex-end',
+        padding: 20,
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: 16,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        maxHeight: '70%',
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 12,
+    },
+    itemRow: {
+        paddingVertical: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+    },
+    addNewButton: {
+        marginTop: 16,
+        flexDirection: 'row',
+        backgroundColor: '#4CAF50',
+        padding: 10,
+        borderRadius: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    addNewText: {
+        color: '#fff',
+        marginLeft: 6,
+        fontWeight: 'bold',
+    },
+    closeButton: {
+        marginTop: 12,
+        alignItems: 'center',
+    },
+    confirmButton: {
+        backgroundColor: '#007aff',
+        padding: 10,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    confirmButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    },
+});
+
+
+
+
+export const s_global_template = StyleSheet.create({
+        title: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 18,
+        marginTop: 8,
+    },
+    grid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+
+    templateLabel: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    closeBtn: {
+        marginTop: 16,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: '#eee',
+        borderRadius: 10,
+    },
+    closeText: {
+        fontSize: 16,
+    },
+    templateBox: {
+        width: '47%',
+        aspectRatio: 1 / 1.414,
+        // height: 180,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        overflow: 'hidden',
+        backgroundColor: '#f1f1f1',
+        marginHorizontal: '1%',
+        justifyContent: 'center',
+        // alignItems: 'center',        this is the key issue
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 2,
+        position: 'relative',
+    },
+
+});
