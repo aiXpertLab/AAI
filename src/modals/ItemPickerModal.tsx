@@ -16,7 +16,6 @@ interface ItemPickerModalProps {
 
 const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClose, onSelectItem, }) => {
     const navigation = useNavigation();
-    const { showDrawerHeader, setShowDrawerHeader } = useDrawerHeaderStore(); // 🧠 Zustand action
     const { createEmptyItem4New } = useItemStore(); // 🧠 Zustand action
 
     return (
@@ -51,9 +50,8 @@ const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClo
                         style={modalStyles.addNewButton}
                         onPress={() => {
                             onClose();
-                            // setShowDrawerHeader('fromInv');
                             createEmptyItem4New();
-                            navigation.navigate("Tab3_Item_Form" as never);
+                            navigation.navigate("Item_Form" as never);
                         }}
                     >
                         <Ionicons name="add" size={16} color="#fff" />

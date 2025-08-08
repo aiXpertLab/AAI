@@ -44,8 +44,8 @@ const ItemsScreen: React.FC = () => {
     useEffect(() => {
         const unsubscribeFocus = navigation.addListener("focus", async () => {
             try {
-                const fetchedClients = await fetchItems();
-                setItems(fetchedClients);
+                const fetchedItems = await fetchItems();
+                setItems(fetchedItems);
             } catch (err) {
                 console.error("❌ fetchClients error:", err);
             }

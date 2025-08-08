@@ -94,7 +94,8 @@ export const Inv3Items: React.FC = () => {
             {/* Add Item Button */}
             <TouchableOpacity
                 onPress={async () => {
-                    await fetchItems();            // 🔄 Fetch first
+                    const fetchedItems = await fetchItems();
+                    setItemList(fetchedItems);
                     setModalVisible(true);         // ✅ Then show modal
                 }}
                 style={{ flexDirection: "row", alignItems: "center", paddingTop: 8 }}
