@@ -12,7 +12,7 @@ import { useTaxCrud } from "@/src/firestore/fs_crud_tax";
 
 const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose, onSelectTax, }) => {
     const navigation = useNavigation();
-    const { updateTax } = useTaxCrud()
+    const {updateTax} = useTaxCrud()
     const [selectedTaxes, setSelectedTaxes] = React.useState<TaxDB[]>([]);
 
     const handleDeleteTax = async (id: string) => {
@@ -29,11 +29,7 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
 
         if (!confirmed) return;
 
-        await updateTax(
-            { tax_id: id, is_deleted: 1 },
-            () => { /* success callback if needed */ },
-            (err) => { /* error callback if needed */ }
-        );
+        const success = await updateTax(tax_id, 1, 'deleted');
         onClose();
     };
 
@@ -103,7 +99,14 @@ const M_TaxPicker: React.FC<TaxPickerModalProps> = ({ visible, taxRows, onClose,
                     <TouchableOpacity
                         style={modalStyles.confirmButton}
                         onPress={() => {
-                            onSelectTax(selectedTaxes);
+                            const combinedRate = selectedTaxes.reduce((sum, tax) => sum + tax.tax_rate, 0);
+                            // const combinedName = selectedTaxes.map(t => t.tax_name).join(" + ");
+                            const combinedName = `${selectedTaxes.map(t => t.tax_name).join(" + ")} (${(combinedRate*100).toFixed(3)}%)`;
+                            onSelectTax({
+                                id: 0,
+                                tax_name: combinedName,
+                                tax_rate: combinedRate,
+                            } as TaxDB);
                             setSelectedTaxes([]);
                             onClose();
                         }}

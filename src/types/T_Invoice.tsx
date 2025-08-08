@@ -3,7 +3,7 @@ export interface InvDB {
     user_id: string | null;
     be_id: string | null; // Link to biz table
     client_id: string | null;
-    inv_pdf_template: string| null;
+    inv_pdf_template: string | null;
 
     client_number: string;
     client_company_name: string;
@@ -85,6 +85,11 @@ export interface ItemDB {
     created_at?: any; // serverTimestamp()
     updated_at?: any; // serverTimestamp()
 }
+
+export type ItemDB_ExcludeID = Omit<ItemDB, 'item_id'> & {
+    item_id?: string;  // optional for insert, required later
+};
+
 
 export interface InvPaymentDB {
     pay_id: string;

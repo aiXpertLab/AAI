@@ -2,13 +2,12 @@ import React from "react";
 import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, ActivityIndicator, } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import * as Crypto from 'expo-crypto';
 
 import { useItemStore } from '@/src/stores/ItemStore';
 import { useItemCrud } from '@/src/firestore/fs_crud_item';
 
 import { s_global, } from "@/src/constants";
-import { ItemDB, DetailStackPara, RouteType } from "@/src/types";
+import { ItemDB_ExcludeID, ItemDB, DetailStackPara, RouteType } from "@/src/types";
 import { Ionicons } from '@expo/vector-icons';
 
 import { cameraB64, processB64Item } from "@/src/utils/u_img64";
@@ -22,16 +21,11 @@ const ItemForm: React.FC = () => {
     const isSavingRef = React.useRef(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
     const [pendingAction, setPendingAction] = React.useState<any>(null);
-    const [isProcessing, setIsProcessing] = React.useState(false);
     const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
 
     const { insertItem, updateItem } = useItemCrud();
 
     const { oItem, setOItem, updateOItem } = useItemStore();  // 🧠 Zustand action
-
-    const [rateText, setRateText] = React.useState(
-        oItem?.item_rate !== undefined ? String(oItem.item_rate) : ''
-    );
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -64,9 +58,9 @@ const ItemForm: React.FC = () => {
 
         isSavingRef.current = true;
 
-        const preparedItem: ItemDB = {
+        const preparedItem: ItemDB_ExcludeID = {
             ...oItem,
-            item_id: 'i_' + Crypto.randomUUID().replace(/-/g, ''),
+            
             item_rate: oItem.item_rate ? Number(oItem.item_rate) : 1, // convert here
             item_name: oItem.item_name ?? "",
         };

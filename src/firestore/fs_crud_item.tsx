@@ -1,5 +1,6 @@
 import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
+import * as Crypto from 'expo-crypto';
 
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { ItemDB } from '@/src/types';
@@ -40,11 +41,12 @@ export const useItemCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            if (!Item.item_id) { throw new Error("item_id is required"); }
-            const docRef = doc(db, `aai/be_${uid}/items`, Item.item_id);
+            const item_id = 'i_' + Crypto.randomUUID().replace(/-/g, '');
+            const docRef = doc(db, `aai/be_${uid}/items`, item_id);
 
             const newItem: Partial<ItemDB> = {
                 ...Item,
+                item_id: item_id,
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp(),
                 is_deleted: 0,

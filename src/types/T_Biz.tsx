@@ -35,7 +35,7 @@ export interface TaxPickerModalProps {
     visible: boolean;
     taxRows: TaxDB[];                       // rows already fetched
     onClose: () => void;
-    onSelectTax: (row: TaxDB) => void;    // returns whole row
+    onSelectTax: (taxes: TaxDB[]) => void;
 }
 
 

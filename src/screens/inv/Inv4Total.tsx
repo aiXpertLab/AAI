@@ -15,6 +15,7 @@ export const Inv4Total: React.FC = () => {
     const [discountModalVisible, setDiscountModalVisible] = React.useState(false);
     const [showTaxModal, setShowTaxModal] = React.useState(false);
     const { fetchTaxList } = useTaxCrud()
+    const [selectedTaxes, setSelectedTaxes] = React.useState<TaxDB[]>([]);
 
     const [taxRows, setTaxRows] = React.useState<TaxDB[]>([]);
 
@@ -41,16 +42,24 @@ export const Inv4Total: React.FC = () => {
         return oInv?.inv_discount ?? 0;
     }, [discount, subtotal, oInv?.inv_discount]);
 
-    const onSelectTax = (tax: TaxDB) => {
-        setOTax(tax); // tax_rate is already SUM of selected ones
+    const onSelectTax = (taxes: TaxDB[]) => {
+        setSelectedTaxes(taxes);
+
+        // Combine selected taxes into one summary object
+        const combinedName = taxes.map(t => t.tax_name).join("+");
+        const combinedRate = taxes.reduce((sum, t) => sum + (t.tax_rate ?? 0), 0);
+
+        const combinedTax: TaxDB = {
+            tax_id: taxes.map(t => t.tax_id).join("_"),
+            tax_name: combinedName,
+            tax_rate: combinedRate,
+        };
+
+        setOTax(combinedTax);
         updateOInv({
-            inv_tax_label: tax.tax_name,
-            inv_tax_rate: tax.tax_rate,
+            inv_tax_label: combinedName,
+            inv_tax_rate: combinedRate,
         });
-
-        // tax_name: combinedName,
-        //     tax_rate: combinedRate,
-
     };
 
     const taxableAmount = subtotal - discountAmount;
@@ -110,9 +119,11 @@ export const Inv4Total: React.FC = () => {
                 <View style={invoiceStyles.totalRow}>
                     <Text
                         style={[s_global.Label, { color: "#007AFF", flexWrap: "wrap", maxWidth: 150, }]}
-                        numberOfLines={2} // or more if needed
+                        numberOfLines={3} // or more if needed
                     >
-                        {oInv?.inv_tax_label ? oInv?.inv_tax_label : "Select Tax"}
+                        {oInv?.inv_tax_label
+                            ? `${oInv.inv_tax_label} (${(oInv.inv_tax_rate! * 100).toFixed(2)}%)`
+                            : "Select Tax"}
                     </Text>
                     <Text style={invoiceStyles.value}>${taxAmount.toFixed(2)}</Text>
                 </View>
