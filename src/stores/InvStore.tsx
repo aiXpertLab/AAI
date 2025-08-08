@@ -55,7 +55,7 @@ type OBizStore = {
 export const useBizStore = create<OBizStore>((set) => ({
     oBiz: null,
     setOBiz: (Biz) => {
-        console.log("setOBiz called with", Biz);
+        console.log("setOBiz called with", Biz?.be_description);
         set({ oBiz: Biz });
     },
     updateOBiz: (Biz) => {

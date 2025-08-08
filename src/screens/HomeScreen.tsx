@@ -158,7 +158,7 @@ const HomeScreen: React.FC = () => {
                     }
                     const newNumber = await getInvoiceNumber();
                     const emptyInvoice = await fetchEmptyInv(newNumber); // wait for invoice
-                    console.log('*---', emptyInvoice)
+                    // console.log('*---', emptyInvoice)
 
                     if (emptyInvoice) {
                         console.log('99999999999')

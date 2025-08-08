@@ -2,6 +2,7 @@ import React from "react";
 import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, ActivityIndicator, } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import * as Crypto from 'expo-crypto';
 
 import { useItemStore } from '@/src/stores/ItemStore';
 import { useItemCrud } from '@/src/firestore/fs_crud_item';
@@ -63,14 +64,23 @@ const ItemForm: React.FC = () => {
 
         isSavingRef.current = true;
 
+        const preparedItem: ItemDB = {
+            ...oItem,
+            item_id: 'i_' + Crypto.randomUUID().replace(/-/g, ''),
+            item_rate: oItem.item_rate ? Number(oItem.item_rate) : 1, // convert here
+            item_name: oItem.item_name ?? "",
+        };
+
+
         if (mode === 'create_new') {
-            insertItem(oItem, () => { navigation.goBack(); }, (err) => {
+            console.log('333', oItem)
+            insertItem(preparedItem, () => { navigation.goBack(); }, (err) => {
                 console.error('Insert failed:', err);
                 isSavingRef.current = false; // reset if failed
             }
             );
         } else {
-            updateItem(oItem, () => { navigation.goBack(); }, (err) => {
+            updateItem(preparedItem, () => { navigation.goBack(); }, (err) => {
                 console.error('Insert failed:', err);
                 isSavingRef.current = false; // reset if failed
             }
@@ -117,7 +127,7 @@ const ItemForm: React.FC = () => {
                         {/* Card 1: Basic Info */}
                         <View style={s_global.Card} >
                             <Text style={s_global.Label}>
-                                Item Name <Text style={{ color: "red" }}>*</Text>
+                                Name <Text style={{ color: "red" }}>*</Text>
                             </Text>
                             <TextInput
                                 style={s_global.Input}
@@ -130,27 +140,23 @@ const ItemForm: React.FC = () => {
 
                             {/* Spacer -  Rate.*/}
                             <View style={{ height: 12 }} />
-                            <Text style={s_global.Label}>Rate</Text>
+                            <Text style={s_global.Label}>Rate <Text style={{ color: "red" }}>*</Text>                           </Text>
                             <TextInput
                                 style={s_global.Input}
-                                placeholder={
-                                    typeof oItem?.item_rate === 'number'
-                                        ? "$" + oItem.item_rate.toFixed(2)
-                                        : "$0.00"
-                                }
+                                placeholder="$9.99"
                                 placeholderTextColor="#999"
                                 keyboardType="decimal-pad"
                                 value={
-                                    typeof oItem?.item_rate === 'number'
-                                        ? "$" + oItem.item_rate.toFixed(2)
-                                        : "$" + String(oItem?.item_rate)
+                                    oItem?.item_rate !== undefined
+                                        ? String(oItem.item_rate)
+                                        : ""
                                 }
-                                onChangeText={(text) => {
-                                    handleChange("item_rate", formatDecimalInput(text)); // Format as they type
-                                }}
+                                onFocus={() => handleChange("item_rate", "")} // Clear on focus
+                                onChangeText={(text) => handleChange("item_rate", text)}
                                 onBlur={() => {
-                                    if (oItem && oItem.item_rate !== undefined) {
-                                        handleChange("item_rate", formatDecimalOnBlur(String(oItem.item_rate))); // Round on blur
+                                    const num = parseFloat(String(oItem?.item_rate));
+                                    if (!isNaN(num)) {
+                                        handleChange("item_rate", num.toFixed(2));
                                     }
                                 }}
                             />

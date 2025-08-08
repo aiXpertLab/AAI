@@ -66,7 +66,7 @@ export const Inv3Items: React.FC = () => {
                                 </Text>
                             </View>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <Text style={{ fontSize: 12, color: "#888" }}>{item.item_description ?? ""}</Text>
+                                <Text style={{ fontSize: 12, color: "#888",maxWidth: 260 }}>{item.item_description ?? ""}</Text>
                                 <Text style={{ fontSize: 12, fontWeight: "600" }}>
                                     ${(item!.item_quantity! * (item.item_rate ?? 0)).toFixed(2)}
                                 </Text>
