@@ -1,9 +1,9 @@
-import { InvDB, InvItemDB } from "@/src/types";
+import { BE_DB, InvDB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export function t2(
     oInv: Partial<InvDB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    oBiz: Partial<BE_DB>,
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
     const bodyContent = `
@@ -11,11 +11,11 @@ export function t2(
     <div class="header-bg">
       <div class="invoice-banner">
         <div class="company-info">
-          <p><strong>${oInv.biz_name}</strong><br>
-          ${oInv.biz_address?.replace(/\n/g, "<br>")}<br>
-          ${oInv.biz_phone}<br>
-          ${oInv.biz_email}<br>
-          ${oInv.biz_biz_number}</p>
+          <p><strong>${oBiz.be_name}</strong><br>
+          ${oBiz.be_address?.replace(/\n/g, "<br>")}<br>
+          ${oBiz.be_phone}<br>
+          ${oBiz.be_email}<br>
+          ${oBiz.be_biz_number}</p>
         </div>
         <div class="invoice-label">INVOICE</div>
       </div>
@@ -49,7 +49,7 @@ export function t2(
             <th style="width: 15%; text-align: right;">RATE</th>
             <th style="width: 15%; text-align: right;">AMOUNT</th>
         </tr>
-        ${oInv!.inv_items.map(item => `
+        ${oInv!.inv_items!.map(item => `
             <tr>
                 <td style="word-wrap: break-word;">${item.item_name}</td>
                 <td style="text-align: right;">${item.item_quantity}</td>

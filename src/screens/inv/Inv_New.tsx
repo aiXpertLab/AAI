@@ -175,7 +175,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items!, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />
