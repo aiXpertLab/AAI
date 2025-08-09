@@ -1,21 +1,29 @@
-import React from "react";
-
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ItemDB } from "@/src/types";
-import { useInvStore, } from '@/src/stores/InvStore';
+import { useInvStore } from "@/src/stores/InvStore";
 import { s_inv } from "@/src/constants";
 import ItemPickerModal from "@/src/modals/ItemPickerModal";
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const Inv3Items: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
-    const { fetchItems } = useItemCrud()
-    const [modalVisible, setModalVisible] = React.useState(false);
-    const [itemList, setItemList] = React.useState<ItemDB[]>([]);
+    const { fetchItems } = useItemCrud();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [itemList, setItemList] = useState<ItemDB[]>([]);
+
+    const [editingItemId, setEditingItemId] = useState<string | null>(null);
+    const inputRef = useRef<TextInput>(null);
 
     const inv_items = oInv?.inv_items || [];
 
+    // Focus when entering edit mode
+    useEffect(() => {
+        if (editingItemId && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [editingItemId]);
 
     const onSelectItem = (newItem: ItemDB) => {
         if (!oInv) return;
@@ -52,40 +60,98 @@ export const Inv3Items: React.FC = () => {
         setModalVisible(false);
     };
 
+    const updateQuantity = (itemId: string, qty: number) => {
+        if (!oInv) return;
+        const updatedItems = inv_items.map(item =>
+            item.item_id === itemId
+                ? { ...item, item_quantity: qty, item_amount: qty * (item.item_rate ?? 0) }
+                : item
+        );
+        updateOInv({ inv_items: updatedItems });
+        setIsDirty(true);
+    };
+
     return (
         <View style={[s_inv.ItemBox, { alignItems: "flex-start" }]}>
             {inv_items.length > 0 ? (
                 inv_items.map((item, index) => (
-                    <View key={index} style={{ marginBottom: 12, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
+                    <TouchableOpacity
+                        key={index}
+                        activeOpacity={0.9}
+                        style={{
+                            marginBottom: 12,
+                            width: "100%",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
+                        onPress={() => setEditingItemId(item.item_id!)}
+                    >
                         {/* Left Column: Item Info */}
                         <View style={{ flex: 1 }}>
+                            {/* First Row */}
                             <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                                <Text style={{ fontWeight: "bold", flexShrink: 1 }}>{item.item_name}</Text>
-                                <Text style={{ fontSize: 12, color: "#888", marginLeft: 8 }}>
-                                    {item.item_quantity} x ${(item.item_rate ?? 0).toFixed(2)}
+                                <Text style={{ fontWeight: "bold", flexShrink: 1 }}>
+                                    {item.item_name}
                                 </Text>
+
+                                {editingItemId === item.item_id ? (
+                                    <View style={{ flexDirection: "row", marginLeft: 8 }}>
+                                        <TextInput
+                                            ref={inputRef}
+                                            value={String(item.item_quantity)}
+                                            onChangeText={(text) => {
+                                                const numericValue = text.replace(/[^0-9]/g, "");
+                                                updateQuantity(item.item_id!, Number(numericValue) || 0);
+                                            }}
+                                            keyboardType="numeric"
+                                            style={{
+                                                fontSize: 14,
+                                                color: "#888",
+                                                borderBottomWidth: 1,
+                                                borderBottomColor: "#ccc",
+                                                minWidth: 24,
+                                                textAlign: "center",
+                                                paddingVertical: 0,
+                                            }}
+                                            onBlur={() => setEditingItemId(null)}
+                                        />
+                                        <Text style={{ fontSize: 12, color: "#888" }}>
+                                            {" "}x ${(item.item_rate ?? 0).toFixed(2)}
+                                        </Text>
+                                    </View>
+                                ) : (
+                                    <Text style={{ fontSize: 12, color: "#888", marginLeft: 8 }}>
+                                        {item.item_quantity} x ${(item.item_rate ?? 0).toFixed(2)}
+                                    </Text>
+                                )}
                             </View>
+
+
+                            {/* Second Row */}
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                <Text style={{ fontSize: 12, color: "#888",maxWidth: 260 }}>{item.item_description ?? ""}</Text>
+                                <Text style={{ fontSize: 12, color: "#888", maxWidth: 260 }}>
+                                    {item.item_description ?? ""}
+                                </Text>
                                 <Text style={{ fontSize: 12, fontWeight: "600" }}>
-                                    ${(item!.item_quantity! * (item.item_rate ?? 0)).toFixed(2)}
+                                    ${(item.item_quantity! * (item.item_rate ?? 0)).toFixed(2)}
                                 </Text>
                             </View>
                         </View>
 
-                        {/* Right Column: Trash Icon vertically centered */}
+                        {/* Right Column: Trash Icon */}
                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                            <TouchableOpacity onPress={() => {
-                                if (!oInv?.inv_items) return;
-                                const updatedItems = oInv.inv_items.filter(i => i.item_id !== item.item_id);
-                                updateOInv({ inv_items: updatedItems });
-                                setIsDirty(true);
-                            }}>
-
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (!oInv?.inv_items) return;
+                                    const updatedItems = oInv.inv_items.filter(i => i.item_id !== item.item_id);
+                                    updateOInv({ inv_items: updatedItems });
+                                    setIsDirty(true);
+                                }}
+                            >
                                 <Ionicons name="trash-outline" size={14} color="#e74c3c" />
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 ))
             ) : (
                 <Text style={{ color: "#aaa" }}>No items or services added yet</Text>
@@ -96,7 +162,7 @@ export const Inv3Items: React.FC = () => {
                 onPress={async () => {
                     const fetchedItems = await fetchItems();
                     setItemList(fetchedItems);
-                    setModalVisible(true);         // ✅ Then show modal
+                    setModalVisible(true);
                 }}
                 style={{ flexDirection: "row", alignItems: "center", paddingTop: 8 }}
             >
@@ -111,6 +177,6 @@ export const Inv3Items: React.FC = () => {
                 onClose={() => setModalVisible(false)}
                 onSelectItem={onSelectItem}
             />
-        </View >
+        </View>
     );
 };

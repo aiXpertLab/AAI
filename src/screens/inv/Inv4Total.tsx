@@ -91,7 +91,7 @@ export const Inv4Total: React.FC = () => {
     }, [subtotal, discountAmount, taxAmount, total]);
 
     return (
-        <View style={{ padding: 10, borderTopWidth: 1, borderColor: "#ccc", marginTop: 6 }}>
+        <View style={{ paddingVertical: 10, paddingRight: 10, paddingLeft: 0, borderTopWidth: 1, borderColor: "#ccc", marginTop: 6 }}>
             <View style={invoiceStyles.totalRow}>
                 <Text style={s_global.Label}>Subtotal</Text>
                 <Text style={invoiceStyles.value}>${subtotal.toFixed(2)}</Text>
