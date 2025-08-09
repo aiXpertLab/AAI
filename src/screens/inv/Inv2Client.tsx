@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Timestamp } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
-import { timestamp2us } from "@/src/utils/dateUtils";
+import { addDateDays, timestamp2us } from "@/src/utils/dateUtils";
 
 import { ClientDB, InvDB } from "@/src/types";
 import { invoiceStyles } from "@/src/constants/styles";
@@ -56,10 +56,10 @@ export const Inv2Client: React.FC = () => {
             const term = parseInt(text);
             if (!isNaN(term)) {  // This will now properly accept 0
                 const issueDate = oInv.inv_date ? oInv.inv_date.toDate() : new Date();
-                // const newDueDate = addDateDays(issueDate, term);
+                const newDueDate = addDateDays(issueDate, term);
                 updateOInv({
                     inv_payment_term: term,
-                    // inv_due_date: newDueDate.toISOString(),
+                    inv_due_date: Timestamp.fromDate(newDueDate),
                 });
             }
         }
