@@ -1,21 +1,21 @@
-import { InvDB, InvItemDB } from "@/src/types";
+import { BE_DB, InvDB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t3 = (
     oInv: Partial<InvDB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    oBiz: Partial<BE_DB>,
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
   <div class="invoice-wrapper">
     <header class="invoice-header">
       <div class="header-left">
-        <h1>${oInv.biz_name}</h1>
+        <h1>${oBiz.be_name}</h1>
         <p>
-          ${oInv.biz_address}<br />
-          ${oInv.biz_phone}<br />
-          ${oInv.biz_email}<br />
-          ${oInv.biz_biz_number}
+          ${oBiz.be_address}<br />
+          ${oBiz.be_phone}<br />
+          ${oBiz.be_email}<br />
+          ${oBiz.be_biz_number}
         </p>
       </div>
       <div class="header-right">

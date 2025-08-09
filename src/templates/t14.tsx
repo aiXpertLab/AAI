@@ -1,10 +1,10 @@
-import { InvDB, BE_DB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t14 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
@@ -19,10 +19,10 @@ export const t14 = (
 </div>
     <h1>${oInv.inv_number || "INVOICE 3-2-1"}</h1>
     <div id="company" class="clearfix">
-      <div>${oInv.biz_name || "Company Name"}</div>
-      <div>${oInv.biz_address || "455 Foggy Heights, AZ 85004, US"}</div>
-      <div>${oInv.biz_phone || "(602) 519-0450"}</div>
-      <div><a href="mailto:${oInv.biz_email || "company@example.com"}">${oInv.biz_email || "company@example.com"}</a></div>
+      <div>${oBiz.be_name || "Company Name"}</div>
+      <div>${oBiz.be_address || "455 Foggy Heights, AZ 85004, US"}</div>
+      <div>${oBiz.be_phone || "(602) 519-0450"}</div>
+      <div><a href="mailto:${oBiz.be_email || "company@example.com"}">${oBiz.be_email || "company@example.com"}</a></div>
     </div>
     <div id="project">
       <div><span>PROJECT</span> ${oInv.inv_title || "Website development"}</div>

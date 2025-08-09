@@ -1,11 +1,11 @@
-import { InvDB, BE_DB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 // Template t4: Dark Mode
 export const t17 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `

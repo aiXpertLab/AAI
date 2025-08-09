@@ -1,17 +1,17 @@
-import { InvDB, BE_DB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t9 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
     <div class="wrapper">
       <header>
         ${oBiz.biz_logo64 ? `<img src="${oBiz.biz_logo64}" alt="Logo" class="logo" />` : ""}
-        <h1>${oInv.biz_name || "Your Company"}</h1>
+        <h1>${oBiz.be_name || "Your Company"}</h1>
       </header>
 
       <section class="invoice-summary">

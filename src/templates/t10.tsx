@@ -1,10 +1,10 @@
-import { InvDB, BE_DB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t10 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
@@ -12,8 +12,8 @@ export const t10 = (
       <div class="card">
         <div class="header">
           ${oBiz.biz_logo64 ? `<img src="${oBiz.biz_logo64}" class="logo" alt="Logo"/>` : ""}
-          <h1>${oInv.biz_name || "Your Company"}</h1>
-          <p class="info">${oInv.biz_address || ""} | ${oInv.biz_email || ""} | ${oInv.biz_phone || ""}</p>
+          <h1>${oBiz.be_name || "Your Company"}</h1>
+          <p class="info">${oBiz.be_address || ""} | ${oBiz.be_email || ""} | ${oBiz.be_phone || ""}</p>
         </div>
 
         <div class="invoice-meta">

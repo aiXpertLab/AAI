@@ -1,10 +1,10 @@
-import { InvDB, BE_DB, InvItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t4 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>,
-    // oInv!.inv_items: Partial<InvItemDB>[],
+    // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
@@ -23,12 +23,12 @@ export const t4 = (
 
 			</figure>
 			<div class="company-info">
-				<h2 class="title">${oInv.biz_name}</h2>
-				<span>${oInv.biz_address}</span>
+				<h2 class="title">${oBiz.be_name}</h2>
+				<span>${oBiz.be_address}</span>
 				<span class="line"></span>
-				<a class="phone" href="tel:602-519-0450">${oInv.biz_phone}</a>
+				<a class="phone" href="tel:602-519-0450">${oBiz.be_phone}</a>
 				<span class="line"></span>
-				<a class="email" href="mailto:company@example.com">${oInv.biz_email}</a>
+				<a class="email" href="mailto:company@example.com">${oBiz.be_email}</a>
 			</div>
 		</div>
 	</header>

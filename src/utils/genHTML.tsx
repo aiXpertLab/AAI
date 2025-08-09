@@ -10,15 +10,12 @@ export const genHTML = (
 ) => {
     switch (templateName) {
         case "t1":
-            console.log('tttt1: ', templateName, templateName.length)
             return t1(oInv, oBiz, previewMode);
         case "t2":
-            console.log('tttt2: ', templateName, templateName.length)
             return t2(oInv, oBiz, previewMode);
-        // case "t3":
-        //     return t3(oInv,  oBiz,  previewMode);
+        case "t3":
+            return t3(oInv,  oBiz,  previewMode);
         case "t4":
-            console.log('tttt4: ', templateName, templateName.length)
             return t4(oInv, oBiz, previewMode);
         case "t5":
             return t5(oInv, oBiz, previewMode);
