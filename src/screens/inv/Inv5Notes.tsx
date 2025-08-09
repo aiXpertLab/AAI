@@ -13,7 +13,7 @@ export const Inv5Notes: React.FC = () => {
             <View>
                 <Text style={s_global.Label}>Notes:</Text>
                 <TextInput
-                    style={[s_global.InputUnderline, { fontSize: 9, fontFamily: 'monospace', }]}
+                    style={[s_global.InputUnderline, { fontSize: 12, fontFamily: 'monospace', }]}
                     placeholder="Thank you for your business!"
                     placeholderTextColor="#aaa"
                     multiline
@@ -29,7 +29,7 @@ export const Inv5Notes: React.FC = () => {
             <View>
                 <Text style={s_global.Label}>Terms & Conditions:</Text>
                 <TextInput
-                    style={s_global.InputUnderline}
+                    style={[s_global.InputUnderline, { fontSize: 12, fontFamily: 'monospace', }]}
                     placeholder="Thank you for your business!"
                     placeholderTextColor="#aaa"
                     multiline
