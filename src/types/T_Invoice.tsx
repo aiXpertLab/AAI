@@ -29,7 +29,7 @@ export interface InvDB {
 
     inv_number: string;
     inv_title: string;
-    inv_date: string; // Stored as TEXT
+    inv_date: string; 
     inv_due_date: string;
     inv_payment_term: number;
     inv_payment_requirement: string;

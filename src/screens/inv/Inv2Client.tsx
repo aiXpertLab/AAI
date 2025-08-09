@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from "@expo/vector-icons";
+
 import { timestamp2us } from "@/src/utils/dateUtils";
 
 import { ClientDB, InvDB } from "@/src/types";
