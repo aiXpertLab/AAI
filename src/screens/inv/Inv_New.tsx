@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ActivityIndicator, useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -21,6 +21,7 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
+import Toast from "react-native-toast-message";
 
 export const Inv_New: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
@@ -31,7 +32,7 @@ export const Inv_New: React.FC = () => {
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
 
-    const { insertInv, updateInv } = useInvCrud();
+    const { insertInv, updateInv, fetch1Inv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
     const saveRef = React.useRef(() => { });
@@ -42,6 +43,15 @@ export const Inv_New: React.FC = () => {
     const [pendingAction, setPendingAction] = React.useState<any>(null);
 
     const [initItem, setInitItem] = React.useState<InvDB | null>(null);
+    const [confirmMessage, setConfirmMessage] = React.useState("");
+    const [confirmTitle, setConfirmTitle] = React.useState("");
+
+    const showValidationModal = (title:string, message: string, onConfirmAction?: () => void) => {
+        setConfirmTitle(title)
+        setConfirmMessage(message);
+        setPendingAction(() => onConfirmAction || null);
+        setShowConfirmModal(true);
+    };
 
     const tip1 = useTipVisibility('tip1_count', true, 800);
     const [tip2Trigger, setTip2Trigger] = React.useState(false);
@@ -105,6 +115,45 @@ export const Inv_New: React.FC = () => {
     };
 
     const handleSave = async () => {
+        if (!oInv) { return }
+
+        // ✅ 1. If inv_number is empty, set it to "empty"
+        if (!oInv.inv_number || oInv.inv_number.trim() === "") {
+            console.log(oInv.inv_number)
+            oInv.inv_number = "empty";
+        }
+
+        // ✅ 2. Check if inv_number is duplicated in Firestore
+        const invoice = await fetch1Inv(oInv.inv_number!);
+        if (invoice) {
+            console.log(oInv.inv_id)
+            showValidationModal(
+                'invo',
+                'Invoice number duplicated. Please change the invoice number before saving.'
+            );
+            return
+        }
+
+        // ✅ 3. Client cannot be empty
+        if (!oInv.client_id || oInv.client_id.trim() === "") {
+            console.log(oInv.client_company_name)
+            showValidationModal(
+                'invo',
+                'Client cannot be empty. Please select a client before saving.'
+            );
+            return
+        }
+
+        // ✅ 4. Must have at least one item
+        if (!oInv.inv_items || oInv.inv_items.length === 0) {
+            console.log(oInv.inv_items)
+            showValidationModal(
+                'invo',
+                'Invoice must have at least one item. Please add items before saving.'
+            );
+            return
+        }
+
         isSavingRef.current = true;
         setIsDirty(false);
         const success = await insertInv(
@@ -198,11 +247,13 @@ export const Inv_New: React.FC = () => {
 
                     <M_Confirmation
                         visible={showConfirmModal}
-                        title="Discard changes?"
-                        message={'You have unsaved changes. \n\nTap "Keep Editing" and use the ✅ icon in the top right corner to save.'}
+                        // title="Discard changes?"
+                        title={confirmTitle}
+                        // message={'You have unsaved changes. \n\nTap "Keep Editing" and use the ✅ icon in the top right corner to save.'}\
+                        message={confirmMessage}
                         confirmText="Discard"
                         cancelText="Keep Editing"
-                        onConfirm={() => { setShowConfirmModal(false); if (pendingAction) pendingAction(); }}
+                        onConfirm={() => { setShowConfirmModal(false); if (pendingAction) pendingAction(); navigation.goBack(); }}
                         onCancel={() => setShowConfirmModal(false)}
                         confirmColor="#d9534f"
                     />

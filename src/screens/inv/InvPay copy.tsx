@@ -3,7 +3,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, TextInput, Button, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
-// import { useSQLiteContext } from "expo-sqlite";
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import { WebView } from "react-native-webview";
 
@@ -19,7 +18,6 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 export const Inv_Pay: React.FC = () => {
-    // const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
     
@@ -33,7 +31,7 @@ export const Inv_Pay: React.FC = () => {
     const [showAddPayment, setShowAddPayment] = React.useState(false);
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
-    const { deleteInvoice, lockInvoice, duplicateInvoice } = useInvoiceCrud();
+    const { updateInv, duplicateInv } = useInvCrud();
 
     const removePayment = async (paymentId: number) => {
         try {
@@ -85,19 +83,19 @@ export const Inv_Pay: React.FC = () => {
 
     const handleConfirmDelete = async () => {
         setShowConfirm(false);
-        const success = await deleteInvoice(oInv?.id!, oInv?.inv_number!);
+        const success = await updateInv(oInv?.inv_id!, oInv?.inv_number!);
         if (success) navigation.goBack();
     };
 
     const handleConfirmArchive = async () => {
         setShowConfirm(false);
-        const success = await lockInvoice(oInv?.id!, oInv?.inv_number!);
+        const success = await updateInv(oInv?.inv_id!, oInv?.inv_number!);
         if (success) navigation.goBack();
     };
 
     const handleDuplicate = async () => {
         try {
-            const success = await duplicateInvoice();
+            const success = await duplicateInv();
             console.log('Duplicate success:', success);
         } catch (error) {
             console.error('Error during duplication:', error);
@@ -138,24 +136,24 @@ export const Inv_Pay: React.FC = () => {
         const newBalance = oInv!.inv_total! - paid_total;
 
         console.log("Payments:", paymentData, paid_total, newBalance);
-        if (oInv!.inv_paid_total !== paid_total || oInv!.inv_balance_due !== newBalance) {
-            updateOInv({ inv_paid_total: paid_total, inv_balance_due: newBalance });
-        }       //only in this way can avoid unlimited loop of useEffect
+        // if (oInv!.inv_paid_total !== paid_total || oInv!.inv_balance_due !== newBalance) {
+        //     updateOInv({ inv_paid_total: paid_total, inv_balance_due: newBalance });
+        // }       //only in this way can avoid unlimited loop of useEffect
 
         console.log("oInv 123:", oInv?.inv_total, paid_total, newBalance);
-        await db.runAsync(
-            `UPDATE invoices 
-            SET
-                inv_paid_total = ?,
-                inv_balance_due = ?,
-                inv_payment_status = CASE
-                    WHEN ? >= inv_total THEN 'Paid'
-                    WHEN ? < inv_total AND inv_due_date < date('now') THEN 'Overdue'
-                    WHEN ? > 0 THEN 'Partially Paid'
-                    ELSE 'Unpaid'
-            END,
-            updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-        WHERE id = ?`, [paid_total, newBalance, paid_total, paid_total, paid_total, oInv!.id!]);
+        // await db.runAsync(
+        //     `UPDATE invoices 
+        //     SET
+        //         inv_paid_total = ?,
+        //         inv_balance_due = ?,
+        //         inv_payment_status = CASE
+        //             WHEN ? >= inv_total THEN 'Paid'
+        //             WHEN ? < inv_total AND inv_due_date < date('now') THEN 'Overdue'
+        //             WHEN ? > 0 THEN 'Partially Paid'
+        //             ELSE 'Unpaid'
+        //     END,
+        //     updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+        // WHERE id = ?`, [paid_total, newBalance, paid_total, paid_total, paid_total, oInv!.id!]);
     };
 
     React.useLayoutEffect(() => {
@@ -229,7 +227,7 @@ export const Inv_Pay: React.FC = () => {
                         {/* Amount Due */}
                         <View style={{ alignItems: 'center', marginVertical: 20 }}>
                             <Text style={{ fontSize: 16, color: '#666' }}>Amount Due</Text>
-                            <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#000' }}>${oInv!.inv_balance_due!.toFixed(2)}</Text>
+                            {/* <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#000' }}>${oInv!.inv_balance_due!.toFixed(2)}</Text> */}
                         </View>
 
                         {/* Live Preview */}

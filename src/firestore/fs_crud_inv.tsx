@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto';
 import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp, getDoc } from "firebase/firestore";
-
+import Toast from 'react-native-toast-message';
 import { app } from "@/src/config/firebaseConfig";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { InvDB } from '@/src/types';
@@ -105,8 +105,8 @@ export const useInvCrud = () => {
             if (invDocSnap.exists()) {
                 const data = invDocSnap.data() as InvDB; // optional type cast
                 const updatedData = { ...data, inv_number: invNumber };
-                
-                return updatedData                
+
+                return updatedData
             } else {
                 console.warn("No inv_empty doc found in Firestore.");
                 return null
@@ -117,5 +117,76 @@ export const useInvCrud = () => {
         }
     };
 
-    return { insertInv, updateInv, fetchInvs, fetchEmptyInv };
+
+    const duplicateInv = async () => {
+        try {
+            const { oInv } = useInvStore.getState();
+
+            if (!uid || !oInv?.inv_id) {
+                Toast.show({ type: 'error', text1: 'Error', text2: 'No invoice selected to duplicate.' });
+                return false;
+            }
+
+            // Fetch original invoice
+            const invRef = doc(db, `aai/be_${uid}/invs`, oInv.inv_id);
+            const invSnap = await getDoc(invRef);
+
+            if (!invSnap.exists()) {
+                Toast.show({ type: 'error', text1: 'Error', text2: 'Source invoice not found.' });
+                return false;
+            }
+
+            // Copy all fields & replace inv_id + inv_number
+            const newInvId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
+            const newInvoice = {
+                ...invSnap.data(),
+                inv_id: newInvId,
+                inv_number: 'duplicate',
+                created_at: serverTimestamp(),
+                updated_at: serverTimestamp(),
+            };
+
+            // Save duplicated invoice
+            await setDoc(doc(db, `aai/be_${uid}/invs`, newInvId), newInvoice);
+
+            Toast.show({
+                type: 'success',
+                text1: 'Invoice Duplicated',
+                text2: 'New invoice created from source invoice',
+                position: 'bottom'
+            });
+
+            return true;
+        } catch (err) {
+            console.error("❌ duplicateInvoice error:", err);
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: 'Failed to duplicate invoice.'
+            });
+            return false;
+        }
+    };
+
+
+
+    const fetch1Inv = async (invNumber: string): Promise<InvDB | null> => {
+        try {
+            const invsRef = collection(db, `aai/be_${uid}/invs`);
+            const q = query(invsRef, where("inv_number", "==", invNumber));
+            const querySnap = await getDocs(q);
+
+            if (querySnap.empty) {                
+                return null;
+            }
+
+            // Return the first matching invoice (should be unique)
+            return querySnap.docs[0].data() as InvDB;
+
+        } catch (err) {
+            console.error(`Failed to load invoice with inv_number ${invNumber} from Firestore:`, err);
+            return null;
+        }
+    };
+    return { insertInv, updateInv, fetchInvs, fetchEmptyInv, duplicateInv, fetch1Inv };
 };
