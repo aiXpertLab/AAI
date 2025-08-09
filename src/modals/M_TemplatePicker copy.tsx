@@ -2,9 +2,9 @@ import React from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { WebView } from "react-native-webview";
 import Toast from 'react-native-toast-message';
-import { s_global_template, s_modal } from '@/src/constants';
-import { useBizCrud } from "@/src/firestore/fs_crud_biz";
+import { s_global, s_modal } from '@/src/constants';
 
+import { useSQLiteContext } from 'expo-sqlite';
 import { genHTML } from "@/src/utils/genHTML";
 import { useInvStore, useBizStore } from '@/src/stores/InvStore';
 import Purchases from 'react-native-purchases';
@@ -17,16 +17,18 @@ type Props = {
 export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     const { oInv, updateOInv, } = useInvStore();
     const { updateOBiz, oBiz } = useBizStore();
-    const { updateBiz } = useBizCrud();
+    
+    // const db = useSQLiteContext();
 
     const saveTemplate2DB = async (template_id: string) => {
-        const bizUpdate = {
-            be_inv_template_id: template_id,  // Only this field will be updated
-        };
-        updateBiz(bizUpdate,
-            () => { console.log("Update successful!"); },
-            (err) => { console.error("Update failed:", err); }
-        );
+        try {
+            await db.runAsync('UPDATE biz       SET biz_inv_template_id = ? WHERE me = ?', [template_id, 'meme']);
+            await db.runAsync('UPDATE invoices  SET biz_inv_template_id = ? WHERE id = ?', [template_id, oInv!.id!]);
+            Toast.show({ type: 'success', text1: 'Template Saved!', text2: "Your template has been updated." });
+        } catch (err) {
+            console.error("Error saving logo:", err);
+            Toast.show({ type: 'fail', text1: 'Failed to Save Logo', text2: "An error occurred." });
+        }
     };
 
     const handleTemplatePress = async (templateId: string) => {
@@ -74,8 +76,8 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                 }
             }
         } else {
-            updateOInv({ inv_pdf_template: templateId });
-            updateOBiz({ be_inv_template_id: templateId });
+            updateOInv({ biz_inv_template_id: templateId });
+            updateOBiz({ biz_inv_template_id: templateId });
             await saveTemplate2DB(templateId);
             onClose();
         }
@@ -90,20 +92,20 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
         >
             <View style={s_modal.ModalOverlay}>
                 <View style={s_modal.TemplateModalContainer}>
-                    <Text style={s_global_template.title}>Choose a Template</Text>
+                    <Text style={styles.title}>Choose a Template</Text>
 
                     <ScrollView style={{ alignSelf: 'stretch', maxHeight: 530 }}>
-                        <View style={s_global_template.grid}>
+                        <View style={styles.grid}>
                             {['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9', 't10', 't11', 't12', 't13', 't14', 't15', 't16', 't17', 't18'].slice(0, 18).map((key) => (
                                 <TouchableOpacity
                                     key={key}
                                     onPress={() => handleTemplatePress(key)}
                                     activeOpacity={0.9}
-                                    style={s_global_template.templateBox}
+                                    style={styles.templateBox}
                                 >
                                     <WebView
                                         originWhitelist={['*']}
-                                        source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items!, "picker", key) }}
+                                        source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "picker", key) }}
                                         style={{
                                             width: '100%',
                                             height: '100%',
@@ -116,8 +118,8 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                         </View>
                     </ScrollView>
 
-                    <TouchableOpacity style={s_global_template.closeBtn} onPress={onClose}>
-                        <Text style={s_global_template.closeText}>Close</Text>
+                    <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
+                        <Text style={styles.closeText}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -125,3 +127,51 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     );
 };
 
+const styles = StyleSheet.create({
+    title: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 18,
+        marginTop: 8,
+    },
+    grid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+
+    templateLabel: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    closeBtn: {
+        marginTop: 16,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: '#eee',
+        borderRadius: 10,
+    },
+    closeText: {
+        fontSize: 16,
+    },
+    templateBox: {
+        width: '47%',
+        aspectRatio: 1 / 1.414,
+        // height: 180,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        overflow: 'hidden',
+        backgroundColor: '#f1f1f1',
+        marginHorizontal: '1%',
+        justifyContent: 'center',
+        // alignItems: 'center',        this is the key issue
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 2,
+        position: 'relative',
+    },
+});
