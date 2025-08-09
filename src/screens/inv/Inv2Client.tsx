@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Timestamp } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
 import { timestamp2us } from "@/src/utils/dateUtils";
@@ -54,7 +55,7 @@ export const Inv2Client: React.FC = () => {
             // Allow "0" by explicitly checking the string isn't empty
             const term = parseInt(text);
             if (!isNaN(term)) {  // This will now properly accept 0
-                const issueDate = oInv.inv_date ? new Date(oInv.inv_date) : new Date();
+                const issueDate = oInv.inv_date ? oInv.inv_date.toDate() : new Date();
                 // const newDueDate = addDateDays(issueDate, term);
                 updateOInv({
                     inv_payment_term: term,
@@ -179,7 +180,7 @@ export const Inv2Client: React.FC = () => {
             {/* Date Pickers */}
             {showIssueDatePicker && (
                 <DateTimePicker
-                    value={oInv.inv_date ? new Date(oInv.inv_date) : new Date()}
+                    value={oInv.inv_date ? oInv.inv_date.toDate() : new Date()}
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
@@ -189,7 +190,7 @@ export const Inv2Client: React.FC = () => {
                             const term = oInv.inv_payment_term ?? 7;
                             // const newDueDate = addDateDays(selectedDate, term);
                             updateOInv({
-                                inv_date: selectedDate.toISOString(),
+                                inv_date: Timestamp.fromDate(selectedDate),
                                 // inv_due_date: newDueDate.toISOString(),
                             });
                         }
@@ -199,19 +200,19 @@ export const Inv2Client: React.FC = () => {
             )}
             {showDueDatePicker && (
                 <DateTimePicker
-                    value={oInv.inv_due_date ? new Date(oInv.inv_due_date) : new Date()}
+                    value={oInv.inv_due_date ? oInv.inv_due_date.toDate() : new Date()}
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
                         setShowDueDatePicker(false);
                         if (selectedDate) {
                             setIsDirty(true);
-                            const issueDate = oInv.inv_date ? new Date(oInv.inv_date) : new Date();
+                            const issueDate = oInv.inv_date ? oInv.inv_date.toDate() : new Date();
                             const diffMs = selectedDate.getTime() - issueDate.getTime();
                             const term = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
                             updateOInv({
-                                inv_due_date: selectedDate.toISOString(),
+                                inv_due_date: Timestamp.fromDate(selectedDate),
                                 inv_payment_term: term >= 0 ? term : 0,
                             });
                         }

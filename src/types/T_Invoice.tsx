@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface InvDB {
     inv_id: string; // Auto-increment ID in DB
     user_id: string | null;
@@ -29,8 +31,10 @@ export interface InvDB {
 
     inv_number: string;
     inv_title: string;
-    inv_date: string; 
-    inv_due_date: string;
+
+    inv_date: Timestamp; 
+    inv_due_date: Timestamp;
+
     inv_payment_term: number;
     inv_payment_requirement: string;
     inv_reference: string;
