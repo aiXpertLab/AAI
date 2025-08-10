@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, View, FlatList, TouchableOpacity, Text } from "react-native";
+import { Pressable, View, FlatList, TouchableOpacity, StatusBar } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useTabSync } from '@/src/hooks/useTabSync';
 import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
-import { ToastAndroid } from 'react-native';
+import Toast from "react-native-toast-message";
 
 const HomeScreen: React.FC = () => {
     useTabSync('Invoices');
@@ -50,17 +50,6 @@ const HomeScreen: React.FC = () => {
         }
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
     };
-
-
-    const renderEmptyComponent = () => (
-
-        <TouchableOpacity
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
-            onPress={handleAddNewInvoice}
-        >
-            <Text style={{ color: "#999", textAlign: "center", }}>Click + to add a new invoice</Text>
-        </TouchableOpacity>
-    );
 
     const fetchInvoicesFromModule = async () => {
         try {
@@ -98,10 +87,9 @@ const HomeScreen: React.FC = () => {
     const handleDelete = async (itemId: string) => {
         try {
             await updateInv({ is_deleted: 1 }, itemId);
-            await fetchInvoicesFromModule();
-            ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+            Toast.show({ type: 'success', text1: 'Updated successfully' });
         } catch (err) {
-            ToastAndroid.show('Failed!', ToastAndroid.SHORT);
+            Toast.show({ type: 'error', text1: 'Update failed', });
         }
         console.log("Deleting invoice with ID:", itemId);
     };
@@ -140,25 +128,6 @@ const HomeScreen: React.FC = () => {
         }, [])
     );
 
-    const handleAddNewInvoice = async () => {
-        if (!oBiz) {
-            const data = await fetchBiz();
-            setOBiz(data || null);
-        }
-        const newNumber = await getInvoiceNumber();
-        const emptyInvoice = await fetchEmptyInv(newNumber);
-
-        if (emptyInvoice) {
-            useInvStore.getState().setOInv(emptyInvoice);
-        }
-
-        navigation.navigate('DetailStack', {
-            screen: 'Inv_New',
-            params: { mode: 'create_new' },
-        });
-    };
-
-
     return (
         <View style={s_global.Container}>
             <View>
@@ -180,7 +149,6 @@ const HomeScreen: React.FC = () => {
                     [
                         invoices.length === 0 && { flex: 1, justifyContent: 'center' }
                     ]}
-                ListEmptyComponent={renderEmptyComponent}
             />
 
             <M_HeaderFilter
@@ -190,7 +158,25 @@ const HomeScreen: React.FC = () => {
 
             <TouchableOpacity
                 style={[s_global.FABSquare]}
-                onPress={handleAddNewInvoice}
+                onPress={async () => {
+                    if (!oBiz) {
+                        const data = await fetchBiz();
+                        setOBiz(data || null);
+                    }
+                    const newNumber = await getInvoiceNumber();
+                    const emptyInvoice = await fetchEmptyInv(newNumber); // wait for invoice
+                    // console.log('*---', emptyInvoice)
+
+                    if (emptyInvoice) {
+                        console.log('99999999999')
+                        useInvStore.getState().setOInv(emptyInvoice);
+                    }
+
+                    navigation.navigate('DetailStack', {
+                        screen: 'Inv_New',
+                        params: { mode: 'create_new' }
+                    });
+                }}
             >
                 <Ionicons name="add" size={42} color="white" />
             </TouchableOpacity>

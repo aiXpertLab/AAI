@@ -15,7 +15,7 @@ export const useInvCrud = () => {
         invId: string       // must pass invId, using oInvId not reliable. sometimes need update db directly
     ): Promise<void> => {
         
-        const docRef = doc(db, `aai/be_${uid}/invs`, invId);
+        const docRef = doc(db, `aai/be_${uid}/clients`, invId);
 
         await updateDoc(docRef, {
             ...updates,
