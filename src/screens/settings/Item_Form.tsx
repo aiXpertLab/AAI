@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, ActivityIndicator, } from "react-native";
+import { Alert, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Modal, ActivityIndicator, ToastAndroid, } from "react-native";
 import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -7,7 +7,7 @@ import { useItemStore } from '@/src/stores/ItemStore';
 import { useItemCrud } from '@/src/firestore/fs_crud_item';
 
 import { s_global, } from "@/src/constants";
-import { ItemDB_ExcludeID, ItemDB, DetailStackPara, RouteType } from "@/src/types";
+import { ItemDB, DetailStackPara, RouteType } from "@/src/types";
 import { Ionicons } from '@expo/vector-icons';
 
 import { cameraB64, processB64Item } from "@/src/utils/u_img64";
@@ -58,23 +58,26 @@ const ItemForm: React.FC = () => {
 
         isSavingRef.current = true;
 
-        const preparedItem: ItemDB_ExcludeID = {
+        const preparedOItem: ItemDB = {
             ...oItem,
-            
+
             item_rate: oItem.item_rate ? Number(oItem.item_rate) : 1, // convert here
             item_name: oItem.item_name ?? "",
         };
 
 
         if (mode === 'create_new') {
-            console.log('333', oItem)
-            insertItem(preparedItem, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed:', err);
-                isSavingRef.current = false; // reset if failed
+            try {
+                await insertItem(preparedOItem);
+                ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+                navigation.goBack(); // only runs if insertInv didn't throw
+            } catch (err) {
+                console.error(err);
+            } finally {
+                isSavingRef.current = false;
             }
-            );
         } else {
-            updateItem(preparedItem, () => { navigation.goBack(); }, (err) => {
+            updateItem(preparedOItem, () => { navigation.goBack(); }, (err) => {
                 console.error('Insert failed:', err);
                 isSavingRef.current = false; // reset if failed
             }

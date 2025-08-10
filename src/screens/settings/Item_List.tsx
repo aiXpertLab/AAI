@@ -83,10 +83,7 @@ const ItemsScreen: React.FC = () => {
 
     const confirmInsert = async () => {
         for (const item of previewItems) {
-            const success = await insertItem(item,
-                () => console.log("Item saved successfully."),
-                (err) => console.error("Failed to save item:", err));
-
+            await insertItem(item);
         }
         setPreviewItems([]);
         setShowConfirm(false);

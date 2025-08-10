@@ -18,6 +18,7 @@ export default function SmartAuthScreen() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { setOBiz, } = useBizStore();  // 🧠 Zustand action
+    const {createBiz, fetchBiz} = useBizCrud();
     const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
     const setIsNewUser = useFirebaseUserStore((s) => s.setIsNewUser);
 
@@ -45,7 +46,7 @@ export default function SmartAuthScreen() {
             const userCredential = await signInWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
             const user = userCredential.user;
             setFirebaseUser(user);
-            setMessage('✅ Signed in successfully!');
+            console.log('✅ Signed in successfully!');
         } catch (signInError: any) {
             if (
                 signInError.code === 'auth/user-not-found' ||
@@ -64,8 +65,9 @@ export default function SmartAuthScreen() {
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
-                                    await getBizCrud().createBiz(user.uid);
-                                    const bizData = await getBizCrud().fetchBiz(user.uid);
+                                    await createBiz(user.uid);
+                                    console.log('create biz...')
+                                    const bizData = await fetchBiz(user.uid);
                                     setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
                                     setIsNewUser(true);

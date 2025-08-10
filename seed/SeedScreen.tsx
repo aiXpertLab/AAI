@@ -3,10 +3,11 @@ import { View, Text } from 'react-native';
 import { getFirestore, doc, setDoc, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
 import { seed_data,  } from "./seed_data";
+import { seed_empty,  } from "./seed_empty";
 
 const db = getFirestore(app);
 
-const SeedBizScreen = () => {
+const SeedScreen = () => {
     useEffect(() => {
         (async () => {
             // 1. business entity
@@ -51,10 +52,16 @@ const SeedBizScreen = () => {
             }
 
             // 7. inv_empty
-            for (const inv of seed_data.inv_empty) {
-                const invDoc = doc(collection(bizRef, "inv_empty"), inv.inv_id);
+            for (const inv of seed_empty.inv_empty) {
+                const invDoc = doc(collection(bizRef, "inv_empty"), "inv_empty");
                 console.log("7.empty invoices", invDoc)
                 await setDoc(invDoc, inv);
+            }
+            // 8. item_empty
+            for (const item of seed_empty.item_empty) {
+                const itemDoc = doc(collection(bizRef, "item_empty"), "item_empty");
+                console.log("8.empty items", itemDoc)
+                await setDoc(itemDoc, item);
             }
         })();
     }, []);
@@ -68,4 +75,4 @@ const SeedBizScreen = () => {
     );
 };
 
-export default SeedBizScreen;
+export default SeedScreen;

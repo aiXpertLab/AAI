@@ -1,4 +1,5 @@
 import React from "react";
+import * as Crypto from 'expo-crypto';
 import { Pressable, View, FlatList, TouchableOpacity, Text } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -143,10 +144,12 @@ const HomeScreen: React.FC = () => {
     const handleAddNewInvoice = async () => {
         if (!oBiz) {
             const data = await fetchBiz();
+            console.log('------', data)
             setOBiz(data || null);
         }
         const newNumber = await getInvoiceNumber();
-        const emptyInvoice = await fetchEmptyInv(newNumber);
+        const invId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
+        const emptyInvoice = await fetchEmptyInv(newNumber, invId);
 
         if (emptyInvoice) {
             useInvStore.getState().setOInv(emptyInvoice);

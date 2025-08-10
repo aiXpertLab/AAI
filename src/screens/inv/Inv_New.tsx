@@ -1,5 +1,5 @@
 import React from "react";
-import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ToastAndroid } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -46,7 +46,7 @@ export const Inv_New: React.FC = () => {
     const [confirmMessage, setConfirmMessage] = React.useState("");
     const [confirmTitle, setConfirmTitle] = React.useState("");
 
-    const showValidationModal = (title:string, message: string, onConfirmAction?: () => void) => {
+    const showValidationModal = (title: string, message: string, onConfirmAction?: () => void) => {
         setConfirmTitle(title)
         setConfirmMessage(message);
         setPendingAction(() => onConfirmAction || null);
@@ -156,11 +156,17 @@ export const Inv_New: React.FC = () => {
 
         isSavingRef.current = true;
         setIsDirty(false);
-        const success = await insertInv(
-            () => console.log("Invoice saved successfully."),
-            (err) => console.error("Failed to save invoice:", err));
-        isSavingRef.current = false; // reset if failed
-        if (success) { navigation.goBack(); }
+
+        try {
+            console.log('oinv:  ', oInv)
+            await insertInv();
+            ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+            navigation.goBack(); // only runs if insertInv didn't throw
+        } catch (err) {
+            console.error(err);
+        } finally {
+            isSavingRef.current = false;
+        }
     };
 
     saveRef.current = handleSave;

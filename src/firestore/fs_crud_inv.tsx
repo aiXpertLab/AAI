@@ -10,11 +10,13 @@ export const useInvCrud = () => {
     const db = getFirestore(app);
     const uid = useFirebaseUserStore.getState().FirebaseUser?.uid;
 
+
+
     const updateInv = async (
         updates: Partial<InvDB>,
         invId: string       // must pass invId, using oInvId not reliable. sometimes need update db directly
     ): Promise<void> => {
-        
+
         const docRef = doc(db, `aai/be_${uid}/invs`, invId);
 
         await updateDoc(docRef, {
@@ -24,37 +26,21 @@ export const useInvCrud = () => {
     };
 
 
-    const insertInv = async (onSuccess: () => void, onError: (err: any) => void) => {
-        try {
-            // ✅ Get current invoice from zustand
-            const oInv = useInvStore.getState().oInv;
 
-            if (!oInv) {
-                throw new Error("No oInv found in zustand store.");
-            }
 
-            const inv_id = 'i_' + Crypto.randomUUID().replace(/-/g, '');
-            const docRef = doc(db, `aai/be_${uid}/invs`, inv_id);
+    const insertInv = async (): Promise<void> => {
+        const oInv = useInvStore.getState().oInv;
 
-            const newInv = {
-                ...oInv,
-                inv_id,
-                created_at: serverTimestamp(),
-                updated_at: serverTimestamp(),
-                is_deleted: 0,
-            };
+        if (!oInv!.inv_id) { throw new Error("No oInv found in zustand store."); }
 
-            // const docRef = await addDoc(colRef, newPM);
-            await setDoc(docRef, newInv);
-            console.log("✅ Inserted Inv:", docRef.id);
+        const docRef = doc(db, `aai/be_${uid}/invs`, oInv!.inv_id);
 
-            onSuccess?.();
-            return true;
-        } catch (err) {
-            console.error("❌ insertInv error:", err);
-            onError?.(err);
-            return false;
-        }
+        const newInv = {
+            ...oInv,
+            created_at: serverTimestamp(),
+            updated_at: serverTimestamp(),
+        };
+        await setDoc(docRef, newInv);
     };
 
 
@@ -85,14 +71,14 @@ export const useInvCrud = () => {
     };
 
 
-    const fetchEmptyInv = async (invNumber: string) => {
+    const fetchEmptyInv = async (invNumber: string, invId: string) => {
         try {
             const invDocRef = doc(db, "aai", `be_${uid}`, "inv_empty", "inv_empty");
             const invDocSnap = await getDoc(invDocRef);
 
             if (invDocSnap.exists()) {
                 const data = invDocSnap.data() as InvDB; // optional type cast
-                const updatedData = { ...data, inv_number: invNumber };
+                const updatedData = { ...data, inv_number: invNumber, inv_id: invId };
 
                 return updatedData
             } else {

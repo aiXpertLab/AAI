@@ -51,7 +51,6 @@ export const Inv3Items: React.FC = () => {
                 item_quantity: 1,
                 item_rate: newItem.item_rate,
                 item_amount: newItem.item_rate,
-                item_status: newItem.item_status,
             };
             updatedItems = [...inv_items, newLine];
         }

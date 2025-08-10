@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import { ItemDB } from '@/src/types';
+import { ItemDB } from '@/src/types/T_Invoice';
 import { createEmptyItem4New } from './seeds4store';
 
 
 type ItemStore = {
-    oItem: Partial<ItemDB> | null;
-    setOItem: (data: Partial<ItemDB>) => void;
-    updateOItem: (Item: Partial<ItemDB>) => void;
+    oItem: ItemDB | null;
+    setOItem: (data: ItemDB) => void;
+    updateOItem: (data: Partial<ItemDB>) => void;
     clearOItem: () => void;
     createEmptyItem4New: () => void;
 };

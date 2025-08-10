@@ -32,7 +32,7 @@ export interface InvDB {
     inv_number: string;
     inv_title: string;
 
-    inv_date: Timestamp; 
+    inv_date: Timestamp;
     inv_due_date: Timestamp;
 
     inv_payment_term: number;
@@ -65,8 +65,8 @@ export interface InvDB {
     inv_notes: string;
     inv_status: string;
 
-    created_at: any; // serverTimestamp()
-    updated_at: any; // serverTimestamp()
+    created_at: any; 
+    updated_at: any; 
 
     inv_items: Partial<ItemDB>[] | null;
     inv_payments: Partial<InvPaymentDB>[] | null;
@@ -75,24 +75,27 @@ export interface InvDB {
 
 export interface ItemDB {
     item_id: string;
-    item_number?: string;
+    item_number: string;
+
     item_name: string;
-    item_description?: string;
-    item_sku?: string;
     item_rate: number;
-    item_unit?: string;
-    item_quantity?: number;
-    item_note?: string;
-    item_amount?: number;
-    item_status?: string;
-    is_deleted?: number;
-    created_at?: any; // serverTimestamp()
-    updated_at?: any; // serverTimestamp()
+    item_unit: string;
+    item_sku: string;
+    item_description: string;
+
+    status: "5 stars",
+    is_active: 1,
+    is_locked: 0,
+    is_deleted: 0,
+    created_at: any; 
+    updated_at: any; 
+
+    item_quantity: number;  // for InvItem only
+    item_note: string;      // for InvItem only
+    item_amount: number;    // for InvItem only
+
 }
 
-export type ItemDB_ExcludeID = Omit<ItemDB, 'item_id'> & {
-    item_id?: string;  // optional for insert, required later
-};
 
 
 export interface InvPaymentDB {
@@ -103,3 +106,4 @@ export interface InvPaymentDB {
     pay_reference: string;
     pay_note: string;
 }
+

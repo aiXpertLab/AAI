@@ -1,4 +1,6 @@
-import {PMDB, InvDB, ClientDB, ItemDB, TaxDB } from "@/src/types"
+import * as Crypto from 'expo-crypto';
+
+import { PMDB, InvDB, ClientDB, ItemDB, TaxDB } from "@/src/types"
 
 export const createEmptyClient4New = (): Partial<ClientDB> => ({
     client_company_name: '',
@@ -18,18 +20,32 @@ export const createEmptyClient4New = (): Partial<ClientDB> => ({
 })
 
 
-export const createEmptyItem4New = (): Partial<ItemDB> => ({
+export const createEmptyItem4New = (): ItemDB => ({
+    item_id: 'item_' + Crypto.randomUUID().replace(/-/g, ''),
+    item_number: '',
     item_name: '',
     item_rate: 0,
     item_unit: '',
+    item_sku: '',
     item_description: '',
-})
+
+    status: "5 stars",
+    is_active: 1,
+    is_locked: 0,
+    is_deleted: 0,
+    created_at: new Date(),
+    updated_at: new Date(),
+
+    item_quantity: 0,  // for InvItem only
+    item_note: "For InvItem Only",      // for InvItem only
+    item_amount: 0,    // for InvItem only
+
+});
 
 
 export const createEmptyTax4New = (): Partial<TaxDB> => ({
     tax_name: '',
     tax_rate: 0,
-    tax_number: '',
     tax_note: '',
 })
 
@@ -49,13 +65,10 @@ export const createEmptyInv4New = (): Partial<InvDB> => {
     };
 
     return {
-        inv_date: formatDate(today),
-        inv_due_date: formatDate(dueDate),
         inv_reference: 'e.g. PO#1234',
 
         inv_subtotal: 0,
         inv_discount: 0,
-        inv_tax: 0,
         inv_total: 0,
         inv_balance_due: 0,
 
