@@ -83,11 +83,11 @@ export interface ItemDB {
     item_sku: string;
     item_description: string;
 
-    status: "5 stars",
-    is_active: 1,
-    is_locked: 0,
-    is_deleted: 0,
-    created_at: any; 
+    status: string;
+    is_active: number;
+    is_locked: number;
+    is_deleted: number;
+    created_at: any;
     updated_at: any; 
 
     item_quantity: number;  // for InvItem only

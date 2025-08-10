@@ -18,5 +18,4 @@ export const useItemStore = create<ItemStore>((set) => ({
     updateOItem: (Item) => set((state) => ({ oItem: { ...state.oItem!, ...Item } })),
     clearOItem: () => set({ oItem: null }),
     createEmptyItem4New: () => set({ oItem: createEmptyItem4New() })
-
 }));
