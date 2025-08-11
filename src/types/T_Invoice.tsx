@@ -36,7 +36,7 @@ export interface InvDB {
     inv_notes: string;
 
     inv_items: ItemDB[];
-    inv_payments: InvPaymentDB[];
+    inv_payments: PMDB[];
 
     status: string;
     is_active: number;
@@ -67,17 +67,25 @@ export interface ItemDB {
     item_quantity: number;  // for InvItem only
     item_note: string;      // for InvItem only
     item_amount: number;    // for InvItem only
-
 }
 
 
 
-export interface InvPaymentDB {
-    pay_id: string;
-    pay_date: string; // ISO timestamp text
-    pay_amount: number;
-    pay_method: string;
-    pay_reference: string;
-    pay_note: string;
+export interface PMDB {
+    pm_id: string;
+    pm_name: string;
+    pm_note: string;
+
+    status: string;
+    is_active: number;
+    is_locked: number;
+    is_deleted: number;
+    created_at: Date;
+    updated_at: Date;
+
+    pay_date: Date;         // for InvPayment only
+    pay_amount: number;     // for InvPayment only
+    pay_reference: string;  // for InvPayment only
+    pay_note: string;       // for InvPayment only
 }
 

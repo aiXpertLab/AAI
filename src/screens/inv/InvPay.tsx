@@ -2,16 +2,17 @@ import React from "react";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, TextInput, Button, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from '@expo/vector-icons';
-import { useInvStore, useBizStore } from '@/src/stores';
 import { WebView } from "react-native-webview";
+import { Ionicons } from '@expo/vector-icons';
+
+import { useInvStore, useBizStore } from '@/src/stores';
 
 import { genHTML } from "@/src/utils/genHTML";
+
 import { DetailStackPara, InvPaymentDB } from "@/src/types";
-import { s_inv } from "@/src/constants";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import {viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
-import { s_global, s_fab, colors } from "@/src/constants";
+import { s_global, s_fab, s_inv } from "@/src/constants";
 
 import { M_TemplatePicker, M_Confirmation, M_PaymentList } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
@@ -20,7 +21,6 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
-    
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);

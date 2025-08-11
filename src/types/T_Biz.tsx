@@ -57,16 +57,3 @@ export interface TaxPickerModalProps {
     onSelectTax: (taxes: TaxDB[]) => void;
 }
 
-
-export interface PMDB {
-    pm_id: string;
-
-    pm_name: string;
-    pm_note: string;
-    is_deleted: number;
-    is_locked: number;
-
-    created_at: any; // serverTimestamp()
-    updated_at: any; // serverTimestamp()
-}
-
