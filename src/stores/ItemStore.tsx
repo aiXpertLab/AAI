@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { ItemDB } from '@/src/types/T_Invoice';
-import { createEmptyItem4New } from './seeds4store';
+import { emptyItem } from './seeds4store';
 
 
 type ItemStore = {
@@ -17,5 +17,5 @@ export const useItemStore = create<ItemStore>((set) => ({
     setOItem: (data) => set({ oItem: { ...data } }),
     updateOItem: (Item) => set((state) => ({ oItem: { ...state.oItem!, ...Item } })),
     clearOItem: () => set({ oItem: null }),
-    createEmptyItem4New: () => set({ oItem: createEmptyItem4New() })
+    createEmptyItem4New: () => set({ oItem: emptyItem() })
 }));

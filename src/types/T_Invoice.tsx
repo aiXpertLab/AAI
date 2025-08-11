@@ -1,39 +1,15 @@
-import { Timestamp } from "firebase/firestore";
-
 export interface InvDB {
     inv_id: string; // Auto-increment ID in DB
-    user_id: string | null;
-    be_id: string | null; // Link to biz table
-    client_id: string | null;
-    inv_pdf_template: string | null;
+    user_id: string;// reserved
+    be_id: string;  // reserved
+    client_id: string;// Link to client table
 
-    client_number: string;
-    client_company_name: string;
-    client_contact_name: string;
-    client_contact_title: string;
-    client_address: string;
-    client_email: string;
-    client_secondphone: string;
-    client_mainphone: string;
-    client_fax: string;
-    client_website: string; // Optional website URL
+    inv_number: string; //INV-0001
+    inv_date: Date;
+    inv_due_date: Date;
 
-    client_business_number: string;
-
-    client_tax_id: string;
-    client_currency: string;
-    client_terms_conditions: string;
-    client_status: string;
-    client_note: string;
-
-    client_payment_term: number;
-    client_payment_method: string;
-
-    inv_number: string;
-    inv_title: string;
-
-    inv_date: Timestamp;
-    inv_due_date: Timestamp;
+    inv_title: string;  // INVOICE, top title for printing
+    inv_template_id: string;  // t1
 
     inv_payment_term: number;
     inv_payment_requirement: string;
@@ -41,35 +17,33 @@ export interface InvDB {
     inv_currency: string;
 
     inv_subtotal: number;
-    inv_discount: number;
-    inv_tax_amount: number;
-    inv_tax_rate: number; // Percentage as a decimal (e.g., 0.15 for 15%)
-    inv_tax_label: string; // Name of the tax (e.g., "VAT", "GST")
-    inv_shipping: number; // Shipping cost, if applicable
-    inv_handling: number; // Shipping cost, if applicable
-    inv_deposit: number;
-    inv_adjustment: number;
+    inv_discount: number;   // -
+    inv_tax_label: string;  // Name of the tax (e.g., "VAT", "GST")
+    inv_tax_rate: number;   // Percentage as a decimal (e.g., 0.15 for 15%)
+    inv_tax_amount: number; // -
+
+    inv_shipping: number;   // Shipping cost, if applicable
+    inv_handling: number;   // Shipping cost, if applicable
+    inv_deposit: number;    // -
+    inv_adjustment: number; // +
     inv_total: number;
 
     inv_paid_total: number;
     inv_balance_due: number;
     inv_payment_status: 'Unpaid' | 'Partially Paid' | 'Paid' | 'Overdue';
 
-    is_locked: number;   // 0 or 1
-    is_deleted: number;  // 0 or 1
-
-    inv_flag_word: string;
-    inv_flag_emoji: string;
-
-    inv_terms_conditions: string;
+    inv_tnc: string;
     inv_notes: string;
-    inv_status: string;
 
-    created_at: any; 
-    updated_at: any; 
+    inv_items: ItemDB[];
+    inv_payments: InvPaymentDB[];
 
-    inv_items: Partial<ItemDB>[] | null;
-    inv_payments: Partial<InvPaymentDB>[] | null;
+    status: string;
+    is_active: number;
+    is_locked: number;
+    is_deleted: number;
+    created_at: Date;
+    updated_at: Date;
 }
 
 
@@ -88,7 +62,7 @@ export interface ItemDB {
     is_locked: number;
     is_deleted: number;
     created_at: any;
-    updated_at: any; 
+    updated_at: any;
 
     item_quantity: number;  // for InvItem only
     item_note: string;      // for InvItem only

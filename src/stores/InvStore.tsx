@@ -1,46 +1,30 @@
 import { create } from 'zustand';
 import { InvDB, ItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
-import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New } from './seeds4store';
+import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New, emptyInv } from './seeds4store';
 
 type OInvStore = {
-    oInv: Partial<InvDB> & {
-        inv_items?: Partial<ItemDB>[] | null; // ✅ Optional to match Firestore flexibility
-        oTax: Partial<TaxDB> | null;
-        oBiz: Partial<BE_DB> | null;
-        oClient: Partial<ClientDB> | null;
-    } | null;
-    setOInv: (inv: Partial<InvDB>) => void;
+    oInv: InvDB | null;
+    setOInv: (inv: InvDB) => void;
     updateOInv: (inv: Partial<InvDB>) => void;
     clearOInv: () => void;
+
     isDirty: boolean;
     setIsDirty: (flag: boolean) => void;
+
+    createEmptyInv: () => void;
 };
 
 export const useInvStore = create<OInvStore>((set) => ({
     oInv: null,
-    setOInv: (inv) =>
-        set({
-            oInv: {
-                ...inv,
-                inv_items: inv.inv_items ? inv.inv_items.filter((item): item is Partial<ItemDB> => !!item) : [],
-                oTax: null,
-                oBiz: null,
-                oClient: null,
-            },
-        }),
-    updateOInv: (inv) =>
-        set((state) => ({
-            oInv: {
-                ...state.oInv!,
-                ...inv,
-            },
-        })),
+    setOInv: (inv) => set({ oInv: { ...inv } }),
+    updateOInv: (inv) => set((state) => ({ oInv: { ...state.oInv!, ...inv } })),
+
     clearOInv: () => set({ oInv: null }),
     isDirty: false,
     setIsDirty: (flag) => set({ isDirty: flag }),
+
+    createEmptyInv: () => set({ oInv: emptyInv() })
 }));
-
-
 
 
 

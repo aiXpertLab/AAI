@@ -1,6 +1,7 @@
 import { serverTimestamp } from "firebase/firestore";
 import * as Crypto from 'expo-crypto';
 
+import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 import { PMDB, InvDB, ClientDB, ItemDB, TaxDB } from "@/src/types"
 
 const baseFlags = {
@@ -8,8 +9,8 @@ const baseFlags = {
     is_active: 1,
     is_locked: 0,
     is_deleted: 0,
-    created_at: serverTimestamp(),
-    updated_at: serverTimestamp(),
+    created_at: new Date(),
+    updated_at: new Date(),
 };
 
 
@@ -32,22 +33,6 @@ export const createEmptyClient4New = (): Partial<ClientDB> => ({
 })
 
 
-export const createEmptyItem4New = (): ItemDB => ({
-    item_id: 'item_' + Crypto.randomUUID().replace(/-/g, ''),
-    item_number: 'P001',
-    item_name: 'Sample',
-    item_rate: 1,
-    item_unit: 'item',
-    item_sku: 'FBAPMK6M',
-    item_description: 'Change me.',
-
-    item_quantity: 5,  // for InvItem only
-    item_note: "For InvItem Only",      // for InvItem only
-    item_amount: 5,    // for InvItem only
-
-    ...baseFlags,    
-
-});
 
 
 export const createEmptyTax4New = (): Partial<TaxDB> => ({
@@ -62,24 +47,64 @@ export const createEmptyPM4New = (): Partial<PMDB> => ({
 })
 
 
-export const createEmptyInv4New = (): Partial<InvDB> => {
-    const today = new Date();
-    const dueDate = new Date();
-    dueDate.setDate(today.getDate() + 7);
 
-    const formatDate = (date: Date): string => {
-        return date.toISOString()
-    };
+export const emptyItem = (): ItemDB => ({
+    item_id: 'item_' + Crypto.randomUUID().replace(/-/g, ''),
+    item_number: 'P001',
+    item_name: 'Sample',
+    item_rate: 1,
+    item_unit: 'item',
+    item_sku: 'FBAPMK6M',
+    item_description: 'Change me.',
 
-    return {
-        inv_reference: 'e.g. PO#1234',
+    item_quantity: 5,  // for InvItem only
+    item_note: "For InvItem Only",      // for InvItem only
+    item_amount: 5,    // for InvItem only
 
-        inv_subtotal: 0,
-        inv_discount: 0,
-        inv_total: 0,
-        inv_balance_due: 0,
+    ...baseFlags,
 
-        inv_notes: '',
-        inv_terms_conditions: '',
-    };
-};
+});
+
+
+export const emptyInv = (): InvDB => ({
+    inv_id: 'inv_' + Crypto.randomUUID().replace(/-/g, ''),
+    user_id: "reserved",
+    be_id: "reserved",
+    client_id: "link to client",
+
+    inv_number: "pending for oBiz",
+    inv_date: new Date(),
+    inv_due_date: new Date(),
+
+    inv_title: "INVOICE",
+    inv_template_id: "t1",
+
+    inv_payment_term: 7,
+    inv_payment_requirement: "Next 7",
+    inv_reference: "PO#168",
+    inv_currency: "USD",
+
+    inv_subtotal: 1.11,
+    inv_discount: 1.11,
+    inv_tax_label: "Tax",
+    inv_tax_rate: 0.0111,   // 1%
+    inv_tax_amount: 1.11,
+
+    inv_shipping: 11.11,
+    inv_handling: 11.11,
+    inv_deposit: 11.11,
+    inv_adjustment: 11.11,
+
+    inv_total: 99.99,
+
+    inv_paid_total: 11.11,
+    inv_balance_due: 11.11,
+    inv_payment_status: "Unpaid",
+
+    inv_tnc: "Thank you for your business!",
+    inv_notes: "Payment Method:\n Bank Name: JPM \n: Account Number: 123456 \n: Bank Address: New York",
+
+    inv_items: [],
+    inv_payments: [],
+    ...baseFlags,
+});

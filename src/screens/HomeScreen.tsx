@@ -1,5 +1,4 @@
 import React from "react";
-import * as Crypto from 'expo-crypto';
 import { Pressable, View, FlatList, TouchableOpacity, Text } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -16,7 +15,6 @@ import { s_global } from "@/src/constants";
 import { InvoiceCard } from "@/src/screens/HomeInvCard";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useTabSync } from '@/src/hooks/useTabSync';
-import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { ToastAndroid } from 'react-native';
 
@@ -24,15 +22,15 @@ const HomeScreen: React.FC = () => {
     useTabSync('Invoices');
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const { fetchBiz } = useBizCrud();
-    const { oBiz, setOBiz } = useBizStore();
+    const { oBiz, setOBiz,  } = useBizStore();
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
-    const [invoices, setInvoices] = React.useState<InvDB[]>([]);
+    const [invoices, setInvoices,] = React.useState<InvDB[]>([]);
     const { updateInv, fetchInvs, fetchEmptyInv } = useInvCrud();
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
-    const { setOInv, updateOInv } = useInvStore();  // 🧠 Zustand action
+    const { setOInv, updateOInv, createEmptyInv } = useInvStore();  // 🧠 Zustand action
 
     const [selectedHeaderFilter, setSelectedHeaderFilter] = React.useState({
         hf_client: "All",
@@ -147,14 +145,9 @@ const HomeScreen: React.FC = () => {
             console.log('------', data)
             setOBiz(data || null);
         }
-        const newNumber = await getInvoiceNumber();
-        const invId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
-        const emptyInvoice = await fetchEmptyInv(newNumber, invId);
-
-        if (emptyInvoice) {
-            useInvStore.getState().setOInv(emptyInvoice);
-        }
-
+        const newInvNumber = `${oBiz!.be_inv_prefix}-${oBiz?.be_inv_number}`
+        createEmptyInv()
+        updateOInv({ inv_number: newInvNumber });
         navigation.navigate('DetailStack', {
             screen: 'Inv_New',
             params: { mode: 'create_new' },

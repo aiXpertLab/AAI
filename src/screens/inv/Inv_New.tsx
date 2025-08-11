@@ -28,7 +28,7 @@ export const Inv_New: React.FC = () => {
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
 
-    const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
+    const { oInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
 

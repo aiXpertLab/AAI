@@ -15,27 +15,24 @@ const baseFlags = {
 // Master seed data for new business entities
 export const seed_data = {
     business_entity: {
-        me: "meme",                              // optional: slug or handle
         user_id: "user_id_aiautoinvoicing",
 
         be_id: "be_id_aiautoinvoicing",
-        be_bk: "BK.",
         be_logo: "",
-
         be_name: "My Corporation",
-        be_type: "sole_proprietorship",
         be_address: "1600 Pennsylvania Ave.,\nWashington DC",
         be_email: "change@me.com",
         be_phone: "1-888-168-5868",
+        be_website: "https://aiautoinvoicing.github.io",
+        be_type: "sole_proprietorship",
 
-        be_be_number: "821235679RC0001",
+        be_biz_number: "821235679RC0001",
         be_tax_id: "1685868RT001",
         be_bank_info: "TD Bank",
         be_payment_term: 7,
 
         be_currency: "USD",
         be_inv_template_id: "t1",
-        be_website: "https://aiautoinvoicing.github.io",
         be_description: "This is a note for the bissiness.",
         be_note: "This is a note for the bissiness.",
 
@@ -43,6 +40,7 @@ export const seed_data = {
         be_date_format: "MM/DD/YYYY",
         be_invoice_prefix: "INV",
         be_next_invoice_number: 1001,
+
         ...baseFlags,
     },
 

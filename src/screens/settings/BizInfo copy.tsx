@@ -218,10 +218,6 @@ export const BizInfo: React.FC = () => {
                             value={oBiz?.be_inv_number?.toString() || ''} onChangeText={(text) => handleChange("be_inv_number", Number(text))} />
                     </View>
 
-                    {/* Card 4: place holder for input pad*/}
-                    <View style={{ height: 220, opacity: 0 }} pointerEvents="none" />
-
-
                     {isProcessing && (
                         <Modal
                             transparent={true}

@@ -1,18 +1,37 @@
 export interface BE_DB {
-    be_id?: string;
+    user_id: string;
+
+    be_id: string;
+    be_logo: string;
     be_name: string;
     be_address: string;
-    be_tax_id: string;
-    be_biz_number: string;
-    be_bank_info: string;
     be_email: string;
     be_phone: string;
     be_website: string;
+    be_type: string;
+
+    be_biz_number: string;
+    be_tax_id: string;
+    be_bank_info: string;
+    be_payment_term: number;
+
     be_currency: string;
+    be_inv_template_id: string;
     be_description: string;
     be_note: string;
-    be_logo: string;
-    be_inv_template_id: string;
+
+    be_timezone: string;
+    be_date_format: string;
+    be_inv_prefix: string;
+    be_inv_number: number,
+
+    status: string;
+    is_active: number;
+    is_locked: number;
+    is_deleted: number;
+    created_at: Date;
+    updated_at: Date;
+
 }
 
 
@@ -22,7 +41,7 @@ export interface TaxDB {
     tax_rate: number;
     tax_type?: string;
     tax_note?: string;
-    
+
     is_deleted?: number;
 }
 
