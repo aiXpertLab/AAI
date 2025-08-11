@@ -5,14 +5,14 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswor
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '@/src/types/RootStackParamList';
+import type { RootStack } from '@/src/types/T_Navigation';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
 import { colors } from '@/src/constants/colors';
 import { createBusinessEntity } from '@/src/firestore_cursor/business/createBusiness';
 
 export default function SmartAuthScreen() {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');

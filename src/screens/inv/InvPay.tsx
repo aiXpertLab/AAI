@@ -9,7 +9,7 @@ import { useInvStore, useBizStore } from '@/src/stores';
 
 import { genHTML } from "@/src/utils/genHTML";
 
-import { DetailStackPara, InvPaymentDB } from "@/src/types";
+import { RootStack, PMDB } from "@/src/types";
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import {viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { s_global, s_fab, s_inv } from "@/src/constants";
@@ -19,7 +19,7 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 export const Inv_Pay: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
@@ -27,7 +27,7 @@ export const Inv_Pay: React.FC = () => {
     const [showTemplateModal, setShowTemplateModal] = React.useState(false);
     const [confirmAction, setConfirmAction] = React.useState<'delete' | 'archive' | 'duplicate' | 'recurring' | null>(null);
 
-    const [payments, setPayments] = React.useState<InvPaymentDB[]>([]);
+    const [payments, setPayments] = React.useState<PMDB[]>([]);
     const [showAddPayment, setShowAddPayment] = React.useState(false);
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
@@ -130,7 +130,7 @@ export const Inv_Pay: React.FC = () => {
 
     const loadData = async () => {
 
-        const paymentData = await db.getAllAsync<InvPaymentDB>(`SELECT * FROM inv_payments WHERE inv_id = ? AND is_deleted =0`, [oInv!.id!]);
+        const paymentData = await db.getAllAsync<PMDB>(`SELECT * FROM inv_payments WHERE inv_id = ? AND is_deleted =0`, [oInv!.id!]);
         setPayments(paymentData);
         const paid_total = paymentData.reduce((sum, p) => sum + (p.pay_amount || 0), 0);
         const newBalance = oInv!.inv_total! - paid_total;

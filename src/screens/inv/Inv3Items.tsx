@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ItemDB } from "@/src/types";
 import { useInvStore } from "@/src/stores/InvStore";
 import { s_inv } from "@/src/constants";
-import ItemPickerModal from "@/src/modals/ItemPickerModal";
+import M_ItemPicker from "@/src/modals/M_ItemPicker";
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const Inv3Items: React.FC = () => {
@@ -170,7 +170,7 @@ export const Inv3Items: React.FC = () => {
             </TouchableOpacity>
 
             {/* Item Picker Modal */}
-            <ItemPickerModal
+            <M_ItemPicker
                 visible={modalVisible}
                 items={itemList}
                 onClose={() => setModalVisible(false)}

@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import BottomTabNavigator from '@/src/navigation/TabNavigator';
 
-import { RootStackParamList } from "@/src/types";
+import { RootStack } from "@/src/types";
 import { colors } from "@/src/constants/colors";
 
 import Drawer_Settings from "@/src/screens/drawer/DrawerSettings";
@@ -19,7 +19,7 @@ import Inv_New from "@/src/screens/inv/Inv_New";
 import Inv1Me_BizForm from "@/src/screens/settings/BizInfo";
 import Inv4Total_TaxForm from '@/src/screens/invoice/Inv4Total_TaxForm';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStack>();
 
 const StackNavigator = () => (
     <>

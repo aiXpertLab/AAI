@@ -8,38 +8,31 @@ import { Ionicons } from '@expo/vector-icons';
 import { usePMStore } from '@/src/stores/InvStore';
 import { s_global, } from "@/src/constants";
 
-import { RootStackPara, PMDB } from '@/src/types';
+import { RootStack, PMDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-// Firestore imports
-import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { app } from "@/src/config/firebaseConfig";
+import { usePMCrud } from "@/src/firestore/fs_crud_pm"
 
 export const PaymentMethod_List: React.FC = () => {
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const { fetchPMs } = usePMCrud();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<PMDB[]>([]);
     const { oPM, setOPM, createEmptyPM4New } = usePMStore();  // 🧠 Zustand action
 
-    // Firestore fetch
-    const fetchItems = async () => {
-        try {
-            const db = getFirestore(app);
-            const auth = getAuth(app);
-            const user = auth.currentUser;
-            if (!user) { return; } // Ensure user is authenticated
-            const uid = user.uid;
-            const colRef = collection(db, `aai/be_${uid}/payment_methods`);
-            const q = query(colRef, where("is_deleted", "==", 0));
-            const snapshot = await getDocs(q);
+    useEffect(() => {
+        const unsubscribeFocus = navigation.addListener("focus", async () => {
+            try {
+                const fetchedItems = await fetchPMs();
+                setItems(fetchedItems);
+            } catch (err) {
+                console.error("❌ fetchClients error:", err);
+            }
+        });
 
-            const activeItems: PMDB[] = snapshot.docs.map(doc => doc.data() as PMDB);
+        return unsubscribeFocus;
+    }, [navigation]);
 
-            setItems(activeItems);
-        } catch (err) { console.error("Failed to load Items:", err); }
-    };
 
     useFocusEffect(
         useCallback(() => {
@@ -51,7 +44,7 @@ export const PaymentMethod_List: React.FC = () => {
     React.useEffect(() => { hideFilterIcon(); }, []);
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener("focus", fetchItems);
+        const unsubscribe = navigation.addListener("focus", fetchPMs);
         return unsubscribe;
     }, [navigation]);
 

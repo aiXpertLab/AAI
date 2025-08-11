@@ -4,11 +4,11 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswor
 import { auth } from '@/src/config/firebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '@/src/types/RootStackParamList';
+import type { RootStack } from '@/src/types/T_Navigation';
 import { useGoogleAuth } from '@/src/utils/googleAuth';
 import analytics from '@react-native-firebase/analytics';
 
-type RootNav = NativeStackNavigationProp<RootStackParamList>;
+type RootNav = NativeStackNavigationProp<RootStack>;
 
 export default function SmartAuthScreen() {
     const navigation = useNavigation<RootNav>();

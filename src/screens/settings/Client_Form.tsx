@@ -11,7 +11,7 @@ import { useClientStore } from '@/src/stores/';
 import { useClientCrud } from '@/src/firestore/fs_crud_client';
 
 import { s_global } from "@/src/constants";
-import { DetailStackPara, ClientDB, RouteType } from "@/src/types";
+import { DetailStack, ClientDB,  } from "@/src/types";
 import { M_Confirmation, M_PaymentList } from "@/src/modals";
 import { uploadB64, cameraB64, processB64Client } from "@/src/utils/u_img64";
 import { TooltipBubble } from "@/src/components/toolTips";
@@ -20,8 +20,7 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 const ClientForm: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
-    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const saveRef = React.useRef(() => { });
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);

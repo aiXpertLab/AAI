@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useItemStore } from '@/src/stores/ItemStore';
 import { s_global, colors } from "@/src/constants";
 
-import { RootStackPara, ItemDB } from '@/src/types';
+import { RootStack, ItemDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
@@ -21,7 +21,7 @@ import { M_Confirmation, M_Spinning } from "@/src/modals";
 
 const ItemsScreen: React.FC = () => {
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<ItemDB[]>([]);
     const { createEmptyItem4New, clearOItem } = useItemStore();  // 🧠 Zustand action

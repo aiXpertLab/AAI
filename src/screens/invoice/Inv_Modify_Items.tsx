@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { ItemDB } from "@/src/types";
 // import { useSQLiteContext } from "expo-sqlite";
 import { invoiceStyles } from "@/src/constants/styles";
-import ItemPickerModal from "@/src/modals/ItemPickerModal";
+import M_ItemPicker from "@/src/modals/M_ItemPicker";
 import { useNavigation, } from "@react-navigation/native";
 
 const LineItemsList: React.FC = () => {
@@ -133,7 +133,7 @@ const LineItemsList: React.FC = () => {
                 <Text style={[invoiceStyles.addText, { color: "#888" }]}>Add a line</Text>
             </TouchableOpacity>
 
-            <ItemPickerModal
+            <M_ItemPicker
                 visible={modalVisible}
                 items={itemList}
                 onClose={() => setModalVisible(false)}

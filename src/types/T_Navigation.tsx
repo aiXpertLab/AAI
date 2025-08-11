@@ -1,27 +1,23 @@
 import { InvDB, ClientDB, ItemDB, BE_DB } from './index';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
-export type DetailStackParamList = {
+export type DetailStack = {
     Inv_New: undefined;
     Inv_Pay: undefined;
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
 };
 
-export type RootStackParamList = {
+export type RootStack = {
     Home: undefined;
     MainDrawer: undefined;
-    Inv_New: undefined;
-    Inv_Pay: undefined;
-    Inv1Me_BizForm: undefined;
-    Inv4Total_TaxForm: undefined;
     Drawer_Settings: undefined;
 
     Client_Form: undefined;
     Item_Form: undefined;
     SeedBizScreen: undefined;
 
-    DetailStack: NavigatorScreenParams<DetailStackParamList>;
+    DetailStack: NavigatorScreenParams<DetailStack>;
 
     AddItem: undefined;
     ItemForm: { item?: ItemDB; selectedItem?: ItemDB } | undefined;

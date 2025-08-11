@@ -14,7 +14,7 @@ interface ItemPickerModalProps {
     onSelectItem: (item: ItemDB) => void;
 }
 
-const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClose, onSelectItem, }) => {
+const M_ItemPicker: React.FC<ItemPickerModalProps> = ({ visible, items, onClose, onSelectItem, }) => {
     const navigation = useNavigation();
     const { createEmptyItem4New } = useItemStore(); // 🧠 Zustand action
 
@@ -67,4 +67,4 @@ const ItemPickerModal: React.FC<ItemPickerModalProps> = ({ visible, items, onClo
     );
 };
 
-export default ItemPickerModal;
+export default M_ItemPicker;

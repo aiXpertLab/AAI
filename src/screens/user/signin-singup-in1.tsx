@@ -4,8 +4,8 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, } from 'fir
 import { auth } from '@/src/config/firebaseConfig'; // Adjust the import path as necessary
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '@/src/types/RootStackParamList';
-type RootNav = NativeStackNavigationProp<RootStackParamList>;
+import type { RootStack } from '@/src/types/T_Navigation';
+type RootNav = NativeStackNavigationProp<RootStack>;
 
 export default function SmartAuthScreen() {
     const [email, setEmail] = useState('');
