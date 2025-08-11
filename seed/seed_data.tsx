@@ -1,6 +1,3 @@
-import { serverTimestamp } from "firebase/firestore";
-import * as Crypto from 'expo-crypto';
-
 const baseFlags = {
     status: "5 stars",
     is_active: 1,
@@ -40,7 +37,7 @@ export const seed_data = {
         be_date_format: "MM/DD/YYYY",
         be_inv_prefix: "INV-",
         be_inv_number: 2025,
-        
+
 
         ...baseFlags,
     },
@@ -302,44 +299,60 @@ export const seed_data = {
     // Payment methods seed data
     items: [
         {
-            item_id: "ITEM",
-            item_sku: "FBAPMK5M",
+            item_id: "ITEM0001",
+            item_number: 'P001',
             item_name: "🚧 Example Item (Tap to Edit)",
-            item_description: "This is a sample item to demonstrate how items work. You can edit or replace it.",
             item_rate: 1.00,
-            item_unit: "unit",
-            item_note: "This item is for demo purposes only.",
+            item_unit: 'item',
+            item_sku: "FBAPMK5M",
+            item_description: "This is a sample item to demonstrate how items work. You can edit or replace it.",
+
+            item_quantity: 5,  // for InvItem only
+            item_note: "For InvItem Only",      // for InvItem only
+            item_amount: 5,    // for InvItem only
 
             ...baseFlags,
         },
         {
             item_id: "T000",
-            item_sku: "SKU 4225-776-3234",
+            item_number: 'P002',
             item_name: "Adjustment",
-            item_description: "additional charges or credits",
             item_rate: 1.00,
             item_unit: "item",
-            item_note: "Notes.",
+            item_sku: "SKU 4225-776-3234",
+            item_description: "additional charges or credits",
+
+            item_quantity: 5,  // for InvItem only
+            item_note: "For InvItem Only",      // for InvItem only
+            item_amount: 5,    // for InvItem only
             ...baseFlags,
         },
         {
             item_id: "T120",
-            item_sku: "6IN-RD-CM-CO",
+            item_number: 'P003',
             item_name: "Product ",
-            item_description: "Tangible goods or materials delivered",
             item_rate: 1500.00,
             item_unit: "project",
-            item_note: "Notes.",
+            item_sku: "6IN-RD-CM-CO",
+            item_description: "Tangible goods or materials delivered",
+
+            item_quantity: 5,  // for InvItem only
+            item_note: "For InvItem Only",      // for InvItem only
+            item_amount: 5,    // for InvItem only
             ...baseFlags,
         },
         {
             item_id: "T130",
-            item_sku: "SH123-BLK-8",
+            item_number: 'P0031',
             item_name: "Consulting Session",
-            item_description: "Business strategy session (1hr)",
             item_rate: 120.00,
             item_unit: "hour",
-            item_note: "notes",
+            item_sku: "SH123-BLK-8",
+            item_description: "Business strategy session (1hr)",
+
+            item_quantity: 5,  // for InvItem only
+            item_note: "For InvItem Only",      // for InvItem only
+            item_amount: 5,    // for InvItem only
             ...baseFlags,
         },
     ],
@@ -347,35 +360,16 @@ export const seed_data = {
 
     invs: [
         {
-            inv_id: "inv_1001",
+            inv_id: "INV-1001",
             user_id: 1,
             be_id: 1,
             client_id: "C003",
-            client_company_name: "Demo Client 3",
-            client_contact_name: "Carol Lee",
-            client_contact_title: "Manager",
-            client_business_number: "123456RT001",
-            client_tax_id: "123456RT001",
-            client_address: "789 Pine Road, Fairview",
-            client_email: "carol.lee@example.com",
-            client_mainphone: "555-345-6789",
-            client_secondphone: "second phone",
-            client_fax: "fax",
-            client_website: "https://example.com",
-            client_currency: "GBP",
-            client_template_id: "t1",
-
-            client_status: "active",
-            client_note: "Call before 5 PM",
-
-            client_payment_method: "Bank Transfer",
-            client_payment_term: 7,
-            client_terms_conditions: "Payment due in 7 days.",
 
             inv_number: "INV-1001",
+            inv_date: new Date(),
+            inv_due_date: new Date(),
+
             inv_title: "Invoice for Demo Client 1",
-            inv_date: serverTimestamp(),
-            inv_due_date: serverTimestamp(),
             inv_payment_requirement: "Net 7 days",
             inv_payment_term: 7,
             inv_reference: "PO#-001",
@@ -461,8 +455,8 @@ export const seed_data = {
 
             inv_number: "INV-1002",
             inv_title: "Invoice for Demo Client 2",
-            inv_date: serverTimestamp(),
-            inv_due_date: serverTimestamp(),
+            inv_date: new Date(),
+            inv_due_date: new Date(),
             inv_payment_requirement: "Net 10 days",
             inv_payment_term: 10,
             inv_reference: "PO#-002",
@@ -546,8 +540,8 @@ export const seed_data = {
 
             inv_number: "INV-1003",
             inv_title: "Invoice for Client 3",
-            inv_date: serverTimestamp(),
-            inv_due_date: serverTimestamp(),
+            inv_date: new Date(),
+            inv_due_date: new Date(),
             inv_payment_requirement: "Net 7 days",
             inv_payment_term: 7,
             inv_reference: "PO#-003",

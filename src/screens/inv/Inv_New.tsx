@@ -29,7 +29,7 @@ export const Inv_New: React.FC = () => {
     const [isProcessing, setIsProcessing] = React.useState(false);
 
     const { oInv, isDirty, setIsDirty } = useInvStore();
-    const { oBiz, } = useBizStore();  // 🧠 Zustand action
+    const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
 
 
     const { insertInv, updateInv, fetch1Inv } = useInvCrud();
@@ -120,7 +120,7 @@ export const Inv_New: React.FC = () => {
         // ✅ 1. If inv_number is empty, set it to "empty"
         if (!oInv.inv_number || oInv.inv_number.trim() === "") {
             console.log(oInv.inv_number)
-            oInv.inv_number = "empty";
+            oInv.inv_number = "INV-pending";
         }
 
         // ✅ 2. Check if inv_number is duplicated in Firestore
@@ -128,17 +128,16 @@ export const Inv_New: React.FC = () => {
         if (invoice) {
             console.log(oInv.inv_id)
             showValidationModal(
-                'invo',
+                'Invalid Invoice Number',
                 'Invoice number duplicated. Please change the invoice number before saving.'
             );
             return
         }
 
         // ✅ 3. Client cannot be empty
-        if (!oInv.client_id || oInv.client_id.trim() === "") {
-            console.log(oInv.client_company_name)
+        if (!oInv.client_id || oInv.client_id.trim() === "link to client") {
             showValidationModal(
-                'invo',
+                'Invalid Client',
                 'Client cannot be empty. Please select a client before saving.'
             );
             return
@@ -148,7 +147,7 @@ export const Inv_New: React.FC = () => {
         if (!oInv.inv_items || oInv.inv_items.length === 0) {
             console.log(oInv.inv_items)
             showValidationModal(
-                'invo',
+                'Missing Item',
                 'Invoice must have at least one item. Please add items before saving.'
             );
             return
@@ -158,8 +157,13 @@ export const Inv_New: React.FC = () => {
         setIsDirty(false);
 
         try {
-            console.log('oinv:  ', oInv)
             await insertInv();
+            const match = oInv.inv_number.match(/(\d+)$/); // last sequence of digits
+            let newNumber = 1;
+            if (match) {
+                newNumber = parseInt(match[1], 10) + 1;
+            }
+            await updateOBiz({ be_inv_number: newNumber });
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw
         } catch (err) {
@@ -230,7 +234,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

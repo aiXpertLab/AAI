@@ -55,25 +55,5 @@ export const useItemCrud = () => {
     };
 
 
-    const fetchEmptyItem = async (): Promise<ItemDB|null> => {
-        try {
-            const invDocRef = doc(db, "aai", `be_${uid}`, "item_empty", "item_empty");
-            const invDocSnap = await getDoc(invDocRef);
-
-            if (invDocSnap.exists()) {
-                const data = invDocSnap.data() as ItemDB; // optional type cast
-                return data
-            } else {
-                console.warn("No inv_empty doc found in Firestore.");
-                return null
-            }
-        } catch (err) {
-            console.error("Error initializing invoice:", err);
-            return null
-        }
-    };
-
-
-
     return { insertItem, updateItem, fetchItems };
 };

@@ -102,7 +102,7 @@ export const emptyInv = (): InvDB => ({
     inv_payment_status: "Unpaid",
 
     inv_tnc: "Thank you for your business!",
-    inv_notes: "Payment Method:\n Bank Name: JPM \n: Account Number: 123456 \n: Bank Address: New York",
+    inv_notes: "Payment Method:\nBank Name: JPM \nAccount Number: 123456 \nBank Address: New York",
 
     inv_items: [],
     inv_payments: [],
