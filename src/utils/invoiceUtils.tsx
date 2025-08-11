@@ -1,4 +1,5 @@
 // src/utils/invoiceUtils.ts
+import { useClientCrud} from "@/src/firestore/fs_crud_client";
 
 export type PaidStatus = 'Unpaid' | 'Partially Paid' | 'Paid' | 'Overdue';
 
@@ -22,22 +23,9 @@ export async function checkOverdueInvoices(db: any) {
 }
 
 
-export async function updateInvoiceStatus(invoiceId) {
+export async function updateInvoiceStatus(invoiceId:any) {
     const today = new Date().toISOString().split('T')[0];
 
-    await db.runAsync(
-        `UPDATE invoices 
-     SET inv_payment_status = CASE
-       WHEN paid_total >= total_amount THEN 'paid'
-       WHEN paid_total = 0 AND due_date < ? THEN 'overdue'
-       WHEN paid_total = 0 THEN 'unpaid'
-       WHEN due_date < ? THEN 'overdue'
-       ELSE 'partial'
-     END,
-     updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-     WHERE id = ?`,
-        [today, today, invoiceId]
-    );
 }
 
 
@@ -58,3 +46,18 @@ export async function updateInvoiceStatus(invoiceId) {
 //     await checkAllOverdueInvoices(); // Quick check
 //     return db.getAllAsync('SELECT * FROM invoices ORDER BY due_date');
 // }
+
+
+// utils/invoiceUtils.ts
+export async function attachClientNames(invoices: any[]) {
+    const { fetch1Client } = useClientCrud();
+    return Promise.all(
+        invoices.map(async (inv) => {
+            const client = await fetch1Client(inv.client_id);
+            return {
+                ...inv,
+                client_company_name: client?.client_company_name || "(Unknown)",
+            };
+        })
+    );
+}

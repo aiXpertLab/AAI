@@ -2,12 +2,13 @@ import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, quer
 import { app } from "@/src/config/firebaseConfig";
 import * as Crypto from 'expo-crypto';
 
-import { getUserUid } from "@/src/utils/getFirebaseUid";
-const db = getFirestore(app);
-import { ClientDB } from '@/src/types';
+import { ClientDB, InvDB } from '@/src/types';
+import { useFirebaseUserStore } from "../stores";
 
 
 export const useClientCrud = () => {
+    const db = getFirestore(app);
+    const uid = useFirebaseUserStore.getState().FirebaseUser?.uid;
 
     const updateClient = async (
         Client: Partial<ClientDB>,
@@ -15,7 +16,6 @@ export const useClientCrud = () => {
         onError: (err: any) => void
     ) => {
         try {
-            const uid = getUserUid();
             if (!uid || !Client.client_id) throw new Error("Missing UID or Client ID");
 
             const docRef = doc(db, `aai/be_${uid}/clients`, Client.client_id);
@@ -70,11 +70,10 @@ export const useClientCrud = () => {
 
     const fetchClients = async (): Promise<ClientDB[]> => {
         try {
-            const uid = getUserUid();
             if (!uid) throw new Error("Missing UID");
 
             const clientsRef = collection(db, `aai/be_${uid}/clients`);
-            const q = query(clientsRef,where("is_deleted", "==", 0),);
+            const q = query(clientsRef, where("is_deleted", "==", 0),);
             const querySnap = await getDocs(q);
 
             const clients: ClientDB[] = querySnap.docs.map(doc => doc.data() as ClientDB);
@@ -85,5 +84,25 @@ export const useClientCrud = () => {
         }
     };
 
-    return { insertClient, updateClient, fetchClients };
+
+    const fetch1Client = async (clientId: string): Promise<ClientDB | null> => {
+        try {
+            const clientsRef = collection(db, `aai/be_${uid}/clients`);
+            const q = query(clientsRef, where("client_id", "==", clientId));
+            const querySnap = await getDocs(q);
+
+            if (querySnap.empty) {
+                return null;
+            }
+
+            // Return the first matching client (should be unique)
+            return querySnap.docs[0].data() as ClientDB;
+
+        } catch (err) {
+            console.error(`Failed to load client with client_id ${clientId} from Firestore:`, err);
+            return null;
+        }
+    };
+
+    return { insertClient, updateClient, fetchClients, fetch1Client };
 };
