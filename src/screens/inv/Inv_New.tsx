@@ -11,7 +11,7 @@ import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, InvDB } from "@/src/types";
-import { useInvStore, useBizStore } from '@/src/stores';
+import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 
@@ -21,7 +21,6 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
-import Toast from "react-native-toast-message";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
 export const Inv_New: React.FC = () => {
@@ -31,6 +30,7 @@ export const Inv_New: React.FC = () => {
 
     const { oInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
+    const { oClient, updateOClient } = useClientStore();
 
     const { updateBiz } = useBizCrud();
 
@@ -239,7 +239,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, oClient!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />
