@@ -22,6 +22,7 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import Toast from "react-native-toast-message";
+import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
 export const Inv_New: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
@@ -30,6 +31,8 @@ export const Inv_New: React.FC = () => {
 
     const { oInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
+
+    const { updateBiz } = useBizCrud();
 
 
     const { insertInv, updateInv, fetch1Inv } = useInvCrud();
@@ -164,6 +167,8 @@ export const Inv_New: React.FC = () => {
                 newNumber = parseInt(match[1], 10) + 1;
             }
             await updateOBiz({ be_inv_number: newNumber });
+            await updateBiz(oBiz!, () => { }, () => { },);
+
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw
         } catch (err) {
