@@ -51,18 +51,18 @@ const SeedScreen = () => {
                 await setDoc(invDoc, inv);
             }
 
-            // 7. inv_empty
-            for (const inv of seed_empty.inv_empty) {
-                const invDoc = doc(collection(bizRef, "inv_empty"), "inv_empty");
-                console.log("7.empty invoices", invDoc)
-                await setDoc(invDoc, inv);
-            }
-            // 8. item_empty
-            for (const item of seed_empty.item_empty) {
-                const itemDoc = doc(collection(bizRef, "item_empty"), "item_empty");
-                console.log("8.empty items", itemDoc)
-                await setDoc(itemDoc, item);
-            }
+            // // 7. inv_empty
+            // for (const inv of seed_empty.inv_empty) {
+            //     const invDoc = doc(collection(bizRef, "inv_empty"), "inv_empty");
+            //     console.log("7.empty invoices", invDoc)
+            //     await setDoc(invDoc, inv);
+            // }
+            // // 8. item_empty
+            // for (const item of seed_empty.item_empty) {
+            //     const itemDoc = doc(collection(bizRef, "item_empty"), "item_empty");
+            //     console.log("8.empty items", itemDoc)
+            //     await setDoc(itemDoc, item);
+            // }
         })();
     }, []);
 

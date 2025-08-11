@@ -431,27 +431,6 @@ export const seed_data = {
             user_id: 1,
             be_id: 1,
             client_id: "C002",
-            client_company_name: "Demo Client 2",
-            client_contact_name: "Bob Smith",
-            client_contact_title: "Manager",
-            client_business_number: "123456RT001",
-            client_tax_id: "123456RT001",
-            client_address: "456 Oak Avenue, Riverdale",
-            client_email: "bob.smith@example.com",
-            client_mainphone: "555-234-5678",
-            client_secondphone: "second phone",
-            client_fax: "fax",
-            client_website: "https://example.com",
-            client_currency: "CAD",
-            client_template_id: "t1",
-
-            client_status: "active",
-            client_note: "Send invoice by email only",
-
-            client_payment_method: "Bank Transfer",
-            client_payment_term: 30,
-            client_terms_conditions: "Payment due in 7 days.",
-
 
             inv_number: "INV-1002",
             inv_title: "Invoice for Demo Client 2",
@@ -515,27 +494,6 @@ export const seed_data = {
             user_id: 1,
             be_id: 1,
             client_id: "C001",
-
-            client_company_name: "Demo Client 3",
-            client_contact_name: "Alice Johnson",
-            client_contact_title: "Manager",
-            client_business_number: "123456RT001",
-            client_tax_id: "123456RT001",
-            client_address: "123 Maple Street, Springfield",
-            client_email: "alice.johnson@example.com",
-            client_mainphone: "555-123-4567",
-            client_secondphone: "second phone",
-            client_fax: "fax",
-            client_website: "https://example.com",
-            client_currency: "USD",
-            client_template_id: "t1",
-
-            client_status: "active",
-            client_note: "Preferred contact time: Morning",
-
-            client_payment_method: "Bank Transfer",
-            client_payment_term: 15,
-            client_terms_conditions: "Payment due in 7 days.",
 
 
             inv_number: "INV-1003",

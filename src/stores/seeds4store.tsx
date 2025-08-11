@@ -101,15 +101,15 @@ export const emptyInv = (): InvDB => ({
     inv_tax_rate: 0.0,   // 1%
     inv_tax_amount: 0,
 
-    inv_shipping: 11.11,
-    inv_handling: 11.11,
-    inv_deposit: 11.11,
-    inv_adjustment: 11.11,
+    inv_shipping: 0,
+    inv_handling: 0,
+    inv_deposit: 0,
+    inv_adjustment: 0,
 
     inv_total: 0,
 
-    inv_paid_total: 11.11,
-    inv_balance_due: 11.11,
+    inv_paid_total: 0,
+    inv_balance_due: 0,
     inv_payment_status: "Unpaid",
 
     inv_tnc: "Thank you for your business!",
