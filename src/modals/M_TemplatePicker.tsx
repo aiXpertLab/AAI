@@ -2,11 +2,12 @@ import React from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { WebView } from "react-native-webview";
 import Toast from 'react-native-toast-message';
+
 import { s_global_template, s_modal } from '@/src/constants';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
+import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 
 import { genHTML } from "@/src/utils/genHTML";
-import { useInvStore, useBizStore } from '@/src/stores';
 import Purchases from 'react-native-purchases';
 
 type Props = {
@@ -17,16 +18,11 @@ type Props = {
 export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     const { oInv, updateOInv, } = useInvStore();
     const { updateOBiz, oBiz } = useBizStore();
+    const { oClient } = useClientStore();
     const { updateBiz } = useBizCrud();
 
     const saveTemplate2DB = async (template_id: string) => {
-        const bizUpdate = {
-            be_inv_template_id: template_id,  // Only this field will be updated
-        };
-        updateBiz(bizUpdate,
-            () => { console.log("Update successful!"); },
-            (err) => { console.error("Update failed:", err); }
-        );
+        updateBiz({be_inv_template_id: template_id,});
     };
 
     const handleTemplatePress = async (templateId: string) => {
@@ -74,7 +70,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                 }
             }
         } else {
-            updateOInv({ inv_pdf_template: templateId });
+            updateOInv({ inv_template_id: templateId });
             updateOBiz({ be_inv_template_id: templateId });
             await saveTemplate2DB(templateId);
             onClose();
@@ -103,7 +99,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                                 >
                                     <WebView
                                         originWhitelist={['*']}
-                                        source={{ html: genHTML(oInv!, oBiz!, "picker", key) }}
+                                        source={{ html: genHTML(oInv!, oBiz!, oClient!, "picker", key) }}
                                         style={{
                                             width: '100%',
                                             height: '100%',
