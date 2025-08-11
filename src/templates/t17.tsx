@@ -4,7 +4,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 // Template t4: Dark Mode
 export const t17 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -24,7 +24,7 @@ export const t17 = (
     </div>
 
     <h3 style="margin-top: 30px;">Bill To:</h3>
-    <p>${oInv.client_company_name || "Client"}<br/>${oInv.client_address || "Address"}</p>
+    <p>${oClient?.client_company_name || "Client"}<br/>${oClient?.client_address || "Address"}</p>
 
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <thead style="background: #333;">

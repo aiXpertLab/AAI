@@ -3,7 +3,7 @@ import {timestamp2us} from "@/src/utils/dateUtils"
 
 export const t1 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, 
     oClient: Partial<ClientDB>,
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -105,7 +105,7 @@ export const t1 = (
         }
 
     <footer class="invoice-footer">
-      ${oInv.inv_terms_conditions || "Thank you for your business!"}
+      ${oInv.inv_tnc || "Thank you for your business!"}
     </footer>
   </div>
   `;

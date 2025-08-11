@@ -4,7 +4,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 // Template t5: Elegant Accent
 export const t5 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -19,7 +19,7 @@ export const t5 = (
     <div style="display: flex; justify-content: space-between;">
       <div>
         <h3>Bill To:</h3>
-        <p>${oInv.client_company_name || "Client"}<br/>${oInv.client_address || "Address"}</p>
+        <p>${oClient?.client_company_name || "Client"}<br/>${oClient?.client_address || "Address"}</p>
       </div>
       <div>
         <p><strong>Invoice No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
@@ -59,7 +59,7 @@ export const t5 = (
     </div>
 
     <footer style="text-align: center; margin-top: 40px; font-style: italic;">
-      ${oInv.inv_terms_conditions || "We appreciate your business."}
+      ${oInv.inv_tnc || "We appreciate your business."}
     </footer>
   </div>`;
 

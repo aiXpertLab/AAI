@@ -1,9 +1,9 @@
-import { BE_DB, InvDB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { BE_DB, ClientDB, InvDB, ItemDB } from "@/src/types";
+import { formatDateForUI, timestamp2us } from "@/src/utils/dateUtils";
 
 export const t3 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
@@ -21,8 +21,8 @@ export const t3 = (
       <div class="header-right">
         <h2>INVOICE</h2>
         <p><strong>No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-        <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-        <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+        <p><strong>Date:</strong> ${timestamp2us(oInv.inv_date)}</p>
+        <p><strong>Due:</strong> ${timestamp2us(oInv.inv_due_date)}</p>
         <p><strong>Terms:</strong> Net ${oInv.inv_payment_term || 7}</p>
       </div>
     </header>
@@ -30,8 +30,8 @@ export const t3 = (
     <section class="bill-to">
       <h3>Bill To</h3>
       <p>
-        ${oInv.client_company_name || "Client Company Name"}<br />
-        ${oInv.client_address || "Client Address"}
+        ${oClient?.client_company_name || "Client Company Name"}<br />
+        ${oClient?.client_address || "Client Address"}
       </p>
     </section>
 
@@ -117,7 +117,7 @@ export const t3 = (
     </section>
 
     <footer class="footer">
-      ${oInv.inv_terms_conditions || "Thank you for your business!"}
+      ${oInv.inv_tnc || "Thank you for your business!"}
     </footer>
   </div>
   `;

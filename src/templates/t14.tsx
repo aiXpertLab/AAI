@@ -3,16 +3,16 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t14 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
   <header class="clearfix">
 <div id="logo" style="text-align: center;">
-  ${oBiz.biz_logo64 ? `
+  ${oBiz.be_logo ? `
     <div class="logo" style="margin-bottom: 10px;">
-      <img src="${oBiz.biz_logo64}" alt="Logo" class="logo"
+      <img src="${oBiz.be_logo}" alt="Logo" class="logo"
         style="width: 150px; height: 100px; object-fit: cover; display: block; margin: 0 auto;" />
     </div>` : ""
   }
@@ -26,8 +26,8 @@ export const t14 = (
     </div>
     <div id="project">
       <div><span>PROJECT</span> ${oInv.inv_title || "Website development"}</div>
-      <div><span>CLIENT</span> ${oInv.client_company_name || "John Doe"}</div>
-      <div><span>ADDRESS</span> ${oInv.client_address || "796 Silver Harbour, TX 79273, US"}</div>
+      <div><span>CLIENT</span> ${oClient?.client_company_name || "John Doe"}</div>
+      <div><span>ADDRESS</span> ${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
       <div><span>EMAIL</span> <a href="mailto:${oInv.client_email || "john@example.com"}">${oInv.client_email || "john@example.com"}</a></div>
       <div><span>DATE</span> ${formatDateForUI(oInv.inv_date)}</div>
       <div><span>DUE DATE</span> ${formatDateForUI(oInv.inv_due_date)}</div>
@@ -73,7 +73,7 @@ export const t14 = (
     </table>
     <div id="notices">
       <div>NOTICE:</div>
-      <div class="notice">${oInv.inv_terms_conditions || "A finance charge of 1.5% will be made on unpaid balances after 30 days."}</div>
+      <div class="notice">${oInv.inv_tnc || "A finance charge of 1.5% will be made on unpaid balances after 30 days."}</div>
     </div>
   </main>
   <footer>

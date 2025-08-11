@@ -1,9 +1,9 @@
-import { BE_DB, InvDB, ItemDB } from "@/src/types";
+import { BE_DB, ClientDB, InvDB, ItemDB } from "@/src/types";
 import {  timestamp2us } from "@/src/utils/dateUtils";
 
 export function t2(
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
     const bodyContent = `
@@ -29,8 +29,8 @@ export function t2(
       <div class="section" style="display: flex; justify-content: space-between;">
         <div style="width: 48%;">
           <strong>INVOICE TO</strong><br>
-          ${oInv.client_company_name || 'Client Company Name'}<br>
-          ${(oInv.client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
+          ${oClient?.client_company_name || 'Client Company Name'}<br>
+          ${(oClient?.client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
         </div>
         <div style="width: 48%;">
           <strong>INVOICE #</strong>: ${oInv.inv_number || 'INV-Number'}<br>
@@ -116,7 +116,7 @@ export function t2(
         </div>
       </div>
         <div class="footer">
-            ${(oInv.inv_terms_conditions || 'Thank you for your business!').replace(/\n/g, "<br>")}
+            ${(oInv.inv_tnc || 'Thank you for your business!').replace(/\n/g, "<br>")}
         </div>
     </div>
   `;

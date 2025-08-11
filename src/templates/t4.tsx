@@ -3,7 +3,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t4 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -14,9 +14,9 @@ export const t4 = (
 		<div class="container">
 			<figure>
                   
-                    ${oBiz.biz_logo64 ? `
+                    ${oBiz.be_logo ? `
           <div class="logo-section" style="margin-bottom: 10px;">
-            <img src="${oBiz.biz_logo64}" alt="Logo" class="logo"
+            <img src="${oBiz.be_logo}" alt="Logo" class="logo"
               style="width: 150px; height: 100px; object-fit: cover; display: block;" />
           </div>` : ""
         }
@@ -37,8 +37,8 @@ export const t4 = (
 		<div class="details clearfix">
 			<div class="client left">
 				<p>INVOICE TO:</p>
-				<p class="name">${oInv.client_company_name}</p>
-				<p>${oInv.client_address}
+				<p class="name">${oClient?.client_company_name}</p>
+				<p>${oClient?.client_address}
 				</p>
 				<a href="mailto:john@example.com">${oInv.client_email}</a>
 			</div>

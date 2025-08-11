@@ -3,7 +3,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t10 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -11,7 +11,7 @@ export const t10 = (
     <div class="invoice-wrapper">
       <div class="card">
         <div class="header">
-          ${oBiz.biz_logo64 ? `<img src="${oBiz.biz_logo64}" class="logo" alt="Logo"/>` : ""}
+          ${oBiz.be_logo ? `<img src="${oBiz.be_logo}" class="logo" alt="Logo"/>` : ""}
           <h1>${oBiz.be_name || "Your Company"}</h1>
           <p class="info">${oBiz.be_address || ""} | ${oBiz.be_email || ""} | ${oBiz.be_phone || ""}</p>
         </div>
@@ -25,7 +25,7 @@ export const t10 = (
           </div>
           <div>
             <h3>Bill To:</h3>
-            <p>${oInv.client_company_name || "Client Company Name"}<br/>${oInv.client_address || "Client Address"}</p>
+            <p>${oClient?.client_company_name || "Client Company Name"}<br/>${oClient?.client_address || "Client Address"}</p>
           </div>
         </div>
 
@@ -70,7 +70,7 @@ export const t10 = (
         }
 
         <footer>
-          ${oInv.inv_terms_conditions || "Thank you for your business!"}
+          ${oInv.inv_tnc || "Thank you for your business!"}
         </footer>
       </div>
     </div>

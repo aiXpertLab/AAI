@@ -4,7 +4,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 // Template t12: Classic Styled Invoice (based on original HTML/CSS)
 export const t12 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -28,8 +28,8 @@ export const t12 = (
       <section style="margin-bottom: 3em;">
         <h2 style="font-size: 16px; font-weight: bold;">Bill To:</h2>
         <address style="font-size: 125%; font-weight: bold;">
-          <p>${oInv.client_company_name || "Client Company"}</p>
-          <p>${oInv.client_address || "Client Address"}</p>
+          <p>${oClient?.client_company_name || "Client Company"}</p>
+          <p>${oClient?.client_address || "Client Address"}</p>
         </address>
       </section>
 

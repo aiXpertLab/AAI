@@ -1,9 +1,10 @@
-import { InvDB, BE_DB, ItemDB } from "@/src/types";
+import { InvDB, BE_DB, ItemDB, ClientDB } from "@/src/types";
 import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t11 = (
   oInv: Partial<InvDB>,
   oBiz: Partial<BE_DB>,
+  oClient: Partial<ClientDB>,
   // oInv!.inv_items: Partial<ItemDB>[],
   previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -58,9 +59,9 @@ export const t11 = (
                     <table width="220" border="0" cellpadding="0" cellspacing="0" align="left" class="col">
                       <tr>
   <td align="left" style="display: flex; justify-content: space-between; align-items: center;">
-            ${oBiz.biz_logo64 ? `
+            ${oBiz.be_logo ? `
           <div class="logo-section" style="margin-bottom: 10px;">
-            <img src="${oBiz.biz_logo64}" alt="Logo" class="logo"
+            <img src="${oBiz.be_logo}" alt="Logo" class="logo"
               style="width: 300px; height: 60px; object-fit: cover; display: block;" />
           </div>` : ""
         }
@@ -70,7 +71,7 @@ export const t11 = (
 </tr>
 <tr>
                         <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; text-align: left;">
-                          Hello, ${oInv.client_company_name || "Client Name"}.<br />
+                          Hello, ${oClient?.client_company_name || "Client Name"}.<br />
                           Thank you for your order.
                         </td>
                       </tr>

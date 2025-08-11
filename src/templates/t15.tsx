@@ -3,7 +3,7 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t15 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -29,8 +29,8 @@ export const t15 = (
     <div class="bill-section">
       <h3>INVOICE TO:</h3>
       <p>
-        ${oInv.client_company_name || "John Doe"}<br />
-        ${oInv.client_address || "796 Silver Harbour, TX 79273, US"}<br />
+        ${oClient?.client_company_name || "John Doe"}<br />
+        ${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}<br />
         ${oInv.client_email || "john@example.com"}
       </p>
     </div>

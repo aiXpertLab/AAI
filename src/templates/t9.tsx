@@ -3,14 +3,14 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t9 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
     <div class="wrapper">
       <header>
-        ${oBiz.biz_logo64 ? `<img src="${oBiz.biz_logo64}" alt="Logo" class="logo" />` : ""}
+        ${oBiz.be_logo ? `<img src="${oBiz.be_logo}" alt="Logo" class="logo" />` : ""}
         <h1>${oBiz.be_name || "Your Company"}</h1>
       </header>
 
@@ -24,8 +24,8 @@ export const t9 = (
         <div>
           <h3>Bill To:</h3>
           <p>
-            ${oInv.client_company_name || "Client Company Name"}<br />
-            ${oInv.client_address || "Client Address"}
+            ${oClient?.client_company_name || "Client Company Name"}<br />
+            ${oClient?.client_address || "Client Address"}
           </p>
         </div>
       </section>
@@ -69,7 +69,7 @@ export const t9 = (
         }
 
       <footer>
-        ${oInv.inv_terms_conditions || "Thank you for your business!"}
+        ${oInv.inv_tnc || "Thank you for your business!"}
       </footer>
     </div>
   `;

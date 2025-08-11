@@ -33,9 +33,9 @@ export const Inv5Notes: React.FC = () => {
                     placeholder="Thank you for your business!"
                     placeholderTextColor="#aaa"
                     multiline
-                    value={oInv!.inv_terms_conditions}
+                    value={oInv!.inv_tnc}
                     onChangeText={(text) => {
-                        updateOInv({ inv_terms_conditions: text });
+                        updateOInv({ inv_tnc: text });
                         setIsDirty(true);
                     }}
 

@@ -3,14 +3,14 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 
 export const t13 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>,
+    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
     const bodyContent = `
   <header class="clearfix">
     <div id="logo">
-      ${oBiz.biz_logo64 ? `<img src="${oBiz.biz_logo64}">` : ""}
+      ${oBiz.be_logo ? `<img src="${oBiz.be_logo}">` : ""}
     </div>
     <div id="company">
       <h2 class="name">${oBiz.be_name || "Company Name"}</h2>
@@ -23,8 +23,8 @@ export const t13 = (
     <div id="details" class="clearfix">
       <div id="client">
         <div class="to">INVOICE TO:</div>
-        <h2 class="name">${oInv.client_company_name || "John Doe"}</h2>
-        <div class="address">${oInv.client_address || "796 Silver Harbour, TX 79273, US"}</div>
+        <h2 class="name">${oClient?.client_company_name || "John Doe"}</h2>
+        <div class="address">${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
         <div class="email"><a href="mailto:${oInv.client_email || "john@example.com"}">${oInv.client_email || "john@example.com"}</a></div>
       </div>
       <div id="invoice">
@@ -78,7 +78,7 @@ export const t13 = (
     <div id="thanks">Thank you!</div>
     <div id="notices">
       <div>NOTICE:</div>
-      <div class="notice">${oInv.inv_terms_conditions || "A finance charge of 1.5% will be made on unpaid balances after 30 days."}</div>
+      <div class="notice">${oInv.inv_tnc || "A finance charge of 1.5% will be made on unpaid balances after 30 days."}</div>
     </div>
   </main>
   <footer>
