@@ -184,7 +184,21 @@ const ItemForm: React.FC = () => {
 
 
                         {/* Card 2: Contact */}
+
+
                         <View style={s_global.Card} >
+                            <Text style={s_global.Label}>Item Number</Text>
+
+                            <TextInput
+                                style={s_global.Input}
+                                placeholder="Item Number"
+                                placeholderTextColor="#999"
+                                multiline
+                                value={oItem?.item_number}
+                                onChangeText={(text) => handleChange("item_number", text)}
+                            />
+                            <View style={{ height: 12 }} />
+
                             <Text style={s_global.Label}>Item Description</Text>
                             <TextInput
                                 style={[s_global.Input, { minHeight: 80, textAlignVertical: 'top' }]}

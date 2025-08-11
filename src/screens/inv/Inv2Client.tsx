@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { Timestamp } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -11,7 +12,7 @@ import { invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global"
 import M_ClientPicker from "@/src/modals/M_ClientPicker_Inv";
 
-import { useInvStore } from "@/src/stores/InvStore";
+import { useInvStore, useClientStore } from "@/src/stores/InvStore";
 
 export const Inv2Client: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
@@ -23,28 +24,13 @@ export const Inv2Client: React.FC = () => {
 
     if (!oInv) { return "loading..."; }
 
-
     const onPressClientPicker = () => {
         setIsDirty(true); // Trigger a re-render to show the modal
         setClientModalVisible(true);
     };
 
     const handleSelectClient = (client: ClientDB) => {
-        updateOInv({
-            client_id: client.client_id,
-            client_company_name: client.client_company_name,
-            client_contact_name: client.client_contact_name,
-            client_address: client.client_address,
-            client_email: client.client_email,
-            client_mainphone: client.client_mainphone,
-            client_secondphone: client.client_secondphone,
-            client_fax: client.client_fax,
-            client_currency: client.client_currency ?? "USD",
-            client_business_number: client.client_business_number,
-            inv_payment_term: client.client_payment_term ?? 7,
-            client_payment_method: client.client_payment_method,
-            client_terms_conditions: client.client_terms_conditions,
-        });
+        updateOInv({ client_id: client.client_id, });
         setClientModalVisible(false);
     };
 

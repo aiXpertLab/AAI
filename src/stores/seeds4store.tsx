@@ -15,21 +15,32 @@ const baseFlags = {
 
 
 
-export const createEmptyClient4New = (): Partial<ClientDB> => ({
-    client_company_name: '',
-    client_address: '',
-    client_business_number: '',
+export const createEmptyClient4New = (): ClientDB => ({
+    client_id: 'c_' + Crypto.randomUUID().replace(/-/g, ''),
+    user_id: "reserved",
+    be_id: "reserved",
 
+    client_number: "internal usage",
+    client_business_number: '',
+    client_company_name: '',
     client_contact_name: '',
+    client_contact_title: '',
+
+    client_address: '',
     client_email: '',
     client_mainphone: '',
     client_secondphone: '',
     client_fax: '',
+    client_website: "https://aiautoinvoicing.github.io",
 
     client_currency: '',
+    client_tax_id: 'taxid',
     client_payment_term: 7,
+    client_payment_method: "",
+
     client_terms_conditions: '',
     client_note: '',
+    ...baseFlags,
 })
 
 

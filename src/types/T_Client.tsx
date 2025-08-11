@@ -1,7 +1,7 @@
 export interface ClientDB {
     client_id: string;
     user_id: string;
-    biz_id: string;
+    be_id: string;
 
     client_number: string;
     client_company_name: string;
@@ -16,19 +16,19 @@ export interface ClientDB {
 
     client_business_number: string;
 
-    client_tax_id: string;
     client_currency: string;
-    client_terms_conditions: string;
-    client_status: string;
-    client_note: string;
-
+    client_tax_id: string;
     client_payment_term: number;
     client_payment_method: string;
 
-    is_deleted: number;
+    client_terms_conditions: string;
+    client_note: string;
+
+
+    status: string;
+    is_active: number;
     is_locked: number;
-
-    created_at: any; // serverTimestamp()
-    updated_at: any; // serverTimestamp()
-
+    is_deleted: number;
+    created_at: Date;
+    updated_at: Date;
 }

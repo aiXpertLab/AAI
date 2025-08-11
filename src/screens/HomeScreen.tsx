@@ -26,7 +26,7 @@ const HomeScreen: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices,] = React.useState<InvDB[]>([]);
-    const { updateInv, fetchInvs, fetchEmptyInv } = useInvCrud();
+    const { updateInv, fetchInvs, } = useInvCrud();
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
