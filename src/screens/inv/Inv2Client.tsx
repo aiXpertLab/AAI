@@ -13,9 +13,14 @@ import { s_global } from "@/src/constants/s_global"
 import M_ClientPicker from "@/src/modals/M_ClientPicker_Inv";
 
 import { useInvStore, useClientStore } from "@/src/stores/InvStore";
+import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
 export const Inv2Client: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
+    const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
+    const [clients, setClients] = React.useState<ClientDB[]>([]);
+    const { insertClient, updateClient, fetchClients } = useClientCrud();
+
     const [isClientModalVisible, setClientModalVisible] = React.useState(false);
 
     const [showIssueDatePicker, setShowIssueDatePicker] = React.useState(false);
@@ -31,21 +36,23 @@ export const Inv2Client: React.FC = () => {
 
     const handleSelectClient = (client: ClientDB) => {
         updateOInv({ client_id: client.client_id, });
+        setOClient(client); // Update Zustand store with selected client
+        setPaymentTerm(String(client.client_payment_term));
         setClientModalVisible(false);
     };
 
     const setPaymentTerm = (text: string) => {
         if (text === "") {
-            updateOInv({ inv_payment_term: undefined });
+            updateOInv({ inv_payment_term: 0 });
         } else {
             // Allow "0" by explicitly checking the string isn't empty
             const term = parseInt(text);
             if (!isNaN(term)) {  // This will now properly accept 0
-                const issueDate = oInv.inv_date ? oInv.inv_date.toDate() : new Date();
+                const issueDate = oInv.inv_date ? oInv.inv_date : new Date();
                 const newDueDate = addDateDays(issueDate, term);
                 updateOInv({
                     inv_payment_term: term,
-                    inv_due_date: Timestamp.fromDate(newDueDate),
+                    inv_due_date: newDueDate,
                 });
             }
         }
@@ -61,21 +68,21 @@ export const Inv2Client: React.FC = () => {
                     <Text style={invoiceStyles.smallText}>Billed to:</Text>
                     <TouchableOpacity
                         onPress={onPressClientPicker}
-                        style={[!oInv?.client_company_name && invoiceStyles.addClientBox,
+                        style={[!oClient && invoiceStyles.addClientBox,
                         {
                             flex: 1,
                             paddingVertical: 8,
-                            justifyContent: oInv?.client_company_name ? "flex-start" : "center",
-                            alignItems: oInv?.client_company_name ? "flex-start" : "center",
+                            justifyContent: oClient ? "flex-start" : "center",
+                            alignItems: oClient ? "flex-start" : "center",
                         },
                         ]}
                     >
-                        {oInv?.client_company_name ? (
+                        {oClient ? (
                             <View>
-                                <Text style={invoiceStyles.clientName}>{oInv.client_company_name}</Text>
-                                <Text style={invoiceStyles.clientDetail}>{oInv.client_contact_name}</Text>
-                                {oInv.client_address && <Text style={invoiceStyles.clientDetail}>{oInv.client_address}</Text>}
-                                {oInv.client_mainphone && <Text style={invoiceStyles.clientDetail}>{oInv.client_mainphone}</Text>}
+                                <Text style={invoiceStyles.clientName}>{oClient.client_company_name}</Text>
+                                <Text style={invoiceStyles.clientDetail}>{oClient.client_contact_name}</Text>
+                                {oClient.client_address && <Text style={invoiceStyles.clientDetail}>{oClient.client_address}</Text>}
+                                {oClient.client_mainphone && <Text style={invoiceStyles.clientDetail}>{oClient.client_mainphone}</Text>}
                             </View>
                         ) : (
                             <Text style={{ color: "#999", textAlign: "center" }}>+ Add a Client</Text>
@@ -132,7 +139,7 @@ export const Inv2Client: React.FC = () => {
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 16 }}>
                 {/* Payment Term */}
-                {oInv.client_company_name && (
+                {oClient && (
                     <View style={{ flex: 1 }}>
                         <View style={{ flexDirection: "row", alignItems: "center" }}>
                             <Text style={[s_global.Label, { textAlign: "left", marginBottom: 0, fontSize: 14 }]}>Payment Term:</Text>
@@ -166,7 +173,7 @@ export const Inv2Client: React.FC = () => {
             {/* Date Pickers */}
             {showIssueDatePicker && (
                 <DateTimePicker
-                    value={oInv.inv_date ? oInv.inv_date.toDate() : new Date()}
+                    value={oInv.inv_date ? oInv.inv_date : new Date()}
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
@@ -176,7 +183,7 @@ export const Inv2Client: React.FC = () => {
                             const term = oInv.inv_payment_term ?? 7;
                             // const newDueDate = addDateDays(selectedDate, term);
                             updateOInv({
-                                inv_date: Timestamp.fromDate(selectedDate),
+                                inv_date: selectedDate,
                                 // inv_due_date: newDueDate.toISOString(),
                             });
                         }
@@ -186,19 +193,19 @@ export const Inv2Client: React.FC = () => {
             )}
             {showDueDatePicker && (
                 <DateTimePicker
-                    value={oInv.inv_due_date ? oInv.inv_due_date.toDate() : new Date()}
+                    value={oInv.inv_due_date ? oInv.inv_due_date : new Date()}
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
                         setShowDueDatePicker(false);
                         if (selectedDate) {
                             setIsDirty(true);
-                            const issueDate = oInv.inv_date ? oInv.inv_date.toDate() : new Date();
+                            const issueDate = oInv.inv_date ? oInv.inv_date : new Date();
                             const diffMs = selectedDate.getTime() - issueDate.getTime();
                             const term = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
                             updateOInv({
-                                inv_due_date: Timestamp.fromDate(selectedDate),
+                                inv_due_date: selectedDate,
                                 inv_payment_term: term >= 0 ? term : 0,
                             });
                         }
