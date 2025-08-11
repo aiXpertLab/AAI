@@ -30,7 +30,7 @@ const HomeScreen: React.FC = () => {
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
-    const { setOInv, updateOInv, createEmptyInv } = useInvStore();  // 🧠 Zustand action
+    const { setOInv, oInv, updateOInv, createEmptyInv } = useInvStore();  // 🧠 Zustand action
 
     const [selectedHeaderFilter, setSelectedHeaderFilter] = React.useState({
         hf_client: "All",
@@ -133,6 +133,23 @@ const HomeScreen: React.FC = () => {
         fetchInvoicesFromModule();
     }, [selectedHeaderFilter]);
 
+    
+    const fetchBiz1 = async () => {
+        try {
+            const data = await fetchBiz();
+            setOBiz(data || null);
+        } catch (err) {
+            console.error("Failed to load invoices:", err);
+        }
+    };
+
+
+    React.useEffect(() => {
+        if (!oBiz) {
+            fetchBiz1();
+        }
+    }, []);
+
     useFocusEffect(
         React.useCallback(() => {
             fetchInvoicesFromModule();
@@ -145,9 +162,15 @@ const HomeScreen: React.FC = () => {
             console.log('------', data)
             setOBiz(data || null);
         }
-        const newInvNumber = `${oBiz!.be_inv_prefix}-${oBiz?.be_inv_number}`
+        console.log(oBiz)
+        const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
+        console.log(newInvNumber,'  000000000000')
+        
         createEmptyInv()
+        
+        
         updateOInv({ inv_number: newInvNumber });
+        console.log(oInv?.inv_number)
         navigation.navigate('DetailStack', {
             screen: 'Inv_New',
             params: { mode: 'create_new' },

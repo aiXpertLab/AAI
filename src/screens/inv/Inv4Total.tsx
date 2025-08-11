@@ -102,7 +102,7 @@ export const Inv4Total: React.FC = () => {
             <TouchableOpacity onPress={() => setDiscountModalVisible(true)}>
                 <View style={invoiceStyles.totalRow}>
                     <Text style={[s_global.Label, { color: "#007AFF" }]}>
-                        {discount ? `Discount${discount.type === "percent" ? ` (${discount.value}%)` : ""}` : "Add a Discount"}
+                        {discount ? `Discount${discount.type === "percent" ? ` (${discount.value}%)` : ""}` : "Discount"}
                     </Text>
                     <Text style={invoiceStyles.value}>-${discountAmount.toFixed(2)}</Text>
                 </View>

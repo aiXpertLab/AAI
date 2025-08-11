@@ -84,18 +84,18 @@ export const emptyInv = (): InvDB => ({
     inv_reference: "PO#168",
     inv_currency: "USD",
 
-    inv_subtotal: 1.11,
-    inv_discount: 1.11,
+    inv_subtotal: 0.00,
+    inv_discount: 0,
     inv_tax_label: "Tax",
-    inv_tax_rate: 0.0111,   // 1%
-    inv_tax_amount: 1.11,
+    inv_tax_rate: 0.0,   // 1%
+    inv_tax_amount: 0,
 
     inv_shipping: 11.11,
     inv_handling: 11.11,
     inv_deposit: 11.11,
     inv_adjustment: 11.11,
 
-    inv_total: 99.99,
+    inv_total: 0,
 
     inv_paid_total: 11.11,
     inv_balance_due: 11.11,
