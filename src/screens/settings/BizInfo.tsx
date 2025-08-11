@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, ActivityIndicator, Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Alert, } from "react-native";
+import { Image, ActivityIndicator, Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Alert, ToastAndroid, } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -10,10 +10,11 @@ import Toast from 'react-native-toast-message';
 import { s_global, s_inv } from "@/src/constants";
 import { BE_DB } from '@/src/types';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import {useBizStore } from '@/src/stores/BizStore';
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
+import { useInvStore } from "@/src/stores/InvStore";
 
 const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
@@ -101,24 +102,18 @@ export const BizInfo: React.FC = () => {
 
         setIsDirty(true);
 
-        const success = updateBiz(
-            oBiz,
-            () => {
-                Toast.show({
-                    type: 'success',
-                    text1: 'Saved!',
-                    text2: 'Business info updated.',
-                    position: 'bottom',
-                });
-
-                navigation.goBack();
-            },
-            (err) => {
-                alert("Failed to save business info.");
-            }
-        );
+        try {
+            await updateBiz(oBiz);
+            navigation.goBack();
+            ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+        } catch (err) {
+            ToastAndroid.show('Failed!', ToastAndroid.SHORT);
+        } finally {
+            setIsDirty(false);
+            saveRef.current = handleSave;
+        }
     };
-    saveRef.current = handleSave;
+    
 
     return (
         <KeyboardAvoidingView

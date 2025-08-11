@@ -28,31 +28,6 @@ export const useInvStore = create<OInvStore>((set) => ({
 
 
 
-// Store for business info (oBiz)
-type OBizStore = {
-    oBiz: BE_DB | null;
-    setOBiz: (biz: BE_DB | null) => void;
-    updateOBiz: (biz: Partial<BE_DB>) => void;
-    clearOBiz: () => void;
-};
-
-export const useBizStore = create<OBizStore>((set) => ({
-    oBiz: null,
-    setOBiz: (Biz) => {
-        console.log("setOBiz called with", Biz?.be_description);
-        set({ oBiz: Biz });
-    },
-    updateOBiz: (Biz) => {
-        console.log("updateOBiz called with", Biz);
-        set((state) => ({ oBiz: { ...state.oBiz!, ...Biz } }));
-    },
-    clearOBiz: () => {
-        console.log("clearOBiz called");
-        set({ oBiz: null });
-    },
-}));
-
-
 // Store for tax info (oTax)
 type OTaxStore = {
     oTax: Partial<TaxDB> | null;

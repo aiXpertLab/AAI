@@ -15,7 +15,7 @@ import { useInvCrud } from '@/src/firestore/fs_crud_inv';
 import { s_global, s_fab, colors } from "@/src/constants";
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, ClientDB, RouteType, InvDB } from "@/src/types";
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores';
 
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';

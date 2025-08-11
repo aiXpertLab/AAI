@@ -1,37 +1,24 @@
 import { getDoc, getFirestore, doc, updateDoc, serverTimestamp, Timestamp, collection, getDocs, setDoc, runTransaction } from "firebase/firestore";
 import { app } from "@/src/config/firebaseConfig";
-import { getUserUid } from "@/src/utils/getFirebaseUid";
 import { BE_DB } from "@/src/types";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-import { useBizStore } from '@/src/stores/InvStore';
+import { useBizStore } from '@/src/stores/BizStore';
 
 const db = getFirestore(app);
 
 export const useBizCrud = () => {
     const firebaseUser = useFirebaseUserStore.getState().FirebaseUser;
     const uid = firebaseUser?.uid;
-    const {oBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
+    const { oBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
 
-    const updateBiz = async (
-        biz: Partial<BE_DB>,
-        onSuccess: () => void,
-        onError: (err: any) => void
-    ) => {
-        try {
-            const docRef = doc(db, `aai/be_${uid}`);
-
-            await updateDoc(docRef, {
-                ...biz,
-                updated_at: serverTimestamp(),
-            });
-
-            console.log("✅ Biz updated successfully");
-            onSuccess();
-        } catch (err) {
-            console.error("❌ updateBiz error:", err);
-            onError(err);
-        }
+    const updateBiz = async (updates: Partial<BE_DB>,): Promise<void> => {
+        const docRef = doc(db, `aai/be_${uid}`);
+        await updateDoc(docRef, {
+            ...updates,
+            updated_at: serverTimestamp(),
+        });
     };
+
 
 
     const fetchBiz = async () => {

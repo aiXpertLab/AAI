@@ -6,7 +6,7 @@ import { s_global, s_modal } from '@/src/constants';
 
 import { useSQLiteContext } from 'expo-sqlite';
 import { genHTML } from "@/src/utils/genHTML";
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores';
 import Purchases from 'react-native-purchases';
 
 type Props = {

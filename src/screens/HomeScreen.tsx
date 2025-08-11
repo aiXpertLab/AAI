@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores';
 import { RootStackPara, InvDB, ItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
@@ -23,7 +23,7 @@ const HomeScreen: React.FC = () => {
     useTabSync('Invoices');
     const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
     const { fetchBiz } = useBizCrud();
-    const { oBiz, setOBiz,  } = useBizStore();
+    const { oBiz, setOBiz, } = useBizStore();
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices,] = React.useState<InvDB[]>([]);
@@ -118,107 +118,104 @@ const HomeScreen: React.FC = () => {
             <Pressable
                 onPress={() => {
                     handleSelectInvoice(invoice);
-                    navigation.navigate('DetailStack', {
-                        screen: 'Inv_Pay',
-                        params: { mode: 'modify_existed' },
-                    });
+                    navigation.navigate('DetailStack', { screen: 'Inv_Pay' });
                 }}
-                style={({ pressed }) => ({
-                    transform: [{ translateY: pressed ? 1 : 0 }],
-                })}
+            style={({ pressed }) => ({
+                transform: [{ translateY: pressed ? 1 : 0 }],
+            })}
             >
-                <InvoiceCard item={invoice} />
-            </Pressable>
-        </Swipeable>
+            <InvoiceCard item={invoice} />
+        </Pressable>
+        </Swipeable >
     );
 
-    React.useEffect(() => {
+React.useEffect(() => {
+    fetchInvoicesFromModule();
+}, [selectedHeaderFilter]);
+
+
+const fetchBiz1 = async () => {
+    try {
+        const data = await fetchBiz();
+        setOBiz(data || null);
+    } catch (err) {
+        console.error("Failed to load invoices:", err);
+    }
+};
+
+
+React.useEffect(() => {
+    if (!oBiz) {
+        fetchBiz1();
+    }
+}, []);
+
+useFocusEffect(
+    React.useCallback(() => {
         fetchInvoicesFromModule();
-    }, [selectedHeaderFilter]);
+    }, [])
+);
 
-    
-    const fetchBiz1 = async () => {
-        try {
-            const data = await fetchBiz();
-            setOBiz(data || null);
-        } catch (err) {
-            console.error("Failed to load invoices:", err);
-        }
-    };
+const handleAddNewInvoice = async () => {
+    if (!oBiz) {
+        const data = await fetchBiz();
+        console.log('------', data)
+        setOBiz(data || null);
+    }
+    console.log(oBiz)
+    const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
+    console.log(newInvNumber, '  000000000000')
 
-
-    React.useEffect(() => {
-        if (!oBiz) {
-            fetchBiz1();
-        }
-    }, []);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            fetchInvoicesFromModule();
-        }, [])
-    );
-
-    const handleAddNewInvoice = async () => {
-        if (!oBiz) {
-            const data = await fetchBiz();
-            console.log('------', data)
-            setOBiz(data || null);
-        }
-        console.log(oBiz)
-        const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
-        console.log(newInvNumber,'  000000000000')
-        
-        createEmptyInv()
-        
-        
-        updateOInv({ inv_number: newInvNumber });
-        console.log(oInv?.inv_number)
-        navigation.navigate('DetailStack', {
-            screen: 'Inv_New',
-            params: { mode: 'create_new' },
-        });
-    };
+    createEmptyInv()
 
 
-    return (
-        <View style={s_global.Container}>
-            <View>
-                <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
+    updateOInv({ inv_number: newInvNumber });
+    console.log(oInv?.inv_number)
+    navigation.navigate('DetailStack', {
+        screen: 'Inv_New',
+        params: { mode: 'create_new' },
+    });
+};
 
-                {/* filter tabs */}
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
-                    <FilterTabs selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
-                </View>
+
+return (
+    <View style={s_global.Container}>
+        <View>
+            <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
+
+            {/* filter tabs */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
+                <FilterTabs selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             </View>
+        </View>
 
-            {/* List Section - takes remaining space */}
-            <FlatList<InvDB>
-                data={selectedFilter === "All" ? invoices : invoices.filter(inv => inv.inv_payment_status === selectedFilter)}
-                keyExtractor={(item) => item.inv_id}
+        {/* List Section - takes remaining space */}
+        <FlatList<InvDB>
+            data={selectedFilter === "All" ? invoices : invoices.filter(inv => inv.inv_payment_status === selectedFilter)}
+            keyExtractor={(item) => item.inv_id}
 
-                renderItem={renderItem}
-                contentContainerStyle={
-                    [
-                        invoices.length === 0 && { flex: 1, justifyContent: 'center' }
-                    ]}
-                ListEmptyComponent={renderEmptyComponent}
-            />
+            renderItem={renderItem}
+            contentContainerStyle={
+                [
+                    invoices.length === 0 && { flex: 1, justifyContent: 'center' }
+                ]}
+            ListEmptyComponent={renderEmptyComponent}
+        />
 
-            <M_HeaderFilter
-                selectedHeaderFilter={selectedHeaderFilter}
-                setSelectedHeaderFilter={setSelectedHeaderFilter}
-            />
+        <M_HeaderFilter
+            selectedHeaderFilter={selectedHeaderFilter}
+            setSelectedHeaderFilter={setSelectedHeaderFilter}
+        />
 
-            <TouchableOpacity
-                style={[s_global.FABSquare]}
-                onPress={handleAddNewInvoice}
-            >
-                <Ionicons name="add" size={42} color="white" />
-            </TouchableOpacity>
+        <TouchableOpacity
+            style={[s_global.FABSquare]}
+            onPress={handleAddNewInvoice}
+        >
+            <Ionicons name="add" size={42} color="white" />
+        </TouchableOpacity>
 
-        </View >
-    );
+    </View >
+);
 };
 
 export default HomeScreen;

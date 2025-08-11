@@ -11,7 +11,7 @@ import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStackPara, InvDB } from "@/src/types";
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore } from '@/src/stores';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 
@@ -35,7 +35,7 @@ export const Inv_New: React.FC = () => {
     const { updateBiz } = useBizCrud();
 
 
-    const { insertInv, updateInv, fetch1Inv } = useInvCrud();
+    const { insertInv, fetch1Inv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
     const saveRef = React.useRef(() => { });
@@ -167,7 +167,7 @@ export const Inv_New: React.FC = () => {
                 newNumber = parseInt(match[1], 10) + 1;
             }
             await updateOBiz({ be_inv_number: newNumber });
-            await updateBiz(oBiz!, () => { }, () => { },);
+            await updateBiz({ be_inv_number: newNumber });
 
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw

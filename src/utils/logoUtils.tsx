@@ -5,7 +5,7 @@ import { BE_DB } from '@/src/types';
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from 'expo-image-picker';
 
-import { useBizStore } from '@/src/stores/InvStore';
+import { useBizStore } from '@/src/stores/BizStore';
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { use } from 'react';
 

@@ -13,7 +13,7 @@ import { s_global } from "@/src/constants";
 import { DetailStackPara } from "@/src/types";
 import SettingItem from "./SettingItem";
 import { useBizCrud } from '@/src/firestore/fs_crud_biz';
-import { useBizStore } from '@/src/stores/InvStore';
+import { useBizStore } from '@/src/stores/BizStore';
 
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
