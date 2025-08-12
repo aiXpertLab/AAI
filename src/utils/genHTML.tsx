@@ -5,17 +5,16 @@ import { t11, t12, t13, t14, t15, t16, t17, t18 } from "@/src/templates";
 export const genHTML = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>, 
-    oClient: Partial<ClientDB> = {},
     previewMode: "pdf" | "picker" | "view" = "pdf",
     templateName: string = "t2"
 ) => {
     switch (templateName) {
         case "t1":
-            return t1(oInv, oBiz, oClient, previewMode);
+            return t1(oInv, oBiz, previewMode);
         case "t2":
-            return t2(oInv, oBiz, oClient, previewMode);
+            return t2(oInv, oBiz, previewMode);
         case "t3":
-            return t3(oInv,  oBiz,  oClient, previewMode);
+            return t3(oInv,  oBiz, previewMode);
         case "t4":
             return t4(oInv, oBiz, previewMode);
         case "t5":
@@ -47,7 +46,7 @@ export const genHTML = (
         case "t18":
             return t18(oInv, oBiz, previewMode);
         default:
-            return t1(oInv, oBiz, oClient,previewMode);
+            return t1(oInv, oBiz, previewMode);
     }
 };
 

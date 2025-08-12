@@ -24,7 +24,7 @@ import { M_TemplatePicker, M_Confirmation } from "@/src/modals";
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 
-export const Inv_Form: React.FC = () => {
+export const Inv_Pay_Edit: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
     const mode = 'create_new';
     const isSavingRef = React.useRef(false);

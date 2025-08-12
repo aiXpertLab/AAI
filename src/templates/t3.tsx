@@ -3,7 +3,7 @@ import { formatDateForUI, timestamp2us } from "@/src/utils/dateUtils";
 
 export const t3 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
@@ -30,8 +30,8 @@ export const t3 = (
     <section class="bill-to">
       <h3>Bill To</h3>
       <p>
-        ${oClient?.client_company_name || "Client Company Name"}<br />
-        ${oClient?.client_address || "Client Address"}
+        ${oInv?.client_company_name || "Client Company Name"}<br />
+        ${oInv?.client_address || "Client Address"}
       </p>
     </section>
 

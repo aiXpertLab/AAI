@@ -57,6 +57,7 @@ export async function attachClientNames(invoices: any[]) {
             return {
                 ...inv,
                 client_company_name: client?.client_company_name || "(Unknown)",
+                client_address: client?.client_address || "(Unknown)",
             };
         })
     );

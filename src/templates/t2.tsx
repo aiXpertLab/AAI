@@ -3,7 +3,7 @@ import {  timestamp2us } from "@/src/utils/dateUtils";
 
 export function t2(
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
     const bodyContent = `
@@ -29,8 +29,8 @@ export function t2(
       <div class="section" style="display: flex; justify-content: space-between;">
         <div style="width: 48%;">
           <strong>INVOICE TO</strong><br>
-          ${oClient?.client_company_name || 'Client Company Name'}<br>
-          ${(oClient?.client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
+          ${oInv?.client_company_name || 'Client Company Name'}<br>
+          ${(oInv?.client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
         </div>
         <div style="width: 48%;">
           <strong>INVOICE #</strong>: ${oInv.inv_number || 'INV-Number'}<br>

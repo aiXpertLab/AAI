@@ -14,6 +14,8 @@ const statusColorMap = {
     All: '#E0E0E0',
 };
 
+type InvoiceWithClientName = InvDB & Partial<{ client_company_name: string }>;
+
 export const InvoiceCard: React.FC<Props> = ({ item }) => {
 
     return (
@@ -26,7 +28,7 @@ export const InvoiceCard: React.FC<Props> = ({ item }) => {
         ]} >
             <View style={{ flexDirection: 'row', alignItems: 'center', padding: 6 }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>{item.client_company_name}</Text>
+                    <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>{(item as InvoiceWithClientName).client_company_name}</Text>
                     <Text style={{ color: 'gray', lineHeight: 20 }}>{item.inv_number}</Text>
                     <Text style={{ color: 'gray', lineHeight: 20 }}>{item.inv_reference}</Text>
                 </View>

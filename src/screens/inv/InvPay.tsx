@@ -132,25 +132,26 @@ export const Inv_Pay: React.FC = () => {
             return;
         }
         console.log(JSON.stringify(oInv, null, 4), isDirty);
-        setIsDirty(false);
-        navigation.navigate('Inv_Form', { mode: 'modify_existed' });
+        setIsDirty(false);        
+        navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit', params: { mode: 'modify_existed' } });
+
     };
 
     React.useEffect(() => { loadData(); }, [oInv]);
 
     const loadData = async () => {
 
-        const paymentData = await db.getAllAsync<PMDB>(`SELECT * FROM inv_payments WHERE inv_id = ? AND is_deleted =0`, [oInv!.id!]);
-        setPayments(paymentData);
-        const paid_total = paymentData.reduce((sum, p) => sum + (p.pay_amount || 0), 0);
-        const newBalance = oInv!.inv_total! - paid_total;
+        // // // const paymentData = await db.getAllAsync<PMDB>(`SELECT * FROM inv_payments WHERE inv_id = ? AND is_deleted =0`, [oInv!.id!]);
+        // // // setPayments(paymentData);
+        // // // const paid_total = paymentData.reduce((sum, p) => sum + (p.pay_amount || 0), 0);
+        // // // const newBalance = oInv!.inv_total! - paid_total;
 
-        console.log("Payments:", paymentData, paid_total, newBalance);
-        // if (oInv!.inv_paid_total !== paid_total || oInv!.inv_balance_due !== newBalance) {
-        //     updateOInv({ inv_paid_total: paid_total, inv_balance_due: newBalance });
-        // }       //only in this way can avoid unlimited loop of useEffect
+        // // console.log("Payments:", paymentData, paid_total, newBalance);
+        // // if (oInv!.inv_paid_total !== paid_total || oInv!.inv_balance_due !== newBalance) {
+        // //     updateOInv({ inv_paid_total: paid_total, inv_balance_due: newBalance });
+        // // }       //only in this way can avoid unlimited loop of useEffect
 
-        console.log("oInv 123:", oInv?.inv_total, paid_total, newBalance);
+        // console.log("oInv 123:", oInv?.inv_total, paid_total, newBalance);
         // await db.runAsync(
         //     `UPDATE invoices 
         //     SET
@@ -224,7 +225,7 @@ export const Inv_Pay: React.FC = () => {
 
                                         {/* Right Column: Trash Icon vertically centered */}
                                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                                            <TouchableOpacity onPress={() => removePayment(p.id)}>
+                                            <TouchableOpacity onPress={() => removePayment("p.pm_id")}>
                                                 <Ionicons name="trash-outline" size={14} color="#e74c3c" />
                                             </TouchableOpacity>
                                         </View>
@@ -237,7 +238,7 @@ export const Inv_Pay: React.FC = () => {
                         {/* Amount Due */}
                         <View style={{ alignItems: 'center', marginVertical: 20 }}>
                             <Text style={{ fontSize: 16, color: '#666' }}>Amount Due</Text>
-                            {/* <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#000' }}>${oInv!.inv_balance_due!.toFixed(2)}</Text> */}
+                            <Text style={{ fontSize: 36, fontWeight: 'bold', color: '#000' }}>${oInv!.inv_balance_due!.toFixed(2)}</Text>
                         </View>
 
                         {/* Live Preview */}
@@ -245,7 +246,7 @@ export const Inv_Pay: React.FC = () => {
                             <WebView
                                 originWhitelist={["*"]}
 
-                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />

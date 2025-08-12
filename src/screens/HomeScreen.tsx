@@ -8,7 +8,7 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 
 import { useInvStore, useBizStore } from '@/src/stores';
-import { RootStackPara, InvDB, ItemDB } from '@/src/types';
+import { RootStack, InvDB, ItemDB } from '@/src/types';
 import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
 
 import { attachClientNames } from "@/src/utils/invoiceUtils";
@@ -21,7 +21,7 @@ import { ToastAndroid } from 'react-native';
 
 const HomeScreen: React.FC = () => {
     useTabSync('Invoices');
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const { fetchBiz } = useBizCrud();
     const { oBiz, setOBiz, } = useBizStore();
 
