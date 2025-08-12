@@ -19,10 +19,11 @@ import { M_TemplatePicker, M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { timestamp2us } from "@/src/utils/dateUtils";
+import { emptyPM } from "@/src/stores/seeds4store";
 
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-    const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();  // 🧠 Zustand action
+    const { oInv, updateOInv, isDirty, setIsDirty, addPaymentToOInv } = useInvStore();  // 🧠 Zustand action
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -45,6 +46,11 @@ export const Inv_Pay: React.FC = () => {
         } catch (error) {
             console.error("Failed to remove payment:", error);
         }
+    };
+
+    const handleAddPayment = () => {
+        addPaymentToOInv(null);  // or pass an actual payment if needed
+        setShowAddPayment(true)
     };
 
     const onDuplicate = () => {
@@ -132,7 +138,7 @@ export const Inv_Pay: React.FC = () => {
             return;
         }
         console.log(JSON.stringify(oInv, null, 4), isDirty);
-        setIsDirty(false);        
+        setIsDirty(false);
         navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit', params: { mode: 'modify_existed' } });
 
     };
@@ -197,7 +203,8 @@ export const Inv_Pay: React.FC = () => {
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 8 }}>Add New Payments</Text>
                                 <TouchableOpacity
-                                    onPress={() => setShowAddPayment(true)}
+                                    // onPress={() => setShowAddPayment(true)}
+                                    onPress={handleAddPayment} 
                                     style={s_inv.Inv_Pay_Icon}
                                 >
                                     <Ionicons name="add" size={18} color="#fff" />
@@ -225,9 +232,9 @@ export const Inv_Pay: React.FC = () => {
 
                                         {/* Right Column: Trash Icon vertically centered */}
                                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                                            <TouchableOpacity onPress={() => removePayment("p.pm_id")}>
-                                                <Ionicons name="trash-outline" size={14} color="#e74c3c" />
-                                            </TouchableOpacity>
+                                            {/* <TouchableOpacity onPress={() => removePayment("p.pm_id")}> */}
+                                            <Ionicons name="trash-outline" size={14} color="#e74c3c" />
+                                            {/* </TouchableOpacity> */}
                                         </View>
                                     </View>
                                 ))

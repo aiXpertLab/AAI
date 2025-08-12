@@ -52,9 +52,23 @@ export const createEmptyTax4New = (): Partial<TaxDB> => ({
     tax_note: '',
 })
 
-export const createEmptyPM4New = (): Partial<PMDB> => ({
+export const emptyPM = (): Partial<PMDB> => ({
+    pm_id: 'pm_' + Crypto.randomUUID().replace(/-/g, ''),
     pm_name: '',
     pm_note: '',
+
+    status: "5 stars",
+    is_active: 1,
+    is_locked: 0,
+    is_deleted: 0,
+    created_at: new Date(),
+    updated_at: new Date(),
+
+    pay_date: new Date(),         // for InvPayment only
+    pay_amount: 0,     // for InvPayment only
+    pay_reference: '',
+    pay_note: '',
+
 })
 
 
