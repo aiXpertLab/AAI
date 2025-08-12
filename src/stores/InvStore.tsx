@@ -3,6 +3,7 @@ import { InvDB, ItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
 import { createEmptyClient4New, createEmptyPM4New, createEmptyTax4New, emptyInv } from './seeds4store';
 
 type OInvStore = {
+    invs: InvDB[];
     oInv: InvDB | null;
     setOInv: (inv: InvDB) => void;
     updateOInv: (inv: Partial<InvDB>) => void;
@@ -12,18 +13,40 @@ type OInvStore = {
     setIsDirty: (flag: boolean) => void;
 
     createEmptyInv: () => void;
+
+    updateOInvPayments: (payments: PMDB[]) => void;
+    addPaymentToOInv: (payment: PMDB) => void;
 };
 
 export const useInvStore = create<OInvStore>((set) => ({
+    invs: [],
     oInv: null,
     setOInv: (inv) => set({ oInv: { ...inv } }),
-    updateOInv: (inv) => set((state) => ({ oInv: { ...state.oInv!, ...inv } })),
+    updateOInv: (inv) => set((state) => state.oInv ? { oInv: { ...state.oInv, ...inv } } : {}),
+
+
 
     clearOInv: () => set({ oInv: null }),
     isDirty: false,
     setIsDirty: (flag) => set({ isDirty: flag }),
 
-    createEmptyInv: () => set({ oInv: emptyInv() })
+    createEmptyInv: () => set({ oInv: emptyInv(), isDirty: true }),
+
+    updateOInvPayments: (payments) =>
+        set((state) => ({
+            oInv: state.oInv ? { ...state.oInv, inv_payments: payments, updated_at: new Date() } : null,
+        })),
+    addPaymentToOInv: (payment) =>
+        set((state) => {
+            if (!state.oInv) return {};
+            return {
+                oInv: {
+                    ...state.oInv,
+                    inv_payments: [...state.oInv.inv_payments, payment],
+                    updated_at: new Date(),
+                },
+            };
+        }),
 }));
 
 

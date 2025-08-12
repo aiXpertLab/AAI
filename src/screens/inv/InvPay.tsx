@@ -15,7 +15,7 @@ import { s_global, s_fab, s_inv } from "@/src/constants";
 
 import { viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 
-import { M_TemplatePicker, M_Confirmation, M_PaymentList } from "@/src/modals";
+import { M_TemplatePicker, M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { timestamp2us } from "@/src/utils/dateUtils";
@@ -34,7 +34,7 @@ export const Inv_Pay: React.FC = () => {
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
     const { updateInv, duplicateInv } = useInvCrud();
-    
+
     const removePayment = async (paymentId: number) => {
         try {
             // await db.runAsync(
@@ -290,14 +290,16 @@ export const Inv_Pay: React.FC = () => {
                         onCancel={() => setShowConfirm(false)}
                     />
 
-                    <M_PaymentList
+                    <M_Payment_Add
                         visible={showAddPayment}
                         onCancel={() => setShowAddPayment(false)}
-                        onSave={() => {
+                        onSave={(paymentDetails) => {
+                            console.log(paymentDetails);
                             setShowAddPayment(false); // hide modal
                             loadData(); // reload payments or other data
                         }}
                     />
+
                     <M_TemplatePicker
                         visible={showTemplateModal}
                         onClose={() => setShowTemplateModal(false)}

@@ -12,7 +12,7 @@ import { useClientCrud } from '@/src/firestore/fs_crud_client';
 
 import { s_global } from "@/src/constants";
 import { DetailStack, ClientDB,  } from "@/src/types";
-import { M_Confirmation, M_PaymentList } from "@/src/modals";
+import { M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { uploadB64, cameraB64, processB64Client } from "@/src/utils/u_img64";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';

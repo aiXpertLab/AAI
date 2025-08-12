@@ -15,7 +15,7 @@ interface AddPaymentModalProps {
     onSave: (paymentDetails: any) => void; // Parent will handle saving
 }
 
-export const M_PaymentList: React.FC<AddPaymentModalProps> = ({ visible, onCancel, onSave }) => {
+export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCancel, onSave }) => {
     const { oInv } = useInvStore(); // 🧠 Zustand action
 
     // Structured state to manage all form data in one object
