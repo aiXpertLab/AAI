@@ -6,17 +6,19 @@ import { WebView } from "react-native-webview";
 import { Ionicons } from '@expo/vector-icons';
 
 import { useInvStore, useBizStore } from '@/src/stores';
+import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 
 import { genHTML } from "@/src/utils/genHTML";
 
 import { RootStack, PMDB } from "@/src/types";
-import { useInvCrud } from "@/src/firestore/fs_crud_inv";
-import {viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { s_global, s_fab, s_inv } from "@/src/constants";
+
+import { viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 
 import { M_TemplatePicker, M_Confirmation, M_PaymentList } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
+import { timestamp2us } from "@/src/utils/dateUtils";
 
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
@@ -32,13 +34,13 @@ export const Inv_Pay: React.FC = () => {
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
     const { updateInv, duplicateInv } = useInvCrud();
-
+    
     const removePayment = async (paymentId: number) => {
         try {
-            await db.runAsync(
-                `UPDATE inv_payments SET is_deleted = 1, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
-                [paymentId]
-            );
+            // await db.runAsync(
+            //     `UPDATE inv_payments SET is_deleted = 1, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+            //     [paymentId]
+            // );
             loadData(); // Reload payments or other data
         } catch (error) {
             console.error("Failed to remove payment:", error);
@@ -83,14 +85,22 @@ export const Inv_Pay: React.FC = () => {
 
     const handleConfirmDelete = async () => {
         setShowConfirm(false);
-        const success = await updateInv(oInv?.inv_id!, oInv?.inv_number!);
-        if (success) navigation.goBack();
+        try {
+            // await updateInv(inv_id!, oInv?.inv_number!);
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error during deletion:', error);
+        }
     };
 
     const handleConfirmArchive = async () => {
         setShowConfirm(false);
-        const success = await updateInv(oInv?.inv_id!, oInv?.inv_number!);
-        if (success) navigation.goBack();
+        try {
+            // await updateInv(oInv?.inv_id!, oInv?.inv_number!);
+            navigation.goBack();
+        } catch (error) {
+            console.error('Error during archiving:', error);
+        }
     };
 
     const handleDuplicate = async () => {
@@ -195,20 +205,20 @@ export const Inv_Pay: React.FC = () => {
                         </View>}
 
                         <View style={s_inv.Inv_Pay_List}>
-                            {payments.length === 0 ? (
+                            {oInv?.inv_payments.length === 0 ? (
                                 <Text style={{ color: '#aaa' }}>No payments recorded.</Text>
                             ) : (
-                                payments.map((p, index) => (
-                                    <View key={p.id} style={{ marginBottom: 12, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
+                                oInv?.inv_payments.map((p, index) => (
+                                    <View key={p.pm_id} style={{ marginBottom: 12, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
                                         {/* Left Column: Payment Info */}
                                         <View style={{ flex: 1 }}>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                                                <Text style={{ fontWeight: "bold" }}>{p.pay_method}</Text>
+                                                <Text style={{ fontWeight: "bold" }}>{p.pm_name}</Text>
                                                 <Text style={{ fontSize: 12, fontWeight: "600" }}>${p.pay_amount.toFixed(2)}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <Text style={{ fontSize: 12, color: "#888" }}>{p.pay_note ?? ""}</Text>
-                                                <Text style={{ fontSize: 12, color: "#888" }}>{p.pay_date?.split("T")[0]}</Text>
+                                                <Text style={{ fontSize: 12, color: "#888" }}>{timestamp2us(p.pay_date)}</Text>
                                             </View>
                                         </View>
 
@@ -234,7 +244,7 @@ export const Inv_Pay: React.FC = () => {
                         <View style={{ minHeight: 600, flexShrink: 0 }}>
                             <WebView
                                 originWhitelist={["*"]}
-                                
+
                                 source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items, "view", oInv!.inv_pdf_template || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled

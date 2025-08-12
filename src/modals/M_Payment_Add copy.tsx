@@ -57,15 +57,7 @@ export const M_PaymentList: React.FC<AddPaymentModalProps> = ({ visible, onCance
 
     const handleSave = async () => {
         if (!oInv) return; // Ensure oInv is defined before proceeding
-        console.log("Saving payment:", oInv.id);
-        try {
-            await db.runAsync(
-                `INSERT INTO inv_payments (inv_id, pay_amount, pay_method, pay_note, pay_date, updated_at) VALUES (?, ?, ?, ?, ?,strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`,
-                [oInv.id!, Number(amount), selectedPaymentMethod, note, date.toISOString()]
-            );
-        } catch (err) {
-            console.error("Failed to insert payment:", err);
-        }
+        console.log(oInv)
         if (onSave) onSave(); // notify parent
 
     };
@@ -75,7 +67,6 @@ export const M_PaymentList: React.FC<AddPaymentModalProps> = ({ visible, onCance
             <View style={s_modal.ModalOverlay}>
                 <View style={s_modal.ModalContainer}>
                     <Text style={s_modal.ModalTitle}>Add Payment</Text>
-
                     <Text style={s_modal.ModalLabel}>Amount</Text>
                     <TextInput
                         value={amount}

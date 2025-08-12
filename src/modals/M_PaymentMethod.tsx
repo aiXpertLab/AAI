@@ -6,6 +6,7 @@ import { modalStyles } from "@/src/constants/styles";
 import { s_modal, s_global } from "@/src/constants";
 import { useNavigation } from "@react-navigation/native";
 import { useDrawerHeaderStore, useClientStore } from '@/src/stores';
+import { usePMCrud } from "@/src/firestore/fs_crud_pm";
 
 interface PickerModalProps {
     visible: boolean;
@@ -16,19 +17,16 @@ interface PickerModalProps {
 const M_PaymentMethod: React.FC<PickerModalProps> = ({ visible, onClose, onSelectPaymentMethod: onSelectPaymentMethod }) => {
     
     const [paymentMethods, setPaymentMethods] = React.useState<PMDB[]>([]);
+    const { fetchPMs } = usePMCrud();
 
     React.useEffect(() => {
-        if (visible) { fetchPayments(); }
-    }, [visible]);
+        const fetchPaymentMethods = async () => {
+            const paymentMethods = await fetchPMs();
+            setPaymentMethods(paymentMethods);
+        };
 
-    const fetchPayments = async () => {
-        try {
-            const result = await db.getAllAsync<PMDB>("SELECT * FROM payment_methods where NOT is_deleted");
-            setPaymentMethods(result);
-        } catch (err) {
-            console.error("Failed to load Clients:", err);
-        }
-    };
+        fetchPaymentMethods();
+    }, [fetchPMs]);
 
     return (
         <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}        >
@@ -37,7 +35,7 @@ const M_PaymentMethod: React.FC<PickerModalProps> = ({ visible, onClose, onSelec
                     <Text style={s_modal.ModalTitle}>Select a Payment Method</Text>
                     <FlatList
                         data={paymentMethods}
-                        keyExtractor={(item) => item.id!.toString()}
+                        keyExtractor={(item) => item.pm_id}
                         renderItem={({ item }) => (
                             <TouchableOpacity onPress={() => onSelectPaymentMethod(item)} style={modalStyles.itemRow}                            >
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>

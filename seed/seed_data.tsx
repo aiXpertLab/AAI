@@ -479,10 +479,12 @@ export const seed_data = {
             ],
             inv_payments: [
                 {
-                    pay_date: "",
+                    pm_id: "pm_1001",
+                    pm_name: "Bank Transfer",
+                    pm_note: "Payment for invoice INV-1002",
 
+                    pay_date: new Date(),
                     pay_amount: 1695.00,
-                    pay_method: "bank transfer",
                     pay_reference: "TRX001",
                     pay_note: "Paid in full",
                 },
@@ -544,10 +546,13 @@ export const seed_data = {
 
             inv_payments: [
                 {
-                    pay_date: "",
 
+                    pm_id: "pm_1002",
+                    pm_name: "Bank Transfer",
+                    pm_note: "Payment for invoice INV-1002",
+
+                    pay_date: new Date(),
                     pay_amount: 1.00,
-                    pay_method: "credit card",
                     pay_reference: "TRX002",
                     pay_note: "First half",
                 },
