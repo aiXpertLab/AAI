@@ -21,7 +21,6 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isClientModalVisible, setPaymentMethodModalVisible] = useState(false);
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("PayPal");
 
     const handleAmountChange = (text: string) => {
         // const cleaned = text.replace(/[^0-9.]/g, '');
@@ -33,9 +32,8 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
 
     };
 
-    const handleSelectPM = (pm: PMDB | { pm_name: string }) => {
-        setSelectedPaymentMethod(pm.pm_name);
-        updateOPM({ pm_name: pm.pm_name, }); // Update payment method in store
+    const handleSelectPM = (pm_row: PMDB | { pm_name: string }) => {
+        updateOPM({ pm_name: pm_row.pm_name, }); // Update payment method in store
         setPaymentMethodModalVisible(false);
     };
 
@@ -87,7 +85,7 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     <View style={s_modal.ModalSection}>
                         <Text style={s_modal.ModalLabel}>Payment Method</Text>
                         <TouchableOpacity style={s_global.DropdownButton} onPress={() => setPaymentMethodModalVisible(true)}>
-                            <Text style={s_global.DropdownText}>{selectedPaymentMethod}</Text>
+                            <Text style={s_global.DropdownText}>{oPM?.pm_name}</Text>
                             <Ionicons name="chevron-down" size={18} color="gray" />
                         </TouchableOpacity>
                         <M_PaymentMethod

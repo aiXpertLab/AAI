@@ -134,10 +134,6 @@ export const Inv_Pay: React.FC = () => {
     };
 
     const onEdit = () => {
-        if (oInv?.is_locked) {
-            if (Platform.OS === 'android') { ToastAndroid.show('This invoice is locked and cannot be edited.', ToastAndroid.SHORT); }
-            return;
-        }
         console.log(JSON.stringify(oInv, null, 4), isDirty);
         setIsDirty(false);
         navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit', params: { mode: 'modify_existed' } });
@@ -170,7 +166,7 @@ export const Inv_Pay: React.FC = () => {
                     <ScrollView contentContainerStyle={{ padding: 16, flexGrow: 1 }}>
                         {/* Payments Section */}
 
-                        {!oInv?.is_locked && <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', marginBottom: 8 }}>
                             {/* Group Add Payments and + together on the RIGHT */}
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                 <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 8 }}>Add New Payments</Text>
@@ -182,7 +178,7 @@ export const Inv_Pay: React.FC = () => {
                                     <Ionicons name="add" size={18} color="#fff" />
                                 </TouchableOpacity>
                             </View>
-                        </View>}
+                        </View>
 
                         <View style={s_inv.Inv_Pay_List}>
                             {oInv?.inv_payments.length === 0 ? (
