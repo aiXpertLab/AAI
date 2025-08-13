@@ -57,7 +57,7 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     {/* Amount Input */}
                     <Text style={s_modal.ModalLabel}>Amount</Text>
                     <TextInput
-                        value={oPM?.pay_amount?.toString() || ''}
+                        value={oPM?.pay_amount.toFixed(2)?.toString() || ''}
                         onChangeText={handleAmountChange}
                         keyboardType="numeric"
                         placeholder="$0.00"
@@ -98,8 +98,8 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     {/* Note Input */}
                     <Text style={s_modal.ModalLabel}>Note (optional)</Text>
                     <TextInput
-                        value={oPM?.pm_note}
-                        onChangeText={(text) => updateOPM({ pm_note: text })}
+                        value={oPM?.pay_note}
+                        onChangeText={(text) => updateOPM({ pay_note: text })}
                         placeholder="Any notes..."
                         style={s_modal.ModalInput}
                     />

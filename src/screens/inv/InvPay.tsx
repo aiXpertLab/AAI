@@ -23,7 +23,7 @@ import { timestamp2us } from "@/src/utils/dateUtils";
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const { oInv, addPaymentToOInv, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
-    const { createEmptyPM4New, oPM } = usePMStore();  // 🧠 Zustand action
+    const { createEmptyPM4New, oPM, updateOPM } = usePMStore();  // 🧠 Zustand action
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -51,6 +51,7 @@ export const Inv_Pay: React.FC = () => {
 
     const handleAddPayment = () => {
         createEmptyPM4New();
+        updateOPM({ pay_amount: oInv?.inv_balance_due });
         setShowAddPayment(true)
     };
 
@@ -273,6 +274,8 @@ export const Inv_Pay: React.FC = () => {
                             console.log(oPM)
                             if (oPM) {
                                 addPaymentToOInv(oPM);
+                                
+                                updateOInv({ inv_balance_due: oInv?.inv_balance_due! - oPM.pay_amount });
                             }
                             setShowAddPayment(false); // hide modal
                         }}
