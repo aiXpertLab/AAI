@@ -19,11 +19,10 @@ import { M_TemplatePicker, M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { timestamp2us } from "@/src/utils/dateUtils";
-import { emptyPM } from "@/src/stores/seeds4store";
 
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-    const { oInv, updateOInv, isDirty, setIsDirty,  } = useInvStore();  // 🧠 Zustand action
+    const { oInv, addPaymentToOInv, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
     const { createEmptyPM4New, oPM } = usePMStore();  // 🧠 Zustand action
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
@@ -38,12 +37,13 @@ export const Inv_Pay: React.FC = () => {
     const { updateInv, duplicateInv } = useInvCrud();
 
     const removePayment = async (paymentId: number) => {
+        console.log(oInv)
+
         try {
             // await db.runAsync(
             //     `UPDATE inv_payments SET is_deleted = 1, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
             //     [paymentId]
             // );
-            loadData(); // Reload payments or other data
         } catch (error) {
             console.error("Failed to remove payment:", error);
         }
@@ -144,35 +144,6 @@ export const Inv_Pay: React.FC = () => {
 
     };
 
-    React.useEffect(() => { loadData(); }, [oInv]);
-
-    const loadData = async () => {
-
-        // // // const paymentData = await db.getAllAsync<PMDB>(`SELECT * FROM inv_payments WHERE inv_id = ? AND is_deleted =0`, [oInv!.id!]);
-        // // // setPayments(paymentData);
-        // // // const paid_total = paymentData.reduce((sum, p) => sum + (p.pay_amount || 0), 0);
-        // // // const newBalance = oInv!.inv_total! - paid_total;
-
-        // // console.log("Payments:", paymentData, paid_total, newBalance);
-        // // if (oInv!.inv_paid_total !== paid_total || oInv!.inv_balance_due !== newBalance) {
-        // //     updateOInv({ inv_paid_total: paid_total, inv_balance_due: newBalance });
-        // // }       //only in this way can avoid unlimited loop of useEffect
-
-        // console.log("oInv 123:", oInv?.inv_total, paid_total, newBalance);
-        // await db.runAsync(
-        //     `UPDATE invoices 
-        //     SET
-        //         inv_paid_total = ?,
-        //         inv_balance_due = ?,
-        //         inv_payment_status = CASE
-        //             WHEN ? >= inv_total THEN 'Paid'
-        //             WHEN ? < inv_total AND inv_due_date < date('now') THEN 'Overdue'
-        //             WHEN ? > 0 THEN 'Partially Paid'
-        //             ELSE 'Unpaid'
-        //     END,
-        //     updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-        // WHERE id = ?`, [paid_total, newBalance, paid_total, paid_total, paid_total, oInv!.id!]);
-    };
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -205,7 +176,7 @@ export const Inv_Pay: React.FC = () => {
                                 <Text style={{ fontSize: 16, fontWeight: 'bold', marginRight: 8 }}>Add New Payments</Text>
                                 <TouchableOpacity
                                     // onPress={() => setShowAddPayment(true)}
-                                    onPress={handleAddPayment} 
+                                    onPress={handleAddPayment}
                                     style={s_inv.Inv_Pay_Icon}
                                 >
                                     <Ionicons name="add" size={18} color="#fff" />
@@ -304,6 +275,9 @@ export const Inv_Pay: React.FC = () => {
                         onCancel={() => setShowAddPayment(false)}
                         onSave={() => {
                             console.log(oPM)
+                            if (oPM) {
+                                addPaymentToOInv(oPM);
+                            }
                             setShowAddPayment(false); // hide modal
                         }}
                     />

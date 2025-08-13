@@ -71,7 +71,7 @@ export const useTaxStore = create<OTaxStore>((set) => ({
 
 
 type OPMStore = {
-    oPM: Partial<PMDB> | null;
+    oPM: PMDB | null;
     setOPM: (PM: PMDB) => void;
     updateOPM: (PM: Partial<PMDB>) => void;
     clearOPM: () => void;
