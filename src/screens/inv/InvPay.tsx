@@ -191,7 +191,7 @@ export const Inv_Pay: React.FC = () => {
                                         <View style={{ flex: 1 }}>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <Text style={{ fontWeight: "bold" }}>{p.pm_name}</Text>
-                                                <Text style={{ fontSize: 12, fontWeight: "600" }}>${p.pay_amount.toFixed(2)}</Text>
+                                                <Text style={{ fontSize: 12, fontWeight: "600" }}>${p.pay_amount}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <Text style={{ fontSize: 12, color: "#888" }}>{p.pay_note ?? ""}</Text>

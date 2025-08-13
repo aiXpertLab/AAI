@@ -6,8 +6,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { PMDB } from "@/src/types";
 import { s_global, s_modal } from '@/src/constants';
 import { formatDateForUI } from "@/src/utils/dateUtils";
-import M_PaymentMethod from './M_PaymentMethod';
-import { useInvStore, usePMStore } from '../stores/InvStore';
+import M_PaymentMethod from '../../modals/M_PaymentMethod';
+import { useInvStore, usePMStore } from '../../stores/InvStore';
 
 interface AddPaymentModalProps {
     visible: boolean;
@@ -74,12 +74,6 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                         }
                         // onFocus={() => handleChange("pay_amount", "55")} // Clear on focus
                         onChangeText={(text) => handleChange("pay_amount", text)}
-                        onBlur={() => {
-                            const num = parseFloat(String(oPM?.pay_amount));
-                            if (!isNaN(num)) {
-                                handleChange("pay_amount", Number(num.toFixed(2)));
-                            }
-                        }}
                     />
 
 
