@@ -22,14 +22,20 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isClientModalVisible, setPaymentMethodModalVisible] = useState(false);
 
+
+    const handleChange = (field: keyof PMDB, value: string | number) => {
+        if (!oPM) return; // guard clause
+        updateOPM({ [field]: value });
+    };
+
     const handleAmountChange = (text: string) => {
-        // const cleaned = text.replace(/[^0-9.]/g, '');
+        console.log("Amount changed:", text);
+        const cleaned = text.replace(/[^0-9.]/g, '');
         // const parts = cleaned.split('.');
         // if (parts.length > 2) return; // Invalid input (too many dots)
         // if (parts[1]?.length > 2) return; // Limit to two decimal places
-        const pay_amount = parseFloat(text) || 0; // Convert text to number (fallback to 0)
-        updateOPM({ pay_amount }); // Update the store
-
+        // const pay_amount = parseFloat(text) || 0; // Convert text to number (fallback to 0)
+        updateOPM({ pay_amount: parseFloat(cleaned) }); // Update the store
     };
 
     const handleSelectPM = (pm_row: PMDB | { pm_name: string }) => {
@@ -57,12 +63,33 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     {/* Amount Input */}
                     <Text style={s_modal.ModalLabel}>Amount</Text>
                     <TextInput
-                        value={oPM?.pay_amount.toFixed(2)?.toString() || ''}
-                        onChangeText={handleAmountChange}
-                        keyboardType="numeric"
-                        placeholder="$0.00"
-                        style={s_modal.ModalInput}
+                        style={s_global.Input}
+                        placeholder="$9.99"
+                        placeholderTextColor="#999"
+                        keyboardType="decimal-pad"
+                        value={
+                            oPM?.pay_amount !== undefined
+                                ? String(oPM.pay_amount)
+                                : ""
+                        }
+                        // onFocus={() => handleChange("pay_amount", "55")} // Clear on focus
+                        onChangeText={(text) => handleChange("pay_amount", text)}
+                        onBlur={() => {
+                            const num = parseFloat(String(oPM?.pay_amount));
+                            if (!isNaN(num)) {
+                                handleChange("pay_amount", Number(num.toFixed(2)));
+                            }
+                        }}
                     />
+
+
+                    {/* <TextInput
+                        value={oPM?.pay_amount.toString() || ''}
+                        onChangeText={handleAmountChange}
+                        keyboardType="decimal-pad"
+                        placeholder="0.00"
+                        style={s_modal.ModalInput}
+                    /> */}
 
                     {/* Date Picker */}
                     <Text style={s_modal.ModalLabel}>Date</Text>
