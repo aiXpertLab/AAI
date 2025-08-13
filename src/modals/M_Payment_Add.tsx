@@ -7,65 +7,47 @@ import { PMDB } from "@/src/types";
 import { s_global, s_modal } from '@/src/constants';
 import { formatDateForUI } from "@/src/utils/dateUtils";
 import M_PaymentMethod from './M_PaymentMethod';
-import { useInvStore } from '../stores/InvStore';
+import { useInvStore, usePMStore } from '../stores/InvStore';
 
 interface AddPaymentModalProps {
     visible: boolean;
     onCancel: () => void;
-    onSave: (paymentDetails: any) => void; // Parent will handle saving
+    onSave: () => void; // Parent will handle saving
 }
 
 export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCancel, onSave }) => {
     const { oInv } = useInvStore(); // 🧠 Zustand action
-
-    // Structured state to manage all form data in one object
-    const [paymentDetails, setPaymentDetails] = useState({
-        amount: '',
-        date: new Date(),
-        paymentMethod: '',
-        note: 'Payment received',
-    });
+    const { oPM, updateOPM } = usePMStore();  // 🧠 Zustand action
 
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [isClientModalVisible, setPaymentMethodModalVisible] = useState(false);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("PayPal");
 
-    // Sync initial values from `oInv` when modal is visible
-    useEffect(() => {
-        if (visible && oInv) {
-            setPaymentDetails({
-                amount: oInv.inv_balance_due != null ? parseFloat(oInv.inv_balance_due.toString()).toFixed(2) : '',
-                paymentMethod: oInv.inv_payment_status || '',
-                date: new Date(), // Reset date when modal opens
-                note: 'Payment received',
-            });
-        }
-    }, [visible, oInv]);
-
     const handleAmountChange = (text: string) => {
-        const cleaned = text.replace(/[^0-9.]/g, '');
-        const parts = cleaned.split('.');
-        if (parts.length > 2) return; // Invalid input (too many dots)
-        if (parts[1]?.length > 2) return; // Limit to two decimal places
+        // const cleaned = text.replace(/[^0-9.]/g, '');
+        // const parts = cleaned.split('.');
+        // if (parts.length > 2) return; // Invalid input (too many dots)
+        // if (parts[1]?.length > 2) return; // Limit to two decimal places
+        const pay_amount = parseFloat(text) || 0; // Convert text to number (fallback to 0)
+        updateOPM({ pay_amount }); // Update the store
 
-        setPaymentDetails((prev) => ({ ...prev, amount: cleaned }));
     };
 
     const handleSelectPM = (pm: PMDB | { pm_name: string }) => {
         setSelectedPaymentMethod(pm.pm_name);
+        updateOPM({ pm_name: pm.pm_name, }); // Update payment method in store
         setPaymentMethodModalVisible(false);
-        setPaymentDetails((prev) => ({ ...prev, paymentMethod: pm.pm_name }));
     };
 
     const handleDateChange = (event: any, selectedDate?: Date) => {
-        setShowDatePicker(false);
-        if (selectedDate) {
-            setPaymentDetails((prev) => ({ ...prev, date: selectedDate }));
+        if (selectedDate) { // Only update if a date was selected (not cancelled)
+            updateOPM({ pay_date: selectedDate });
         }
+        setShowDatePicker(false);
     };
 
     const handleSave = async () => {
-        if (onSave) onSave(paymentDetails); // Return payment details to the parent
+        if (onSave) onSave(); // notify parent
     };
 
     return (
@@ -77,7 +59,7 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     {/* Amount Input */}
                     <Text style={s_modal.ModalLabel}>Amount</Text>
                     <TextInput
-                        value={paymentDetails.amount}
+                        value={oPM?.pay_amount?.toString() || ''}
                         onChangeText={handleAmountChange}
                         keyboardType="numeric"
                         placeholder="$0.00"
@@ -88,13 +70,13 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     <Text style={s_modal.ModalLabel}>Date</Text>
                     <TouchableOpacity onPress={() => setShowDatePicker(true)} style={s_modal.ModalInput}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                            <Text>{formatDateForUI(paymentDetails.date.toISOString())}</Text>
+                            <Text>{formatDateForUI(oPM?.pay_date?.toISOString())}</Text>
                             <Ionicons name="calendar-outline" size={20} color="#888" />
                         </View>
                     </TouchableOpacity>
                     {showDatePicker && (
                         <DateTimePicker
-                            value={paymentDetails.date}
+                            value={oPM?.pay_date || new Date()}
                             mode="date"
                             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                             onChange={handleDateChange}
@@ -118,8 +100,8 @@ export const M_Payment_Add: React.FC<AddPaymentModalProps> = ({ visible, onCance
                     {/* Note Input */}
                     <Text style={s_modal.ModalLabel}>Note (optional)</Text>
                     <TextInput
-                        value={paymentDetails.note}
-                        onChangeText={(text) => setPaymentDetails((prev) => ({ ...prev, note: text }))}
+                        value={oPM?.pm_note}
+                        onChangeText={(text) => updateOPM({ pm_note: text })}
                         placeholder="Any notes..."
                         style={s_modal.ModalInput}
                     />

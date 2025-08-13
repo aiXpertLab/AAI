@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { WebView } from "react-native-webview";
 import { Ionicons } from '@expo/vector-icons';
 
-import { useInvStore, useBizStore } from '@/src/stores';
+import { useInvStore, useBizStore, usePMStore } from '@/src/stores';
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 
 import { genHTML } from "@/src/utils/genHTML";
@@ -23,7 +23,8 @@ import { emptyPM } from "@/src/stores/seeds4store";
 
 export const Inv_Pay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-    const { oInv, updateOInv, isDirty, setIsDirty, addPaymentToOInv } = useInvStore();  // 🧠 Zustand action
+    const { oInv, updateOInv, isDirty, setIsDirty,  } = useInvStore();  // 🧠 Zustand action
+    const { createEmptyPM4New, oPM } = usePMStore();  // 🧠 Zustand action
     const { oBiz, } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);
@@ -49,7 +50,7 @@ export const Inv_Pay: React.FC = () => {
     };
 
     const handleAddPayment = () => {
-        addPaymentToOInv(null);  // or pass an actual payment if needed
+        createEmptyPM4New();
         setShowAddPayment(true)
     };
 
@@ -301,10 +302,9 @@ export const Inv_Pay: React.FC = () => {
                     <M_Payment_Add
                         visible={showAddPayment}
                         onCancel={() => setShowAddPayment(false)}
-                        onSave={(paymentDetails) => {
-                            console.log(paymentDetails);
+                        onSave={() => {
+                            console.log(oPM)
                             setShowAddPayment(false); // hide modal
-                            loadData(); // reload payments or other data
                         }}
                     />
 
