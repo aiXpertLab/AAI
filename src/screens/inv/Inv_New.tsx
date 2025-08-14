@@ -52,7 +52,7 @@ export const Inv_New: React.FC = () => {
     const showValidationModal = (title: string, message: string, onConfirmAction?: () => void) => {
         setConfirmTitle(title)
         setConfirmMessage(message);
-        setPendingAction(() => onConfirmAction || null);
+        // setPendingAction(() => onConfirmAction || null);
         setShowConfirmModal(true);
     };
 
@@ -119,6 +119,8 @@ export const Inv_New: React.FC = () => {
 
     const handleSave = async () => {
         if (!oInv) { return }
+        isSavingRef.current = true;  
+        setIsDirty(false);   
 
         // ✅ 1. If inv_number is empty, set it to "empty"
         if (!oInv.inv_number || oInv.inv_number.trim() === "") {
@@ -190,6 +192,11 @@ export const Inv_New: React.FC = () => {
             // Prevent navigation and prompt confirmation
             e.preventDefault();
             setPendingAction(() => () => navigation.dispatch(e.data.action));
+            showValidationModal(
+                'Invalid Invoice Number',
+                'Invoice number duplicated. Please change the invoice number before saving.'
+            );
+
             setShowConfirmModal(true);
         };
 
