@@ -8,6 +8,13 @@ export type DetailStack = {
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
     BizInfo: undefined;
+    Tax_List: undefined;
+    Client_List: undefined;
+    Item_List: undefined;
+    PaymentMethod_List: undefined;
+    SeedBizScreen: undefined;
+    TestScreen: undefined;
+
 };
 
 export type RootStack = {
@@ -16,7 +23,6 @@ export type RootStack = {
     Drawer_Settings: undefined;
 
     Client_Form: undefined;
-    BizInfo: undefined;
     Item_Form: undefined;
     SeedBizScreen: undefined;
 

@@ -99,7 +99,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
                                 >
                                     <WebView
                                         originWhitelist={['*']}
-                                        source={{ html: genHTML(oInv!, oBiz!, oClient!, "picker", key) }}
+                                        source={{ html: genHTML(oInv!, oBiz!, "picker", key) }}
                                         style={{
                                             width: '100%',
                                             height: '100%',

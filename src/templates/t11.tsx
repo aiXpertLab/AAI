@@ -4,8 +4,6 @@ import { formatDateForUI } from "@/src/utils/dateUtils";
 export const t11 = (
   oInv: Partial<InvDB>,
   oBiz: Partial<BE_DB>,
-  oClient: Partial<ClientDB>,
-  // oInv!.inv_items: Partial<ItemDB>[],
   previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
   const bodyContent = `
@@ -71,7 +69,7 @@ export const t11 = (
 </tr>
 <tr>
                         <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; text-align: left;">
-                          Hello, ${oClient?.client_company_name || "Client Name"}.<br />
+                          Hello, ${oInv?.client_company_name || "Client Name"}.<br />
                           Thank you for your order.
                         </td>
                       </tr>

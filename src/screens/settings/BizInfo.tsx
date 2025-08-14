@@ -57,7 +57,7 @@ export const BizInfo: React.FC = () => {
                     <TouchableOpacity onPressIn={handleCamera} style={{ marginRight: 20 }}>
                         <Ionicons name="camera-outline" size={28} color="#fff" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPressOut={() => saveRef.current()}>
+                    <TouchableOpacity onPressIn={() => saveRef.current()}>
                         <Ionicons name="checkmark-sharp" size={32} color="#fff" />
                     </TouchableOpacity>
                 </View>
@@ -90,6 +90,8 @@ export const BizInfo: React.FC = () => {
     };
 
     const handleSave = async () => {
+        
+        
         if (!oBiz?.be_name) {
             Alert.alert("Business name is required.");
             return;
@@ -107,10 +109,11 @@ export const BizInfo: React.FC = () => {
             ToastAndroid.show('Failed!', ToastAndroid.SHORT);
         } finally {
             setIsDirty(false);
-            saveRef.current = handleSave;
+
         }
     };
 
+    saveRef.current = handleSave;
 
     return (
         <KeyboardAvoidingView
