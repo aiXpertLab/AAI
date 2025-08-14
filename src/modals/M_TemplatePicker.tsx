@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 
 import { s_global_template, s_modal } from '@/src/constants';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
+import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 
 import { genHTML } from "@/src/utils/genHTML";
@@ -20,9 +21,11 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
     const { updateOBiz, oBiz } = useBizStore();
     const { oClient } = useClientStore();
     const { updateBiz } = useBizCrud();
+    const { updateInv } = useInvCrud();
 
     const saveTemplate2DB = async (template_id: string) => {
         updateBiz({be_inv_template_id: template_id,});
+        updateInv({inv_template_id: template_id,}, oInv.inv_id);
     };
 
     const handleTemplatePress = async (templateId: string) => {

@@ -137,7 +137,7 @@ export const Inv_Pay: React.FC = () => {
     const onEdit = () => {
         console.log(JSON.stringify(oInv, null, 4), isDirty);
         setIsDirty(false);
-        navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit', params: { mode: 'modify_existed' } });
+        navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit' });
 
     };
 
@@ -221,7 +221,6 @@ export const Inv_Pay: React.FC = () => {
                         <View style={{ minHeight: 600, flexShrink: 0 }}>
                             <WebView
                                 originWhitelist={["*"]}
-
                                 source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
