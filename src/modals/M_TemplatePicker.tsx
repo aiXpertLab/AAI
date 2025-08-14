@@ -25,7 +25,7 @@ export const M_TemplatePicker: React.FC<Props> = ({ visible, onClose, }) => {
 
     const saveTemplate2DB = async (template_id: string) => {
         updateBiz({be_inv_template_id: template_id,});
-        updateInv({inv_template_id: template_id,}, oInv.inv_id);
+        updateInv({inv_template_id: template_id,}, oInv!.inv_id);
     };
 
     const handleTemplatePress = async (templateId: string) => {
