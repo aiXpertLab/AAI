@@ -9,11 +9,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
 import { usePMStore } from '@/src/stores/InvStore';
 
-import { DetailStackPara, PMDB, RouteType } from '@/src/types';
+import { DetailStack, PMDB, RouteType } from '@/src/types';
 import { usePMCrud } from '@/src/firestore/fs_crud_pm';
 
 export const PaymentMethod_Form: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const saveRef = useRef(() => { });
     const { oPM, updateOPM, setOPM, createEmptyPM4New, clearOPM } = usePMStore();  // 🧠 Zustand action
     const { insertPM, updatePM } = usePMCrud();

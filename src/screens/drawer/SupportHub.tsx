@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking, ScrollView } from "r
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { DetailStackPara } from "@/src/types";
+import { DetailStack } from "@/src/types";
 import { s_global } from "@/src/constants";
 
 const supportLinks = [
@@ -31,7 +31,7 @@ const supportLinks = [
 ];
 
 export const SupportHub: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
 
     return (
         <ScrollView contentContainerStyle={s_global.Container}>

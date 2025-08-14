@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
-import { DetailStackPara, InvDB } from "@/src/types";
+import { DetailStack, InvDB } from "@/src/types";
 import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
@@ -24,7 +24,7 @@ import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
 export const Inv_New: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
 

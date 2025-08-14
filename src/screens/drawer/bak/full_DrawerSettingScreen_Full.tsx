@@ -3,12 +3,12 @@ import React, { useLayoutEffect, useState } from "react";
 import { View, Text, ScrollView, StyleSheet, Switch } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { DetailStackPara } from "@/src/types";
+import { DetailStack } from "@/src/types";
 import SettingItem from "@/src/screens/settings/SettingItem";
 import { s_global, colors } from "@/src/constants";
 
 const Drawer_Settings_Screen: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
 
     useLayoutEffect(() => {
         const parent = navigation.getParent();

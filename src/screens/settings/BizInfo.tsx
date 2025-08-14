@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { s_global, s_inv } from "@/src/constants";
 import { BE_DB } from '@/src/types';
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
-import {useBizStore } from '@/src/stores/BizStore';
+import { useBizStore } from '@/src/stores/BizStore';
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 import { uploadB64, cameraB64, processB64Me } from "@/src/utils/u_img64";
@@ -18,20 +18,17 @@ const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 export const BizInfo: React.FC = () => {
     const navigation = useNavigation();
-    const { updateBiz } = useBizCrud();
+    const { fetchBiz, updateBiz } = useBizCrud();
 
-    const { oBiz, updateOBiz, } = useBizStore();  // 🧠 Zustand action
+    const { oBiz, updateOBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
     const { setIsDirty, updateOInv } = useInvStore();
     const [isProcessing, setIsProcessing] = React.useState(false);
-    console.log("BizInfo: oBiz:", oBiz?.be_website);
 
     const saveRef = React.useRef(() => { });
     const [isFocused, setIsFocused] = React.useState(false);
 
     // Add function to fetch and set business data
     const fetchAndSetBiz = async () => {
-        const { fetchBiz } = useBizCrud();
-        const { setOBiz } = useBizStore();
         try {
             const bizData = await fetchBiz();
             setOBiz(bizData || null);
@@ -101,6 +98,8 @@ export const BizInfo: React.FC = () => {
         setIsDirty(true);
 
         try {
+            console.log("BizInfo: oBiz:", oBiz);
+
             await updateBiz(oBiz);
             navigation.goBack();
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
@@ -111,7 +110,7 @@ export const BizInfo: React.FC = () => {
             saveRef.current = handleSave;
         }
     };
-    
+
 
     return (
         <KeyboardAvoidingView

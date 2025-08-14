@@ -9,11 +9,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { s_global, colors } from "@/src/constants";
 import { useTaxStore } from '@/src/stores/InvStore';
 
-import { DetailStackPara, TaxDB, RouteType } from '@/src/types';
+import { DetailStack, TaxDB, RouteType } from '@/src/types';
 import { useTaxCrud } from '@/src/firestore/fs_crud_tax';
 
 export const Tax_Form: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const saveRef = useRef(() => { });
     const { oTax, updateOTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action
     const { insertTax, updateTax } = useTaxCrud();

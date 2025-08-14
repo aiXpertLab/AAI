@@ -7,7 +7,7 @@ import { useItemStore } from '@/src/stores/ItemStore';
 import { useItemCrud } from '@/src/firestore/fs_crud_item';
 
 import { s_global, } from "@/src/constants";
-import { ItemDB, DetailStackPara, RouteType } from "@/src/types";
+import { ItemDB, DetailStack, RouteType } from "@/src/types";
 import { Ionicons } from '@expo/vector-icons';
 
 import { cameraB64, processB64Item } from "@/src/utils/u_img64";
@@ -16,7 +16,7 @@ import { formatDecimalInput, formatDecimalOnBlur } from '@/src/utils/Number.99';
 import { M_Confirmation, } from "@/src/modals";
 
 const ItemForm: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const saveRef = React.useRef(() => { });
     const isSavingRef = React.useRef(false);
     const [showConfirm, setShowConfirm] = React.useState(false);
