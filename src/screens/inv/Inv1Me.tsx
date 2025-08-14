@@ -6,14 +6,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useBizStore } from '@/src/stores/BizStore';
 import { useBizCrud } from '@/src/firestore/fs_crud_biz'
 
-import { DetailStackPara } from '@/src/types';
+import { DetailStack } from '@/src/types';
 import { s_inv } from "@/src/constants/s_inv";
 
 import { pickAndSaveLogo } from '@/src/utils/logoUtils';
 
 export const Inv1Me: React.FC = () => {
 
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
 
     const { oBiz,updateOBiz } = useBizStore();  // 🧠 Zustand action
     const { updateBiz } = useBizCrud();

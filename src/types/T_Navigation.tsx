@@ -7,7 +7,7 @@ export type DetailStack = {
     Inv_Pay_Edit: { mode: 'modify_existed' | 'create_new' };
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
-
+    BizInfo: undefined;
 };
 
 export type RootStack = {
@@ -16,6 +16,7 @@ export type RootStack = {
     Drawer_Settings: undefined;
 
     Client_Form: undefined;
+    BizInfo: undefined;
     Item_Form: undefined;
     SeedBizScreen: undefined;
 
