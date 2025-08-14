@@ -173,7 +173,6 @@ const handleAddNewInvoice = async () => {
     console.log(oInv?.inv_number)
     navigation.navigate('DetailStack', {
         screen: 'Inv_New',
-        params: { mode: 'create_new' },
     });
 };
 

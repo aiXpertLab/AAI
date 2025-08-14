@@ -15,7 +15,7 @@ const baseFlags = {
 
 
 
-export const createEmptyClient4New = (): ClientDB => ({
+export const emptyClient = (): ClientDB => ({
     client_id: 'c_' + Crypto.randomUUID().replace(/-/g, ''),
     user_id: "reserved",
     be_id: "reserved",

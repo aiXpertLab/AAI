@@ -1,19 +1,33 @@
 import { InvDB, ClientDB, ItemDB, BE_DB } from './index';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
+
+type ModeType = 'create_new' | 'modify_existed' | 'restore_deleted' | 'restore_archived';
 
 export type DetailStack = {
     Inv_New: undefined;
     Inv_Pay: undefined;
-    Inv_Pay_Edit: { mode: 'modify_existed' | 'create_new' };
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
     BizInfo: undefined;
+    
     Tax_List: undefined;
+    Tax_Form: { mode?: ModeType };
+
     Client_List: undefined;
+    Client_Form: { mode?: ModeType };
+
     Item_List: undefined;
+    Item_Form: { mode?: ModeType };
+
     PaymentMethod_List: undefined;
+    PaymentMethod_Form: { mode?: ModeType };
+
     SeedBizScreen: undefined;
     TestScreen: undefined;
+
+    Restore: { mode?: 'restore_deleted' | 'restore_archived' };
+    CreateModify: { mode?: 'create_new' | 'modify_existed' };
 
 };
 
@@ -38,3 +52,5 @@ export type RootStack = {
     ClientPicker: undefined;
     AddClient: undefined;
 };
+
+export type RouteType<Screen extends keyof DetailStack> = RouteProp<DetailStack, Screen>;

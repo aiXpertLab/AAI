@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Alert, } from "react-native";
+import { ActivityIndicator, Modal, View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, TouchableWithoutFeedback, Keyboard, Alert, ToastAndroid, } from "react-native";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -7,11 +7,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from "@react-native-picker/picker";
 
-import { useClientStore } from '@/src/stores/';
+import { useClientStore } from '@/src/stores/ClientStore';
 import { useClientCrud } from '@/src/firestore/fs_crud_client';
 
 import { s_global } from "@/src/constants";
-import { DetailStack, ClientDB,  } from "@/src/types";
+import { DetailStack, ClientDB, RouteType,  } from "@/src/types";
 import { M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { uploadB64, cameraB64, processB64Client } from "@/src/utils/u_img64";
 import { TooltipBubble } from "@/src/components/toolTips";
@@ -21,6 +21,8 @@ const currencies = ["USD", "CAD", "EUR", "GBP", "OTHER"];
 
 const ClientForm: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
+    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
+    
     const saveRef = React.useRef(() => { });
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
@@ -97,20 +99,23 @@ const ClientForm: React.FC = () => {
         setIsDirty(false); // Optionally reset dirty flag
 
         if (mode === 'create_new') {
-            insertClient(oClient, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed:', err);
-                isSavingRef.current = false; // reset if failed
-                setIsDirty(true); // flag dirty again if save failed
+            try {
+                await insertClient(oClient);
+                ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+                navigation.goBack(); // only runs if insertInv didn't throw
+            } catch (err) {
+                console.error(err);
+            } finally {
+                isSavingRef.current = false;
             }
-            );
         } else {
-            console.log("Updating client:", oClient);
-            updateClient(oClient, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed:', err);
-                isSavingRef.current = false; // reset if failed
-                setIsDirty(true); // flag dirty again if save failed
+            try {
+                await updateClient(oClient, oClient.client_id);
+                ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+                navigation.goBack(); // only runs if insertInv didn't throw
+            } catch (err) {
+                console.error(err);
             }
-            );
         }
     };
 

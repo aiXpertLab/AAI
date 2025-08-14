@@ -8,7 +8,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { M_Confirmation, } from "@/src/modals";
 
 import { useInvStore, useBizStore,  } from '@/src/stores/InvStore';
-import { RootStackPara, InvDB, ItemDB } from '@/src/types';
+import { RootStack, InvDB, ItemDB } from '@/src/types';
 import { RouteType } from "@/src/types";
 
 import { s_global, colors } from "@/src/constants";
@@ -19,7 +19,7 @@ import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 export const RestoreScreen: React.FC = () => {
     useTabSync('Invoices');
     // const db = useSQLiteContext();
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
     const mode = useRoute<RouteType<'Restore'>>().params?.mode ?? 'restore_deleted';
     let msg = mode === 'restore_deleted' ? "Deleted Invoices" : "Archived Invoices";

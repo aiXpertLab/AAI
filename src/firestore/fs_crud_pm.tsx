@@ -33,8 +33,6 @@ export const usePMCrud = () => {
         const newPM: Partial<PMDB> = {
             ...pm,
             pm_id: pm_id,
-            created_at: serverTimestamp(),
-            updated_at: serverTimestamp(),
             is_deleted: 0,
         };
 

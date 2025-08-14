@@ -12,7 +12,7 @@ import Toast from "react-native-toast-message";
 import { useTaxStore } from '@/src/stores/InvStore';
 import { s_inv, s_global, } from "@/src/constants";
 
-import { RootStackPara, TaxDB } from '@/src/types';
+import { RootStack, TaxDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useTabSync } from '@/src/hooks/useTabSync';
@@ -21,7 +21,7 @@ export const Biz_Logo: React.FC = () => {
     useTabSync('items');
     // const db = useSQLiteContext();
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<TaxDB[]>([]);
     const { oTax, setOTax, createEmptyTax4New, clearOTax } = useTaxStore();  // 🧠 Zustand action

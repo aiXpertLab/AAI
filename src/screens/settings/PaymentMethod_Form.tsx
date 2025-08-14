@@ -46,7 +46,7 @@ export const PaymentMethod_Form: React.FC = () => {
         updateOPM({ [field]: value });
     };
 
-    const mode = useRoute<RouteType<'Tab2_Client_Form'>>().params?.mode ?? 'create_new';
+    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
     const handleSave = async () => {
         if (!oPM) return;
 
@@ -68,17 +68,17 @@ export const PaymentMethod_Form: React.FC = () => {
                 console.log("Updated oPM:++++", newOPM);
                 console.log("Creating new PM:------", oPM);
             }
-
-            insertPM(oPM, () => { navigation.goBack(); }, (err) => {
+            try {
+                await insertPM(oPM);
+            } catch (err) {
                 console.error('Insert failed:', err);
             }
-            );
         } else {
-            console.log("Updating existing PM:", oPM);
-            updatePM(oPM, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed:', err);
+            try {
+                await updatePM(oPM);
+            } catch (err) {
+                console.error('Update failed:', err);
             }
-            );
         }
     };
 

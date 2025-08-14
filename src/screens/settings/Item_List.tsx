@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator, Alert } from "react-native";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation, useRoute, useFocusEffect } from "@react-navigation/native";
 
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
@@ -13,13 +13,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { useItemStore } from '@/src/stores/ItemStore';
 import { s_global, colors } from "@/src/constants";
 
-import { RootStack, ItemDB } from '@/src/types';
+import { RootStack, ItemDB, RouteType } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
 import { M_Confirmation, M_Spinning } from "@/src/modals";
 
 const ItemsScreen: React.FC = () => {
+    const mode = useRoute<RouteType<'CreateModify'>>().params?.mode ?? 'create_new';
+
     const { filterIcon, showFilterIcon, hideFilterIcon } = useModalStore();
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [isFocused, setIsFocused] = useState(false);

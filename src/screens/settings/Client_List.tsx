@@ -14,14 +14,16 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { s_global } from "@/src/constants";
 
-import { useClientStore, useModalStore } from '@/src/stores';
-import { RootStackPara, ClientDB } from '@/src/types';
+import { useClientStore } from '@/src/stores/ClientStore';
+import { useModalStore } from '@/src/stores/';
+
+import { RootStack, ClientDB } from '@/src/types';
 
 import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
 
 const ClientsScreen: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
     const db = getFirestore(app);
     const { FirebaseUser } = useFirebaseUserStore();
@@ -51,20 +53,7 @@ const ClientsScreen: React.FC = () => {
     };
 
     const handleDelete = async (clientId: string) => {
-        await updateClient(
-            {
-                client_id: clientId,
-                is_deleted: 1,
-            },
-            async () => {
-                const updatedClients = await fetchClients();
-                setClients(updatedClients);  // update state
-            },
-            (err) => {
-                console.error("❌ Failed to delete client:", err);
-            }
-        );
-
+        await updateClient({ is_deleted: 1, }, clientId,);
     };
 
     React.useLayoutEffect(() => {

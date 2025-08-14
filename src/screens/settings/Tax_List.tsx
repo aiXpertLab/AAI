@@ -10,11 +10,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useModalStore, useFirebaseUserStore, useTaxStore } from '@/src/stores/'
 import { s_global, colors } from "@/src/constants";
 
-import { RootStackPara, TaxDB } from '@/src/types';
+import { RootStack, TaxDB } from '@/src/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export const Tax_List: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackPara>>();
+    const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
 
     const db = getFirestore(app);
     const { FirebaseUser } = useFirebaseUserStore();
