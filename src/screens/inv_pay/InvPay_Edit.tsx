@@ -23,7 +23,8 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
-export const Inv_New: React.FC = () => {
+export const InvPay_Edit: React.FC = () => {
+    console.log("InvPay_Edit")
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
@@ -71,16 +72,6 @@ export const Inv_New: React.FC = () => {
         });
     };
 
-    const handleUploadImage = async () => {
-        const base64Image = await uploadB64();
-        await processB64Inv(base64Image, setIsProcessing);
-    }
-
-    const handleCamera = async () => {
-        const base64Image = await cameraB64();
-        await processB64Inv(base64Image, setIsProcessing);
-    };
-
     React.useEffect(() => {
         const timer = setTimeout(() => setShowTooltip(false), 3000);
         return () => clearTimeout(timer);
@@ -93,17 +84,13 @@ export const Inv_New: React.FC = () => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-                    <TouchableOpacity onPressIn={handleUploadImage} style={{ marginRight: 20 }}>
-                        <Ionicons name="arrow-up" size={28} color="#fff" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPressIn={handleCamera} style={{ marginRight: 15 }}>
-                        <Ionicons name="camera-outline" size={28} color="#fff" />
-                    </TouchableOpacity>
                     <TouchableOpacity onPressOut={() => saveRef.current()}>
                         <Ionicons name="checkmark-sharp" size={32} color="#fff" />
                     </TouchableOpacity>
                 </View>
             ),
+            title: oInv!.inv_number,
+
         });
     }, [navigation,]);
 
@@ -119,8 +106,8 @@ export const Inv_New: React.FC = () => {
 
     const handleSave = async () => {
         if (!oInv) { return }
-        isSavingRef.current = true;  
-        setIsDirty(false);   
+        isSavingRef.current = true;
+        setIsDirty(false);
 
         // ✅ 1. If inv_number is empty, set it to "empty"
         if (!oInv.inv_number || oInv.inv_number.trim() === "") {

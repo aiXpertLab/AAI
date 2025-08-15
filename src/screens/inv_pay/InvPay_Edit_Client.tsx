@@ -68,25 +68,18 @@ export const InvChange_Client: React.FC = () => {
                     <Text style={invoiceStyles.smallText}>Billed to:</Text>
                     <TouchableOpacity
                         onPress={onPressClientPicker}
-                        style={[!oClient && invoiceStyles.addClientBox,
-                        {
+                        style={{
                             flex: 1,
                             paddingVertical: 8,
-                            justifyContent: oClient ? "flex-start" : "center",
-                            alignItems: oClient ? "flex-start" : "center",
-                        },
-                        ]}
+                            justifyContent: "flex-start",
+                            alignItems: "flex-start",
+                        }}
                     >
-                        {oClient ? (
-                            <View>
-                                <Text style={invoiceStyles.clientName}>{oClient.client_company_name}</Text>
-                                <Text style={invoiceStyles.clientDetail}>{oClient.client_contact_name}</Text>
-                                {oClient.client_address && <Text style={invoiceStyles.clientDetail}>{oClient.client_address}</Text>}
-                                {oClient.client_mainphone && <Text style={invoiceStyles.clientDetail}>{oClient.client_mainphone}</Text>}
-                            </View>
-                        ) : (
-                            <Text style={{ color: "#999", textAlign: "center" }}>+ Add a Client</Text>
-                        )}
+                        <View>
+                            <Text style={invoiceStyles.clientName}>{(oInv as any).client_company_name}</Text>
+                            <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_address}</Text>
+                        </View>
+
                     </TouchableOpacity>
                     <M_ClientPicker
                         visible={isClientModalVisible}

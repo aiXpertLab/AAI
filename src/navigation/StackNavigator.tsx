@@ -10,8 +10,8 @@ import Client_List from '@/src/screens/settings/Client_List';
 import Item_Form from '@/src/screens/settings/Item_Form';
 import Item_List from '@/src/screens/settings/Item_List';
 
-import { Inv_New } from "@/src/screens/inv/Inv_New";
-import { InvPay_Edit } from "@/src/screens/inv/InvPay_Edit";
+import { Inv_New } from "@/src/screens/inv_new/InvNew";
+import { InvPay_Edit } from "@/src/screens/inv_pay/InvPay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
 import { Inv_Pay,InvChange_Client, Inv4Total_TaxForm } from "@/src/screens/invoice";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";

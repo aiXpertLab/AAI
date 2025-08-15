@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import {Inv_Pay} from "../screens/inv/InvPay";
+import {Inv_Pay} from "../screens/inv_pay/InvPay";
 
 export const s_inv = StyleSheet.create({
     FloatingBar: {
