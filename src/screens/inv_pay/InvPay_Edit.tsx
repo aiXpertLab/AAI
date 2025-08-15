@@ -36,7 +36,7 @@ export const InvPay_Edit: React.FC = () => {
     const { updateBiz } = useBizCrud();
 
 
-    const { insertInv, fetch1Inv } = useInvCrud();
+    const { updateInv,  fetch1Inv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
     const saveRef = React.useRef(() => { });
@@ -109,32 +109,6 @@ export const InvPay_Edit: React.FC = () => {
         isSavingRef.current = true;
         setIsDirty(false);
 
-        // ✅ 1. If inv_number is empty, set it to "empty"
-        if (!oInv.inv_number || oInv.inv_number.trim() === "") {
-            console.log(oInv.inv_number)
-            oInv.inv_number = "INV-pending";
-        }
-
-        // ✅ 2. Check if inv_number is duplicated in Firestore
-        const invoice = await fetch1Inv(oInv.inv_number!);
-        if (invoice) {
-            console.log(oInv.inv_id)
-            showValidationModal(
-                'Invalid Invoice Number',
-                'Invoice number duplicated. Please change the invoice number before saving.'
-            );
-            return
-        }
-
-        // ✅ 3. Client cannot be empty
-        if (!oInv.client_id || oInv.client_id.trim() === "link to client") {
-            showValidationModal(
-                'Invalid Client',
-                'Client cannot be empty. Please select a client before saving.'
-            );
-            return
-        }
-
         // ✅ 4. Must have at least one item
         if (!oInv.inv_items || oInv.inv_items.length === 0) {
             console.log(oInv.inv_items)
@@ -149,7 +123,7 @@ export const InvPay_Edit: React.FC = () => {
         setIsDirty(false);
 
         try {
-            await insertInv();
+            await updateInv(oInv, oInv.inv_id);
             const match = oInv.inv_number.match(/(\d+)$/); // last sequence of digits
             let newNumber = 1;
             if (match) {

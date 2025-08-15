@@ -21,7 +21,7 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { timestamp2us } from "@/src/utils/dateUtils";
 
-export const Inv_Pay: React.FC = () => {
+export const InvPay: React.FC = () => {
     console.log("InvPay")
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const { oInv, addPaymentToOInv, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action

@@ -23,7 +23,7 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
-export const Inv_New: React.FC = () => {
+export const InvNew: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);

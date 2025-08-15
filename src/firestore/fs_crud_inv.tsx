@@ -45,29 +45,41 @@ export const useInvCrud = () => {
 
 
     const fetchInvs = async (hf_client: string, hf_fromDate: Date, hf_toDate: Date): Promise<InvDB[]> => {
-        try {
-            const invRef = collection(db, `aai/be_${uid}/invs`);
-            const conditions = [where("is_deleted", "!=", 1)];
-            if (hf_client !== "All") {
-                conditions.push(where("client_company_name", "==", hf_client));
-            }
-
-            conditions.push(where("inv_date", ">=", Timestamp.fromDate(new Date(hf_fromDate.setHours(0, 0, 0, 0)))));
-            conditions.push(where("inv_date", "<=", Timestamp.fromDate(new Date(hf_toDate.setHours(23, 59, 59, 999)))));
-
-            console.log(hf_fromDate, ' ', hf_client, '---', hf_toDate)
-            const q = query(invRef, ...conditions, orderBy("inv_due_date", "desc"));
-            const querySnap = await getDocs(q);
-
-            const invoices: InvDB[] = querySnap.docs.map(doc => doc.data() as InvDB);
-            useFirebaseUserStore.getState().setIsBizCreated(true);
-
-            return invoices;
-
-        } catch (err) {
-            console.error("Failed to load invoices from Firestore:", err);
-            return [];
+        const invRef = collection(db, `aai/be_${uid}/invs`);
+        const conditions = [where("is_deleted", "!=", 1)];
+        if (hf_client !== "All") {
+            conditions.push(where("client_company_name", "==", hf_client));
         }
+
+        // conditions.push(where("inv_date", ">=", Timestamp.fromDate(new Date(hf_fromDate.setHours(0, 0, 0, 0)))));
+        // conditions.push(where("inv_date", "<=", Timestamp.fromDate(new Date(hf_toDate.setHours(23, 59, 59, 999)))));
+        conditions.push(
+            where("inv_date", ">=", Timestamp.fromDate(new Date(hf_fromDate.getFullYear(), hf_fromDate.getMonth(), hf_fromDate.getDate(), 0, 0, 0, 0))),
+            where("inv_date", "<=", Timestamp.fromDate(new Date(hf_toDate.getFullYear(), hf_toDate.getMonth(), hf_toDate.getDate(), 23, 59, 59, 999)))
+        );
+
+        console.log(hf_fromDate, ' ', hf_client, '---', hf_toDate)
+        const q = query(invRef, ...conditions, orderBy("inv_due_date", "desc"));
+        const querySnap = await getDocs(q);
+
+        // const invoices: InvDB[] = querySnap.docs.map(doc => doc.data() as InvDB);
+        // useFirebaseUserStore.getState().setIsBizCreated(true);
+        const invoices: InvDB[] = querySnap.docs.map(doc => {
+            const data = doc.data();
+
+            return {
+                ...data,
+                inv_date: data.inv_date?.toDate(),
+                inv_due_date: data.inv_due_date?.toDate(),
+                inv_payments: data.inv_payments?.map((p: any) => ({
+                    ...p,
+                    pay_date: p.pay_date?.toDate(),
+                })) || []
+            } as InvDB;
+        });
+
+        return invoices;
+
     };
 
 
@@ -124,22 +136,24 @@ export const useInvCrud = () => {
 
 
     const fetch1Inv = async (invNumber: string): Promise<InvDB | null> => {
-        try {
-            const invsRef = collection(db, `aai/be_${uid}/invs`);
-            const q = query(invsRef, where("inv_number", "==", invNumber));
-            const querySnap = await getDocs(q);
+        const invsRef = collection(db, `aai/be_${uid}/invs`);
+        const q = query(invsRef, where("inv_number", "==", invNumber));
+        const querySnap = await getDocs(q);
 
-            if (querySnap.empty) {
-                return null;
-            }
+        if (querySnap.empty) { return null; }
 
-            // Return the first matching invoice (should be unique)
-            return querySnap.docs[0].data() as InvDB;
+        const data = querySnap.docs[0].data();
 
-        } catch (err) {
-            console.error(`Failed to load invoice with inv_number ${invNumber} from Firestore:`, err);
-            return null;
-        }
+        return {
+            ...data,
+            inv_date: data.inv_date?.toDate(),
+            inv_due_date: data.inv_due_date?.toDate(),
+            inv_payments: data.inv_payments?.map((p: any) => ({
+                ...p,
+                pay_date: p.pay_date?.toDate(),
+            })) || []
+        } as InvDB;
+
     };
     return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv };
 };

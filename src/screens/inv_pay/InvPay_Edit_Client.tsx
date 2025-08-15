@@ -64,8 +64,6 @@ export const InvChange_Client: React.FC = () => {
                 {/* Invoice Metadata */}
                 <View style={{ flex: 1, alignItems: "flex-end" }}>
 
-                    {/* Invoice No. & Dates */}
-
                     {/* Invoice Date & Due Date */}
                     <View style={{ marginBottom: 6, width: "100%" }}>
                         <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Date of Issue</Text>

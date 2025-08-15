@@ -12,7 +12,10 @@ adb shell setprop debug.firebase.analytics.app com.aixpertlab.aiautoinvoicing
             - 
 
 
+Date:
 - Firestore date is timestamp. JS is Date. When saving to firestore, type will be auto-converted. Reading from firestore always convert to Date immediately.
+
+
 - Empty Invoice, Item are created by store. Due to asyn issue, based on hardcode (not fetching from firestore)
 - Inv has client_id, map client_company_name through helper.
 - BE is one. Always show.

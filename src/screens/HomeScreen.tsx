@@ -118,7 +118,7 @@ const HomeScreen: React.FC = () => {
             <Pressable
                 onPress={() => {
                     handleSelectInvoice(invoice);
-                    navigation.navigate('DetailStack', { screen: 'Inv_Pay' });
+                    navigation.navigate('DetailStack', { screen: 'InvPay' });
                 }}
             style={({ pressed }) => ({
                 transform: [{ translateY: pressed ? 1 : 0 }],
