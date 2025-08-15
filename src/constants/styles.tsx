@@ -447,6 +447,7 @@ export const invoiceStyles = StyleSheet.create({
         fontSize: 12,
         color: '#666',
         textAlign: 'left',
+        marginBottom: 12,
     },
     clientName: {
         fontWeight: "bold",

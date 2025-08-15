@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { Timestamp } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
 import { addDateDays, timestamp2us } from "@/src/utils/dateUtils";
@@ -10,7 +9,6 @@ import { addDateDays, timestamp2us } from "@/src/utils/dateUtils";
 import { ClientDB, InvDB } from "@/src/types";
 import { invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global"
-import M_ClientPicker from "@/src/modals/M_ClientPicker_Inv";
 
 import { useInvStore, useClientStore } from "@/src/stores";
 import { useClientCrud } from "@/src/firestore/fs_crud_client";
@@ -28,18 +26,6 @@ export const InvChange_Client: React.FC = () => {
 
 
     if (!oInv) { return "loading..."; }
-
-    const onPressClientPicker = () => {
-        setIsDirty(true); // Trigger a re-render to show the modal
-        setClientModalVisible(true);
-    };
-
-    const handleSelectClient = (client: ClientDB) => {
-        updateOInv({ client_id: client.client_id, });
-        setOClient(client); // Update Zustand store with selected client
-        setPaymentTerm(String(client.client_payment_term));
-        setClientModalVisible(false);
-    };
 
     const setPaymentTerm = (text: string) => {
         if (text === "") {
@@ -65,27 +51,14 @@ export const InvChange_Client: React.FC = () => {
             <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 16 }}>
                 {/* Client Info */}
                 <View style={{ flex: 1 }}>
-                    <Text style={invoiceStyles.smallText}>Billed to:</Text>
-                    <TouchableOpacity
-                        onPress={onPressClientPicker}
-                        style={{
-                            flex: 1,
-                            paddingVertical: 8,
-                            justifyContent: "flex-start",
-                            alignItems: "flex-start",
-                        }}
-                    >
-                        <View>
-                            <Text style={invoiceStyles.clientName}>{(oInv as any).client_company_name}</Text>
-                            <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_address}</Text>
-                        </View>
-
-                    </TouchableOpacity>
-                    <M_ClientPicker
-                        visible={isClientModalVisible}
-                        onClose={() => setClientModalVisible(false)}
-                        onSelectClient={handleSelectClient}
-                    />
+                    <Text style={invoiceStyles.smallText}>Client (locked):</Text>
+                    <View>
+                        <Text style={s_global.SummaryLabel}>{(oInv as any).client_company_name}</Text>
+                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_address}</Text>
+                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_contact_name}</Text>
+                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_email}</Text>
+                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_phone}</Text>
+                    </View>
                 </View>
 
                 {/* Invoice Metadata */}

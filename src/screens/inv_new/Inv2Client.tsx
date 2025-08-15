@@ -83,6 +83,7 @@ export const Inv2Client: React.FC = () => {
                                 <Text style={invoiceStyles.clientDetail}>{oClient.client_contact_name}</Text>
                                 {oClient.client_address && <Text style={invoiceStyles.clientDetail}>{oClient.client_address}</Text>}
                                 {oClient.client_mainphone && <Text style={invoiceStyles.clientDetail}>{oClient.client_mainphone}</Text>}
+                                {oClient.client_email && <Text style={invoiceStyles.clientDetail}>{oClient.client_email}</Text>}
                             </View>
                         ) : (
                             <Text style={{ color: "#999", textAlign: "center" }}>+ Add a Client</Text>
