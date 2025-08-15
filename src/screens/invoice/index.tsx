@@ -8,5 +8,3 @@ export * from '@/src/screens/settings/BizInfo';
 export * from '@/src/screens/invoice/Inv4Total_TaxForm';
 
 
-// export * from '@/src/screens/invoice/Inv_Form_New';
-// export * from '@/src/screens/invoice/Inv_Form';

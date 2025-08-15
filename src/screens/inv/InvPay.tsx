@@ -142,10 +142,9 @@ export const Inv_Pay: React.FC = () => {
     };
 
     const onEdit = () => {
-        console.log(JSON.stringify(oInv, null, 4), isDirty);
+        // console.log(JSON.stringify(oInv, null, 4), isDirty);
         setIsDirty(false);
-        navigation.navigate('DetailStack', { screen: 'Inv_Pay_Edit' });
-
+        navigation.navigate('DetailStack', { screen: 'Inv_New' });
     };
 
 

@@ -167,8 +167,6 @@ const handleAddNewInvoice = async () => {
     console.log(newInvNumber, '  000000000000')
 
     createEmptyInv()
-
-
     updateOInv({ inv_number: newInvNumber });
     console.log(oInv?.inv_number)
     navigation.navigate('DetailStack', {
