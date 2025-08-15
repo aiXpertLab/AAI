@@ -6,11 +6,12 @@ type ModeType = 'create_new' | 'modify_existed' | 'restore_deleted' | 'restore_a
 
 export type DetailStack = {
     Inv_New: undefined;
-    Inv_Pay: undefined;
-    Inv_Pay_Edit: undefined;
     Inv1Me_BizForm: undefined;
     Inv4Total_TaxForm: undefined;
     BizInfo: undefined;
+    InvPay: undefined;
+    InvPay_Edit: undefined;
+    InvChange_Client: undefined;
     
     Tax_List: undefined;
     Tax_Form: { mode?: ModeType };

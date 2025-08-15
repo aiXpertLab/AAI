@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, ActivityIndicator, useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ToastAndroid } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -10,8 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { genHTML } from "@/src/utils/genHTML";
 
 import { Inv1Me, InvChange_Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
-import { DetailStackPara, InvDB } from "@/src/types";
-import { useInvStore, useBizStore } from '@/src/stores/InvStore';
+import { DetailStack, InvDB } from "@/src/types";
+import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
 import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 
@@ -21,17 +21,21 @@ import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
+import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
-export const Inv_New: React.FC = () => {
-    const navigation = useNavigation<NativeStackNavigationProp<DetailStackPara>>();
+export const InvPay_Edit: React.FC = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
 
-    const { oInv, setOInv, updateOInv, isDirty, setIsDirty } = useInvStore();
-    const { oBiz, } = useBizStore();  // 🧠 Zustand action
+    const { oInv, isDirty, setIsDirty } = useInvStore();
+    const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
+    const { oClient, updateOClient } = useClientStore();
+
+    const { updateBiz } = useBizCrud();
 
 
-    const { insertInv, updateInv } = useInvCrud();
+    const { insertInv, fetch1Inv } = useInvCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
     const saveRef = React.useRef(() => { });
@@ -42,6 +46,15 @@ export const Inv_New: React.FC = () => {
     const [pendingAction, setPendingAction] = React.useState<any>(null);
 
     const [initItem, setInitItem] = React.useState<InvDB | null>(null);
+    const [confirmMessage, setConfirmMessage] = React.useState("");
+    const [confirmTitle, setConfirmTitle] = React.useState("");
+
+    const showValidationModal = (title: string, message: string, onConfirmAction?: () => void) => {
+        setConfirmTitle(title)
+        setConfirmMessage(message);
+        // setPendingAction(() => onConfirmAction || null);
+        setShowConfirmModal(true);
+    };
 
     const tip1 = useTipVisibility('tip1_count', true, 800);
     const [tip2Trigger, setTip2Trigger] = React.useState(false);
@@ -58,16 +71,6 @@ export const Inv_New: React.FC = () => {
         });
     };
 
-    const handleUploadImage = async () => {
-        const base64Image = await uploadB64();
-        await processB64Inv(base64Image, setIsProcessing);
-    }
-
-    const handleCamera = async () => {
-        const base64Image = await cameraB64();
-        await processB64Inv(base64Image, setIsProcessing);
-    };
-
     React.useEffect(() => {
         const timer = setTimeout(() => setShowTooltip(false), 3000);
         return () => clearTimeout(timer);
@@ -80,17 +83,13 @@ export const Inv_New: React.FC = () => {
         navigation.setOptions({
             headerRight: () => (
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10 }}>
-                    <TouchableOpacity onPressIn={handleUploadImage} style={{ marginRight: 20 }}>
-                        <Ionicons name="arrow-up" size={28} color="#fff" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPressIn={handleCamera} style={{ marginRight: 15 }}>
-                        <Ionicons name="camera-outline" size={28} color="#fff" />
-                    </TouchableOpacity>
                     <TouchableOpacity onPressOut={() => saveRef.current()}>
                         <Ionicons name="checkmark-sharp" size={32} color="#fff" />
                     </TouchableOpacity>
                 </View>
             ),
+            title: oInv!.inv_number,
+
         });
     }, [navigation,]);
 
@@ -105,13 +104,66 @@ export const Inv_New: React.FC = () => {
     };
 
     const handleSave = async () => {
+        if (!oInv) { return }
         isSavingRef.current = true;
         setIsDirty(false);
-        const success = await insertInv(
-            () => console.log("Invoice saved successfully."),
-            (err) => console.error("Failed to save invoice:", err));
-        isSavingRef.current = false; // reset if failed
-        if (success) { navigation.goBack(); }
+
+        // ✅ 1. If inv_number is empty, set it to "empty"
+        if (!oInv.inv_number || oInv.inv_number.trim() === "") {
+            console.log(oInv.inv_number)
+            oInv.inv_number = "INV-pending";
+        }
+
+        // ✅ 2. Check if inv_number is duplicated in Firestore
+        const invoice = await fetch1Inv(oInv.inv_number!);
+        if (invoice) {
+            console.log(oInv.inv_id)
+            showValidationModal(
+                'Invalid Invoice Number',
+                'Invoice number duplicated. Please change the invoice number before saving.'
+            );
+            return
+        }
+
+        // ✅ 3. Client cannot be empty
+        if (!oInv.client_id || oInv.client_id.trim() === "link to client") {
+            showValidationModal(
+                'Invalid Client',
+                'Client cannot be empty. Please select a client before saving.'
+            );
+            return
+        }
+
+        // ✅ 4. Must have at least one item
+        if (!oInv.inv_items || oInv.inv_items.length === 0) {
+            console.log(oInv.inv_items)
+            showValidationModal(
+                'Missing Item',
+                'Invoice must have at least one item. Please add items before saving.'
+            );
+            return
+        }
+
+        isSavingRef.current = true;
+        setIsDirty(false);
+
+        try {
+            await insertInv();
+            const match = oInv.inv_number.match(/(\d+)$/); // last sequence of digits
+            let newNumber = 1;
+            if (match) {
+                newNumber = parseInt(match[1], 10) + 1;
+            }
+            await updateOBiz({ be_inv_number: newNumber });
+            await updateBiz({ be_inv_number: newNumber });
+
+            ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+            navigation.goBack(); // only runs if insertInv didn't throw
+        } catch (err) {
+            console.error(err);
+        } finally {
+            isSavingRef.current = false;
+        }
     };
 
     saveRef.current = handleSave;
@@ -126,6 +178,11 @@ export const Inv_New: React.FC = () => {
             // Prevent navigation and prompt confirmation
             e.preventDefault();
             setPendingAction(() => () => navigation.dispatch(e.data.action));
+            showValidationModal(
+                'Invalid Invoice Number',
+                'Invoice number duplicated. Please change the invoice number before saving.'
+            );
+
             setShowConfirmModal(true);
         };
 
@@ -175,7 +232,7 @@ export const Inv_New: React.FC = () => {
                             {/* Invoice Preview */}
                             <WebView
                                 originWhitelist={['*']}
-                                source={{ html: genHTML(oInv!, oBiz!, oInv!.inv_items!, "view", oInv!.inv_pdf_template || 't1') }}
+                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
                             />
@@ -198,11 +255,16 @@ export const Inv_New: React.FC = () => {
 
                     <M_Confirmation
                         visible={showConfirmModal}
-                        title="Discard changes?"
-                        message={'You have unsaved changes. \n\nTap "Keep Editing" and use the ✅ icon in the top right corner to save.'}
+                        // title="Discard changes?"
+                        title={confirmTitle}
+                        // message={'You have unsaved changes. \n\nTap "Keep Editing" and use the ✅ icon in the top right corner to save.'}\
+                        message={confirmMessage}
                         confirmText="Discard"
                         cancelText="Keep Editing"
-                        onConfirm={() => { setShowConfirmModal(false); if (pendingAction) pendingAction(); }}
+                        onConfirm={() => {
+                            setShowConfirmModal(false);
+                            if (pendingAction) pendingAction();
+                        }}
                         onCancel={() => setShowConfirmModal(false)}
                         confirmColor="#d9534f"
                     />

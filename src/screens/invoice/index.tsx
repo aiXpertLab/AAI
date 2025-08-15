@@ -6,5 +6,5 @@ export * from '@/src/screens/inv/Inv5Notes';
 export * from '@/src/screens/inv/InvPay';
 export * from '@/src/screens/settings/BizInfo';
 export * from '@/src/screens/invoice/Inv4Total_TaxForm';
-
+export * from '@/src/screens/inv/InvChange_Client';
 

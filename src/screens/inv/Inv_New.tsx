@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { genHTML } from "@/src/utils/genHTML";
 
-import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
+import { Inv1Me, InvChange_Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/invoice";
 import { DetailStack, InvDB } from "@/src/types";
 import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
 import { viewPDF, genPDF } from '@/src/utils/genPDF'; // adjust path
@@ -229,7 +229,7 @@ export const Inv_New: React.FC = () => {
 
                         <View style={{ borderBottomWidth: 1, borderColor: '#ddd', marginVertical: 18 }} />
 
-                        <Inv2Client />
+                        <InvChange_Client />
 
                         <Inv3Items />
 
