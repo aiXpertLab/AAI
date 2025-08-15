@@ -6,7 +6,7 @@ export function t2(
     oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
-    const bodyContent = `
+const bodyContent = `
     <!-- Green background section -->
     <div class="header-bg">
       <div class="invoice-banner">
@@ -24,25 +24,24 @@ export function t2(
     <!-- Divider (green line) -->
     <div class="green-divider"></div>
 
+    
     <!-- White invoice content -->
     <div class="container">
       <div class="section" style="display: flex; justify-content: space-between;">
         <div style="width: 48%;">
           <strong>INVOICE TO</strong><br>
-          ${oInv?.client_company_name || 'Client Company Name'}<br>
-          ${(oInv?.client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
+          ${(oInv as any)?.client_company_name || 'Client Company Name'}<br>
+          ${((oInv as any).client_address || 'Client Address').replace(/\n/g, "<br>")}<br>
         </div>
-        <div style="width: 48%;">
-          <strong>INVOICE #</strong>: ${oInv.inv_number || 'INV-Number'}<br>
-          <strong>DATE</strong>: ${timestamp2us(oInv.inv_date) || 'Issue Date'}<br>
-          <strong>DUE DATE</strong>: ${timestamp2us(oInv.inv_due_date) || 'Due Date'}<br>
-          
-          <strong>TERMS</strong>: Net ${oInv.inv_payment_term || '7'}<br>
+
+
+        <div style="width: 48%; display: grid; grid-template-columns: 120px 1fr; row-gap: 4px;">
+            <div><strong>INVOICE #</strong></div> <div>${oInv.inv_number || 'INV-Number'}</div>
+            <div><strong>DATE</strong></div> <div>${timestamp2us(oInv.inv_date) || 'Issue Date'}</div>
+            <div><strong>DUE DATE</strong></div> <div>${timestamp2us(oInv.inv_due_date) || 'Due Date'}</div>
+            <div><strong>TERMS</strong></div> <div>Net ${oInv.inv_payment_term || '7'}</div>
         </div>
-      </div>
-
-
-
+    </div>
         <table>
         <tr>
             <th style="width: 55%;">Description</th>
@@ -132,12 +131,12 @@ export function t2(
           body {
             margin: 0;
             padding: 0;
-            background: #f9f9f9;
+            background: #ffffff;
           }
 
           .header-bg {
             background-color: #d4e0c4;
-            padding: 20px 40px 0 40px;
+            padding: 20px 40px 20px 40px;
             width: 100vw;
             box-sizing: border-box;
           }
@@ -157,10 +156,11 @@ export function t2(
             width: 100%;
           }
 
+
           .container {
             background: white;
             max-width: 750px;
-            margin: 0 auto;
+  margin: 20px auto 0 auto; /* added top margin */
             padding: 16px;
           }
 

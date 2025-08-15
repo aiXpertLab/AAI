@@ -1,4 +1,5 @@
 import React from "react";
+import * as Print from 'expo-print';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet, ToastAndroid, View, Text, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, Modal, TextInput, Button, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -72,7 +73,13 @@ export const Inv_Pay: React.FC = () => {
 
     const onPDF = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
+            // genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1')
+            // const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
+            const htmlContent = genHTML(oInv!, oBiz!, "pdf", oInv!.inv_template_id || 't1')
+            const { uri } = await Print.printToFileAsync({ html: htmlContent });
+
+            // return uri;
+
             await viewPDF(uri);
             // await openWithExternalPDFViewer(uri);
         } catch (err) {
@@ -273,7 +280,7 @@ export const Inv_Pay: React.FC = () => {
                             console.log(oPM)
                             if (oPM) {
                                 addPaymentToOInv(oPM);
-                                
+
                                 updateOInv({ inv_balance_due: oInv?.inv_balance_due! - oPM.pay_amount });
                             }
                             setShowAddPayment(false); // hide modal
