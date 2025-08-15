@@ -6,6 +6,7 @@ import * as MailComposer from 'expo-mail-composer';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
 import { genHTML } from './genHTML'; // Adjust path to your HTML generator
+import { InvDB, BE_DB } from "@/src/types";
 
 export const genPDF = async (oInv: any, oBiz: any, oInvItems: any) => {
     if (!oInv) throw new Error("Missing invoice data");
@@ -76,7 +77,7 @@ export const sharePDF = async (uri: any) => {
 
 // utils/emailPDF.js
 
-export const emailPDF = async (uri: any, oInv: any) => {
+export const emailPDF = async (uri: any, oInv: InvDB, oBiz: BE_DB) => {
     const isAvailable = await MailComposer.isAvailableAsync();
     if (!isAvailable) {
         throw new Error("Mail composer not available");
@@ -84,9 +85,9 @@ export const emailPDF = async (uri: any, oInv: any) => {
 
     try {
         await MailComposer.composeAsync({
-            recipients: [oInv?.client_email!],
-            subject: `Invoice from ${oInv?.biz_name}`, // Dynamic business name
-            body: `Dear ${oInv?.client_contact_name},\n\nPlease find your invoice attached.\n\nBest regards,\n${oInv!.biz_name}`,
+            recipients: [(oInv as any)?.client_email!],
+            subject: `Invoice from ${oBiz?.be_name}`, // Dynamic business name
+            body: `Dear ${(oInv as any)?.client_contact_name},\n\nPlease find your invoice attached.\n\nBest regards,\n${oBiz?.be_name}`,
             attachments: [uri],
         });
     } catch (err) {

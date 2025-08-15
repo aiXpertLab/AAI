@@ -131,7 +131,7 @@ export const InvPay: React.FC = () => {
     const sendEmail = async () => {
         try {
             const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
-            await emailPDF(uri, oInv);
+            await emailPDF(uri, oInv, oBiz);
         } catch (err) { console.error("Error Email:", err); }
     };
 
