@@ -26,9 +26,8 @@ const ItemsScreen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const [isFocused, setIsFocused] = useState(false);
     const [items, setItems] = useState<ItemDB[]>([]);
-    const { createEmptyItem4New, clearOItem } = useItemStore();  // 🧠 Zustand action
+    const { createEmptyItem4New, setOItem } = useItemStore();  // 🧠 Zustand action
     const [isProcessing, setIsProcessing] = React.useState(false);
-    const { oItem, setOItem, updateOItem } = useItemStore();  // 🧠 Zustand action
 
     const [previewItems, setPreviewItems] = useState<ItemDB[]>([]);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -133,13 +132,6 @@ const ItemsScreen: React.FC = () => {
                 item_id: itemId,
                 is_deleted: 1,
             },
-            async () => {
-                const updatedClients = await fetchItems();
-                setItems(updatedClients);  // update state
-            },
-            (err) => {
-                console.error("❌ Failed to delete client:", err);
-            }
         );
 
     };

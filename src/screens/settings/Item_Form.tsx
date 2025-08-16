@@ -62,6 +62,8 @@ const ItemForm: React.FC = () => {
             ...oItem,
 
             item_rate: oItem.item_rate ? Number(oItem.item_rate) : 1, // convert here
+            item_amount: oItem.item_rate ? Number(oItem.item_rate) : 1, // convert here
+            item_quantity: 1,
             item_name: oItem.item_name ?? "",
         };
 
@@ -77,11 +79,13 @@ const ItemForm: React.FC = () => {
                 isSavingRef.current = false;
             }
         } else {
-            updateItem(preparedOItem, () => { navigation.goBack(); }, (err) => {
-                console.error('Insert failed:', err);
-                isSavingRef.current = false; // reset if failed
+            try {
+                updateItem(preparedOItem);
+                ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
+                navigation.goBack(); // only runs if insertInv didn't throw
+            } catch (err) {
+                console.error(err);
             }
-            );
         }
     };
 

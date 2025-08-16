@@ -2,7 +2,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 
-export function timestamp2us(date: Date | Timestamp | string | null | undefined): string {
+export function date2string(date: Date | Timestamp | string | null | undefined): string {
     if (!date) return '';
 
     const jsDate =

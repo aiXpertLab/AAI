@@ -11,32 +11,22 @@ export const useItemCrud = () => {
     const uid = useFirebaseUserStore.getState().FirebaseUser?.uid;
     if (!uid) throw new Error("Missing UID");
 
-    const updateItem = async (
-        Item: Partial<ItemDB>,
-        onSuccess: () => void,
-        onError: (err: any) => void
-    ) => {
-        try {
-            if (!uid || !Item.item_id) throw new Error("Missing UID or Item ID");
-            const docRef = doc(db, `aai/be_${uid}/items`, Item.item_id);
-            const { item_id, ...updateFields } = Item; // remove id from payload
+    const updateItem = async (Item: Partial<ItemDB>): Promise<void> => {
+        if (!uid || !Item.item_id) throw new Error("Missing UID or Item ID");
+        const docRef = doc(db, `aai/be_${uid}/items`, Item.item_id);
 
-            await updateDoc(docRef, {
-                ...updateFields,
-                updated_at: serverTimestamp(),
-            });
-
-            onSuccess();
-        } catch (err) {
-            console.error("❌ updateItem error:", err);
-            onError(err);
-        }
+        await updateDoc(docRef, Item);
     };
 
 
-    const insertItem = async (preparedOItem: ItemDB) => {
+    const insertItem = async (preparedOItem: ItemDB): Promise<void> => {
         const docRef = doc(db, `aai/be_${uid}/items`, preparedOItem.item_id);
-        await setDoc(docRef, preparedOItem);
+        const itemToInsert: ItemDB = {
+            ...preparedOItem,
+            item_quantity: 1,
+            item_amount: preparedOItem.item_rate ?? 0,
+        };      // quantity=1 make sure rate=amount, so that item-pickup in invoice could be added directly
+        await setDoc(docRef, itemToInsert);
     };
 
 

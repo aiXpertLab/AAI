@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { addDateDays, timestamp2us } from "@/src/utils/dateUtils";
+import { addDateDays, date2string } from "@/src/utils/dateUtils";
 
 import { ClientDB, InvDB } from "@/src/types";
 import { invoiceStyles } from "@/src/constants/styles";
@@ -55,9 +55,7 @@ export const InvChange_Client: React.FC = () => {
                     <View>
                         <Text style={s_global.SummaryLabel}>{(oInv as any).client_company_name}</Text>
                         <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_address}</Text>
-                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_contact_name}</Text>
                         <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_email}</Text>
-                        <Text style={invoiceStyles.clientDetail}>{(oInv as any).client_phone}</Text>
                     </View>
                 </View>
 
@@ -70,7 +68,7 @@ export const InvChange_Client: React.FC = () => {
                         <TouchableOpacity
                             onPress={() => setShowIssueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{date2string(oInv.inv_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>
@@ -81,7 +79,7 @@ export const InvChange_Client: React.FC = () => {
                             onPress={() => setShowDueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}
                         >
-                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_due_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{date2string(oInv.inv_due_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>

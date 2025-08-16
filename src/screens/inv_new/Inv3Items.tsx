@@ -43,16 +43,7 @@ export const Inv3Items: React.FC = () => {
                     : item
             );
         } else {
-            const newLine: Partial<ItemDB> = {
-                item_id: newItem.item_id,
-                item_number: newItem.item_number,
-                item_name: newItem.item_name,
-                item_description: newItem.item_description,
-                item_quantity: 1,
-                item_rate: newItem.item_rate,
-                item_amount: newItem.item_rate,
-            };
-            updatedItems = [...inv_items, newLine];
+            updatedItems = [...inv_items, newItem];
         }
 
         updateOInv({ inv_items: updatedItems });
@@ -88,13 +79,24 @@ export const Inv3Items: React.FC = () => {
                         {/* Left Column: Item Info */}
                         <View style={{ flex: 1 }}>
                             {/* First Row */}
-                            <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-                                <Text style={{ fontWeight: "bold", flexShrink: 1 }}>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",   // ✅ keeps both vertically aligned
+                                    width: "100%",
+                                }}
+                            >
+                                {/* <Text style={{ fontWeight: "bold", flexShrink: 1 }}> */}
+                                <Text
+                                    style={{ fontWeight: "bold", flex: 1 }}
+                                    numberOfLines={3}
+                                    ellipsizeMode="tail"
+                                >
                                     {item.item_name}
                                 </Text>
 
                                 {editingItemId === item.item_id ? (
-                                    <View style={{ flexDirection: "row", marginLeft: 8 }}>
+                                    <View style={{ flexDirection: "row", marginLeft: 8, flexShrink: 0 }}>
                                         <TextInput
                                             ref={inputRef}
                                             value={String(item.item_quantity)}
@@ -104,11 +106,12 @@ export const Inv3Items: React.FC = () => {
                                             }}
                                             keyboardType="numeric"
                                             style={{
-                                                fontSize: 14,
+                                                fontSize: 12,
                                                 color: "#888",
                                                 borderBottomWidth: 1,
                                                 borderBottomColor: "#ccc",
                                                 minWidth: 24,
+                                                maxWidth: 40,
                                                 textAlign: "center",
                                                 paddingVertical: 0,
                                             }}

@@ -1,5 +1,5 @@
 import { BE_DB, ClientDB, InvDB, ItemDB } from "@/src/types";
-import { formatDateForUI, timestamp2us } from "@/src/utils/dateUtils";
+import { formatDateForUI, date2string } from "@/src/utils/dateUtils";
 
 export const t3 = (
     oInv: Partial<InvDB>,
@@ -21,8 +21,8 @@ export const t3 = (
       <div class="header-right">
         <h2>INVOICE</h2>
         <p><strong>No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-        <p><strong>Date:</strong> ${timestamp2us(oInv.inv_date)}</p>
-        <p><strong>Due:</strong> ${timestamp2us(oInv.inv_due_date)}</p>
+        <p><strong>Date:</strong> ${date2string(oInv.inv_date)}</p>
+        <p><strong>Due:</strong> ${date2string(oInv.inv_due_date)}</p>
         <p><strong>Terms:</strong> Net ${oInv.inv_payment_term || 7}</p>
       </div>
     </header>

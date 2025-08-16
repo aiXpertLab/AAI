@@ -1,5 +1,5 @@
 import { BE_DB, ClientDB, InvDB, ItemDB } from "@/src/types";
-import {  timestamp2us } from "@/src/utils/dateUtils";
+import {  date2string } from "@/src/utils/dateUtils";
 
 export function t2(
     oInv: Partial<InvDB>,
@@ -37,8 +37,9 @@ const bodyContent = `
 
         <div style="width: 48%; display: grid; grid-template-columns: 120px 1fr; row-gap: 4px;">
             <div><strong>INVOICE #</strong></div> <div>${oInv.inv_number || 'INV-Number'}</div>
-            <div><strong>DATE</strong></div> <div>${timestamp2us(oInv.inv_date) || 'Issue Date'}</div>
-            <div><strong>DUE DATE</strong></div> <div>${timestamp2us(oInv.inv_due_date) || 'Due Date'}</div>
+            <div><strong>DATE</strong></div> <div>${date2string(oInv.inv_date) || 'Issue Date'}</div>
+            <div><strong>DUE DATE</strong></div> <div>${date2string(oInv.inv_due_date) || 'Due Date'}</div>
+            <div><strong>REFERENCE</strong></div> <div>${oInv.inv_reference || ''}</div>
             <div><strong>TERMS</strong></div> <div>Net ${oInv.inv_payment_term || '7'}</div>
         </div>
     </div>

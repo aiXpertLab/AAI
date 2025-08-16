@@ -307,9 +307,9 @@ export const seed_data = {
             item_sku: "FBAPMK5M",
             item_description: "This is a sample item to demonstrate how items work. You can edit or replace it.",
 
-            item_quantity: 5,  // for InvItem only
+            item_quantity: 1,  // for InvItem only
             item_note: "For InvItem Only",      // for InvItem only
-            item_amount: 5,    // for InvItem only
+            item_amount: 1,    // for InvItem only
 
             ...baseFlags,
         },
@@ -317,14 +317,14 @@ export const seed_data = {
             item_id: "T000",
             item_number: 'P002',
             item_name: "Adjustment",
-            item_rate: 1.00,
+            item_rate: 2.00,
             item_unit: "item",
             item_sku: "SKU 4225-776-3234",
             item_description: "additional charges or credits",
 
-            item_quantity: 5,  // for InvItem only
+            item_quantity: 1,  // for InvItem only
             item_note: "For InvItem Only",      // for InvItem only
-            item_amount: 5,    // for InvItem only
+            item_amount: 2,    // for InvItem only
             ...baseFlags,
         },
         {
@@ -336,9 +336,9 @@ export const seed_data = {
             item_sku: "6IN-RD-CM-CO",
             item_description: "Tangible goods or materials delivered",
 
-            item_quantity: 5,  // for InvItem only
+            item_quantity: 1,  // for InvItem only
             item_note: "For InvItem Only",      // for InvItem only
-            item_amount: 5,    // for InvItem only
+            item_amount: 1500,    // for InvItem only
             ...baseFlags,
         },
         {
@@ -350,9 +350,9 @@ export const seed_data = {
             item_sku: "SH123-BLK-8",
             item_description: "Business strategy session (1hr)",
 
-            item_quantity: 5,  // for InvItem only
+            item_quantity: 1,  // for InvItem only
             item_note: "For InvItem Only",      // for InvItem only
-            item_amount: 5,    // for InvItem only
+            item_amount: 120,    // for InvItem only
             ...baseFlags,
         },
     ],

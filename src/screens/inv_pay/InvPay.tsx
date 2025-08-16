@@ -19,7 +19,7 @@ import { viewPDF, sharePDF, emailPDF, genPDF } from '@/src/utils/genPDF'; // adj
 import { M_TemplatePicker, M_Confirmation, M_Payment_Add } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
 import { useTipVisibility } from '@/src/hooks/useTipVisibility';
-import { timestamp2us } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const InvPay: React.FC = () => {
     console.log("InvPay")
@@ -202,7 +202,7 @@ export const InvPay: React.FC = () => {
                                             </View>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <Text style={{ fontSize: 12, color: "#888" }}>{p.pay_note ?? ""}</Text>
-                                                <Text style={{ fontSize: 12, color: "#888" }}>{timestamp2us(p.pay_date)}</Text>
+                                                <Text style={{ fontSize: 12, color: "#888" }}>{date2string(p.pay_date)}</Text>
                                             </View>
                                         </View>
 

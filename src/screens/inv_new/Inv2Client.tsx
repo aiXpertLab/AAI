@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Timestamp } from "firebase/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
-import { addDateDays, timestamp2us } from "@/src/utils/dateUtils";
+import { addDateDays, date2string } from "@/src/utils/dateUtils";
 
 import { ClientDB, InvDB } from "@/src/types";
 import { invoiceStyles } from "@/src/constants/styles";
@@ -118,7 +118,7 @@ export const Inv2Client: React.FC = () => {
                         <TouchableOpacity
                             onPress={() => setShowIssueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
-                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{date2string(oInv.inv_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>
@@ -129,7 +129,7 @@ export const Inv2Client: React.FC = () => {
                             onPress={() => setShowDueDatePicker(true)}
                             style={{ flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}
                         >
-                            <Text style={s_global.InputRightAAA}>{timestamp2us(oInv.inv_due_date)}</Text>
+                            <Text style={s_global.InputRightAAA}>{date2string(oInv.inv_due_date)}</Text>
                             <Ionicons name="calendar-outline" size={18} color="#888" style={{ marginLeft: 6 }} />
                         </TouchableOpacity>
                     </View>
