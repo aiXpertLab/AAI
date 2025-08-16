@@ -14,7 +14,7 @@ import { InvNew } from "@/src/screens/inv_new/InvNew";
 import { InvPay } from "@/src/screens/inv_pay/InvPay";
 import { InvPay_Edit } from "@/src/screens/inv_pay/InvPay_Edit";
 import SignScreen from "@/src/screens/user/SignScreen";
-import { InvChange_Client, Inv4Total_TaxForm } from "@/src/screens/invoice";
+import { InvPay_Edit_Client, Inv4Total_TaxForm } from "@/src/screens/invoice";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
 import {  Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
 import SeedScreen from '@/seed/SeedScreen';
@@ -38,7 +38,7 @@ function StackNavigator() {
             <DetailStack.Screen name="Drawer_Settings" component={Drawer_Settings} options={{ title: 'Settings' }} />
             <DetailStack.Screen name="InvPay" component={InvPay} options={{ title: 'Invoice Payment', }} />
             <DetailStack.Screen name="InvPay_Edit" component={InvPay_Edit} options={{ title: 'Invoice' }} />
-            <DetailStack.Screen name="InvChange_Client" component={InvChange_Client} options={{ title: 'Invoice' }} />
+            <DetailStack.Screen name="InvPay_Edit_Client" component={InvPay_Edit_Client} options={{ title: 'Invoice' }} />
             <DetailStack.Screen name="Inv_New" component={InvNew} options={{ title: 'New Invoice' }} />
             <DetailStack.Screen name="BizInfo" component={BizInfo} options={{ title: 'My Business' }} />
             <DetailStack.Screen name="Client_List" component={Client_List} options={{ title: 'My Client' }} />

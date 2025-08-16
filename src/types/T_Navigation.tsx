@@ -11,7 +11,7 @@ export type DetailStack = {
     BizInfo: undefined;
     InvPay: undefined;
     InvPay_Edit: undefined;
-    InvChange_Client: undefined;
+    InvPay_Edit_Client: undefined;
     
     Tax_List: undefined;
     Tax_Form: { mode?: ModeType };

@@ -13,7 +13,7 @@ import { s_global } from "@/src/constants/s_global"
 import { useInvStore, useClientStore } from "@/src/stores";
 import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
-export const InvChange_Client: React.FC = () => {
+export const InvPay_Edit_Client: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
     const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
     const [clients, setClients] = React.useState<ClientDB[]>([]);
