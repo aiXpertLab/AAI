@@ -29,8 +29,8 @@ export interface BE_DB {
     is_active: number;
     is_locked: number;
     is_deleted: number;
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
 
 }
 

@@ -36,7 +36,7 @@ export const seed_data = {
         be_timezone: "America/New_York",
         be_date_format: "MM/DD/YYYY",
         be_inv_prefix: "INV-",
-        be_inv_number: 2025,
+        be_inv_number: 2501,
 
 
         ...baseFlags,

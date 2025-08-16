@@ -26,8 +26,6 @@ export const useInvCrud = () => {
     };
 
 
-
-
     const insertInv = async (): Promise<void> => {
         const oInv = useInvStore.getState().oInv;
 
@@ -40,6 +38,7 @@ export const useInvCrud = () => {
             created_at: serverTimestamp(),
             updated_at: serverTimestamp(),
         };
+        console.log(oInv)
         await setDoc(docRef, newInv);
     };
 

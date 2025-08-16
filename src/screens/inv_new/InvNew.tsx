@@ -141,14 +141,9 @@ export const InvNew: React.FC = () => {
             return
         }
 
-        // ✅ 3. if empty, set to TBD
-        if (!oInv.client_id || oInv.client_id.trim() === "link to client") {
-            if (!oClient?.client_id) {
-                updateOInv({ client_id: oClient?.client_id, });
-            } else {
-                updateOInv({ client_id: 'Client_TBD', });
-            }
-
+        // ✅ 3. if client empty, set to TBD
+        if (oClient?.client_id) {
+            updateOInv({ client_id: oClient?.client_id, });
         }
 
         // ✅ 4. if no item, set TBD

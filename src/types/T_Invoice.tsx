@@ -42,8 +42,8 @@ export interface InvDB {
     is_active: number;
     is_locked: number;
     is_deleted: number;
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 
@@ -80,8 +80,8 @@ export interface PMDB {
     is_active: number;
     is_locked: number;
     is_deleted: number;
-    created_at: Date;
-    updated_at: Date;
+    created_at?: Date;
+    updated_at?: Date;
 
     pay_date: Date;         // for InvPayment only
     pay_amount: number;     // for InvPayment only

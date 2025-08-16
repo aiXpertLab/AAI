@@ -93,7 +93,7 @@ export const emptyInv = (): InvDB => ({
     inv_id: 'inv_' + Crypto.randomUUID().replace(/-/g, ''),
     user_id: "reserved",
     be_id: "reserved",
-    client_id: "link to client",
+    client_id: "Client_TBD",
 
     inv_number: "pending for oBiz",
     inv_date: new Date(),
