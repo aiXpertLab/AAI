@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { InvDB, ItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
+import { BE_DB } from '@/src/types/T_Biz';
 
 // Store for business info (oBiz)
 type OBizStore = {

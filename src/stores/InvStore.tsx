@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { InvDB,  PMDB, TaxDB } from '@/src/types';
+import { InvDB, PMDB, TaxDB } from '@/src/types';
 import { emptyPM, createEmptyTax4New, emptyInv } from './seeds4store';
 
 type OInvStore = {
@@ -32,7 +32,10 @@ export const useInvStore = create<OInvStore>((set) => ({
 
     updateOInvPayments: (payments) =>
         set((state) => ({
-            oInv: state.oInv ? { ...state.oInv, inv_payments: payments, updated_at: new Date() } : null,
+            oInv: state.oInv ? {
+                ...state.oInv,
+                inv_payments: payments, 
+            } : null,
         })),
     addPaymentToOInv: (payment) =>
         set((state) => {
@@ -41,7 +44,6 @@ export const useInvStore = create<OInvStore>((set) => ({
                 oInv: {
                     ...state.oInv,
                     inv_payments: [...state.oInv.inv_payments, payment],
-                    updated_at: new Date(),
                 },
             };
         }),

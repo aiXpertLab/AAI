@@ -17,7 +17,7 @@ const statusColorMap = {
 };
 
 
-export const FilterTabs: React.FC<Props> = ({ selectedFilter, setSelectedFilter }) => {
+export const HomeFilterTabs: React.FC<Props> = ({ selectedFilter, setSelectedFilter }) => {
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
             {invoiceFilters.map((filter) => (

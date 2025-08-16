@@ -61,8 +61,8 @@ export interface ItemDB {
     is_active: number;
     is_locked: number;
     is_deleted: number;
-    created_at: any;
-    updated_at: any;
+    created_at?: Date;
+    updated_at?: Date;
 
     item_quantity: number;  // for InvItem only
     item_note: string;      // for InvItem only

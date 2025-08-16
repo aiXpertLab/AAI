@@ -7,8 +7,6 @@ const baseFlags = {
     is_active: 1,
     is_locked: 0,
     is_deleted: 0,
-    created_at: new Date(),
-    updated_at: new Date(),
 };
 
 

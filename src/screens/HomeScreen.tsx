@@ -2,14 +2,15 @@ import React from "react";
 import { Pressable, View, FlatList, TouchableOpacity, Text } from "react-native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Ionicons } from '@expo/vector-icons';
-
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 import { useInvStore, useBizStore } from '@/src/stores';
 import { RootStack, InvDB, ItemDB } from '@/src/types';
-import { SummaryCards, FilterTabs, M_HeaderFilter } from "@/src/screens/home";
+import { M_HeaderFilter } from "@/src/modals/M_HeaderFilter";
+import { HomeSummaryCards } from "@/src/screens/HomeSummaryCard";
+import { HomeFilterTabs } from "@/src/screens/HomeFilterTabs";
 
 import { attachClientNames } from "@/src/utils/invoiceUtils";
 import { s_global } from "@/src/constants";
@@ -42,12 +43,6 @@ const HomeScreen: React.FC = () => {
     const { hf_client, hf_fromDate, hf_toDate } = selectedHeaderFilter;
 
     const handleSelectInvoice = async (invoice: InvDB) => {
-        if (!oBiz) {
-            const data = await fetchBiz();
-            console.log('Fetched bizData:', data?.be_address);
-            setOBiz(data || null);
-            console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
-        }
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
     };
 
@@ -174,11 +169,11 @@ const handleAddNewInvoice = async () => {
 return (
     <View style={s_global.Container}>
         <View>
-            <SummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
+            <HomeSummaryCards overdue={summaryTotals.overdue} unpaid={summaryTotals.unpaid} />
 
             {/* filter tabs */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 8 }}>
-                <FilterTabs selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
+                <HomeFilterTabs selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             </View>
         </View>
 

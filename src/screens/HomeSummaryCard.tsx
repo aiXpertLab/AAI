@@ -7,7 +7,7 @@ interface SummaryCardsProps {
     unpaid: number;
 }
 
-export const SummaryCards: React.FC<SummaryCardsProps> = ({ overdue, unpaid }) => {
+export const HomeSummaryCards: React.FC<SummaryCardsProps> = ({ overdue, unpaid }) => {
     const summaryCards = [
         { id: '1', label: 'Total Overdue', value: `$${overdue.toFixed(2)}` },
         { id: '2', label: 'Total Unpaid', value: `$${unpaid.toFixed(2)}` },
