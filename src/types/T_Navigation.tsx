@@ -24,6 +24,7 @@ export type DetailStack = {
 
     PaymentMethod_List: undefined;
     PaymentMethod_Form: { mode?: ModeType };
+    InvNumber_Form: undefined;
 
     SeedBizScreen: undefined;
     TestScreen: undefined;

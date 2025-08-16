@@ -157,18 +157,14 @@ useFocusEffect(
 );
 
 const handleAddNewInvoice = async () => {
-    if (!oBiz) {
-        const data = await fetchBiz();
-        console.log('------', data)
-        setOBiz(data || null);
-    }
-    console.log(oBiz)
+    // if (!oBiz) {
+    //     const data = await fetchBiz();
+    //     setOBiz(data || null);
+    // }
     const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
     console.log(newInvNumber, '  000000000000')
-
     createEmptyInv()
     updateOInv({ inv_number: newInvNumber });
-    console.log(oInv?.inv_number)
     navigation.navigate('DetailStack', {
         screen: 'Inv_New',
     });

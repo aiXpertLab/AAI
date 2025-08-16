@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { InvDB, ItemDB, ClientDB, BE_DB, PMDB, TaxDB } from '@/src/types';
-import { emptyClient, emptyPM, createEmptyTax4New, emptyInv } from './seeds4store';
+import { InvDB,  PMDB, TaxDB } from '@/src/types';
+import { emptyPM, createEmptyTax4New, emptyInv } from './seeds4store';
 
 type OInvStore = {
     invs: InvDB[];
@@ -23,8 +23,6 @@ export const useInvStore = create<OInvStore>((set) => ({
     oInv: null,
     setOInv: (inv) => set({ oInv: { ...inv } }),
     updateOInv: (inv) => set((state) => state.oInv ? { oInv: { ...state.oInv, ...inv } } : {}),
-
-
 
     clearOInv: () => set({ oInv: null }),
     isDirty: false,

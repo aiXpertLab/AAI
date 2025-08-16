@@ -23,7 +23,7 @@ export interface BE_DB {
     be_timezone: string;
     be_date_format: string;
     be_inv_prefix: string;
-    be_inv_number: number,
+    be_inv_number: number,  // current inv_number, when fetch, add 1 to be new
 
     status: string;
     is_active: number;

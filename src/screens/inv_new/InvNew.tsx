@@ -22,13 +22,14 @@ import { useTipVisibility } from '@/src/hooks/useTipVisibility';
 
 import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
+import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
 export const InvNew: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
     const [isProcessing, setIsProcessing] = React.useState(false);
 
-    const { oInv, isDirty, setIsDirty } = useInvStore();
+    const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
     const { oClient, updateOClient } = useClientStore();
 
@@ -36,6 +37,7 @@ export const InvNew: React.FC = () => {
 
 
     const { insertInv, fetch1Inv } = useInvCrud();
+    const { fetch1Item } = useItemCrud();
     const [showTooltip, setShowTooltip] = React.useState(true);
 
     const saveRef = React.useRef(() => { });
@@ -119,8 +121,8 @@ export const InvNew: React.FC = () => {
 
     const handleSave = async () => {
         if (!oInv) { return }
-        isSavingRef.current = true;  
-        setIsDirty(false);   
+        isSavingRef.current = true;
+        setIsDirty(false);
 
         // ✅ 1. If inv_number is empty, set it to "empty"
         if (!oInv.inv_number || oInv.inv_number.trim() === "") {
@@ -139,23 +141,29 @@ export const InvNew: React.FC = () => {
             return
         }
 
-        // ✅ 3. Client cannot be empty
+        // ✅ 3. if empty, set to TBD
         if (!oInv.client_id || oInv.client_id.trim() === "link to client") {
-            showValidationModal(
-                'Invalid Client',
-                'Client cannot be empty. Please select a client before saving.'
-            );
-            return
+            if (!oClient?.client_id) {
+                updateOInv({ client_id: oClient?.client_id, });
+            } else {
+                updateOInv({ client_id: 'Client_TBD', });
+            }
+
         }
 
-        // ✅ 4. Must have at least one item
+        // ✅ 4. if no item, set TBD
         if (!oInv.inv_items || oInv.inv_items.length === 0) {
-            console.log(oInv.inv_items)
-            showValidationModal(
-                'Missing Item',
-                'Invoice must have at least one item. Please add items before saving.'
-            );
-            return
+            const itemTBD = await fetch1Item("Item_TBD");
+            if (itemTBD) {
+                console.log('Item_TBD')
+                updateOInv({ inv_items: [itemTBD] });
+            } else {
+                showValidationModal(
+                    'Missing Item',
+                    'Invoice must have at least one item. Please add items before saving.'
+                );
+                return
+            }
         }
 
         isSavingRef.current = true;

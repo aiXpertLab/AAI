@@ -13,12 +13,13 @@ import Item_List from '@/src/screens/settings/Item_List';
 import { InvNew } from "@/src/screens/inv_new/InvNew";
 import { InvPay } from "@/src/screens/inv_pay/InvPay";
 import { InvPay_Edit } from "@/src/screens/inv_pay/InvPay_Edit";
-import SignScreen from "@/src/screens/user/SignScreen";
 import { Inv4Total_TaxForm } from "@/src/screens/inv_new/Inv4Total_TaxForm";
 import { InvPay_Edit_Client  } from "@/src/screens/inv_pay/InvPay_Edit_Client";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
-import {  Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
+import { Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
+import { InvNumber_Form } from '@/src/screens/settings/InvNumber_Form'
 import SeedScreen from '@/seed/SeedScreen';
+import SignScreen from "@/src/screens/user/SignScreen";
 
 import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
 import TestScreen from '@/src/screens/drawer/TestScreen';
@@ -48,6 +49,8 @@ function StackNavigator() {
             <DetailStack.Screen name="Item_Form" component={Item_Form} options={{ title: 'Edit Item or Service' }} />
             <DetailStack.Screen name="Tax_List" component={Tax_List} options={{ title: 'Tax' }} />
             <DetailStack.Screen name="Tax_Form" component={Tax_Form} options={{ title: 'Tax' }} />
+            <DetailStack.Screen name="InvNumber_Form" component={InvNumber_Form} options={{ title: 'Invoice Number' }} />
+            
             <DetailStack.Screen name="PaymentMethod_List" component={PaymentMethod_List} options={{ title: 'Payment Method' }} />
             <DetailStack.Screen name="PaymentMethod_Form" component={PaymentMethod_Form} options={{ title: 'Payment Method' }} />
             <DetailStack.Screen name="RestoreScreen" component={RestoreScreen} options={{ title: 'Restore' }} />

@@ -121,6 +121,17 @@ export const InvPay: React.FC = () => {
 
     const handleDuplicate = async () => {
         try {
+
+            const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
+            updateOInv({ inv_number: newInvNumber });
+
+            let newNumber = 1;
+            if (match) {
+                newNumber = parseInt(match[1], 10) + 1;
+            }
+            await updateOBiz({ be_inv_number: newNumber });
+            await updateBiz({ be_inv_number: newNumber });
+
             const success = await duplicateInv();
             console.log('Duplicate success:', success);
         } catch (error) {
@@ -130,9 +141,13 @@ export const InvPay: React.FC = () => {
 
     const sendEmail = async () => {
         try {
-            const uri = await genPDF(oInv, oBiz, oInv!.inv_items);
-            await emailPDF(uri, oInv, oBiz);
-        } catch (err) { console.error("Error Email:", err); }
+            const htmlContent = genHTML(oInv!, oBiz!, "pdf", oInv!.inv_template_id || 't1');
+            const { uri } = await Print.printToFileAsync({ html: htmlContent });
+
+            await emailPDF(uri, oInv!, oBiz!);
+        } catch (err) {
+            console.error("Error Email:", err);
+        }
     };
 
     const handleShare = async () => {

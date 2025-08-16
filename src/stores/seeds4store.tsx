@@ -1,7 +1,5 @@
-import { serverTimestamp } from "firebase/firestore";
 import * as Crypto from 'expo-crypto';
 
-import { getInvoiceNumber } from "@/src/utils/genInvNumber";
 import { PMDB, InvDB, ClientDB, ItemDB, TaxDB } from "@/src/types"
 
 const baseFlags = {

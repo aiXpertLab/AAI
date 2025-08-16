@@ -11,7 +11,7 @@ import { InvDB, BE_DB } from "@/src/types";
 export const genPDF = async (oInv: any, oBiz: any, oInvItems: any) => {
     if (!oInv) throw new Error("Missing invoice data");
 
-    const htmlContent = genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't2') 
+    const htmlContent = genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't2')
     const { uri } = await Print.printToFileAsync({ html: htmlContent });
 
     return uri;
@@ -83,11 +83,26 @@ export const emailPDF = async (uri: any, oInv: InvDB, oBiz: BE_DB) => {
         throw new Error("Mail composer not available");
     }
 
+    const greeting = (oInv as any)?.client_contact_name
+        ? `Dear ${(oInv as any).client_contact_name},`
+        : `Dear Client,`; // fallback if missing
+
+    const emailBody = [
+        greeting,
+        `I hope this message finds you well. Please find your invoice ${oInv.inv_number} attached. Your prompt payment is appreciated.`,
+        `If you have any questions, please feel free to let me know. `,
+        `Thank you for your continued business. `,
+        `Best regards,`,
+        oBiz?.be_name,
+        oBiz?.be_email || "",   // only show if not null
+        oBiz?.be_phone || ""    // only show if not null
+    ].filter(Boolean).join("\n\n");
+
     try {
         await MailComposer.composeAsync({
             recipients: [(oInv as any)?.client_email!],
-            subject: `Invoice from ${oBiz?.be_name}`, // Dynamic business name
-            body: `Dear ${(oInv as any)?.client_contact_name},\n\nPlease find your invoice attached.\n\nBest regards,\n${oBiz?.be_name}`,
+            subject: `Invoice ${oInv.inv_number} from ${oBiz?.be_name}`,
+            body: emailBody,
             attachments: [uri],
         });
     } catch (err) {

@@ -27,7 +27,7 @@ export const useClientCrud = () => {
         if (!uid) throw new Error("Missing UID");
 
         const clientsRef = collection(db, `aai/be_${uid}/clients`);
-        const q = query(clientsRef, where("is_deleted", "==", 0),);
+        const q = query(clientsRef, where("is_deleted", "==", 0),);     // show default status . not show deleted or TBD.
         const querySnap = await getDocs(q);
 
         const clients: ClientDB[] = querySnap.docs.map(doc => doc.data() as ClientDB);

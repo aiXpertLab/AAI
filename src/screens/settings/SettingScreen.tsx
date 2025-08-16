@@ -34,34 +34,24 @@ const Drawer_Settings_Screen: React.FC = () => {
         <ScrollView style={s_global.SettingsContainer}>
             {/* Business Section */}
             <Section title="My Business">
-                <SettingItem title="Business Info" onPress={async () => {
-                    if (!oBiz) {
-                        const data = await fetchBiz();
-                        console.log('Fetched bizData:', data?.be_address);
-                        setOBiz(data || null);
-                        console.log('Current oBiz:', useBizStore.getState().oBiz?.be_address);
-                    }
-                    navigation.navigate("BizInfo");
-                }} />
+                <SettingItem title="Business Info" onPress={async () => { navigation.navigate("BizInfo"); }} />
                 <SettingItem title="Tax" onPress={() => navigation.navigate("Tax_List")} />
-                <SettingItem title="Payment Method" onPress={() => navigation.navigate("PaymentMethod_List")} />
-                {/* <SettingItem title="Payment Method" />
-                <SettingItem title="Terms & Conditions" />
-                <SettingItem title="Signature" /> */}
+                <SettingItem title="Clients" onPress={() => navigation.navigate("Client_List")} />
+                <SettingItem title="Items & Services" onPress={() => navigation.navigate("Item_List")} />
             </Section>
 
             {/* Invoice Section */}
             <Section title="Invoice">
-                <SettingItem title="Clients" onPress={() => navigation.navigate("Client_List")} />
-                <SettingItem title="Items & Services" onPress={() => navigation.navigate("Item_List")} />
 
-                {/* <SettingItem title="Due Terms" subtitle="7 days" />
+                <SettingItem title="Invoice Number" onPress={() => navigation.navigate("InvNumber_Form")} />
+                <SettingItem title="Payment Method" onPress={() => navigation.navigate("PaymentMethod_List")} />
+                {/* <SettingItem title="Signature" />  */}
                 <SettingItem
                     title="Paid show on Invoice"
                     toggle
                     toggleValue={showPaidOnInvoice}
                     onToggle={setShowPaidOnInvoice}
-                /> */}
+                />
             </Section>
 
             {/* General Section */}

@@ -2,7 +2,7 @@ const baseFlags = {
     status: "5 stars",
     is_active: 1,
     is_locked: 0,
-    is_deleted: 0,
+    is_deleted: 0,  // 1-deleted. 0-default. 2.TBD/hidden, always show 0. never show 2.
     created_at: new Date(),
     updated_at: new Date(),
 };
@@ -174,6 +174,32 @@ export const seed_data = {
 
     clients: [
         {
+            client_id: "Client_TBD",
+            client_company_name: "Client_TBD",
+            client_contact_name: "Client_TBD",
+            client_contact_title: "Client_TBD",
+            client_business_number: "Client_TBD",
+            client_tax_id: "Client_TBD",
+            client_address: "Client_TBD",
+            client_email: "TBD@example.com",
+            client_mainphone: "555-567-8901",
+            client_secondphone: "Client_TBD",
+            client_fax: "Client_TBD",
+            client_website: "Client_TBD",
+            client_currency: "OTHER",
+            client_template_id: "t1",
+
+            client_status: "active",
+            client_note: "Requires itemized invoices",
+
+            client_payment_method: "Bank Transfer",
+            client_payment_term: 15,
+            client_terms_conditions: "Payment due in 7 days.",
+            ...baseFlags,
+            is_deleted: 2, //hidden
+        },
+
+        {
             client_id: "C001",
             client_company_name: "Demo Client 1",
             client_contact_name: "Alice Johnson",
@@ -269,49 +295,26 @@ export const seed_data = {
             client_terms_conditions: "Payment due in 7 days.",
             ...baseFlags,
         },
-        {
-            client_id: "C005",
-            client_company_name: "Demo Client 5",
-            client_contact_name: "Emma Brown",
-            client_contact_title: "Manager",
-            client_business_number: "123456RT001",
-            client_tax_id: "123456RT001",
-            client_address: "654 Cedar Lane, Lakeside",
-            client_email: "emma.brown@example.com",
-            client_mainphone: "555-567-8901",
-            client_secondphone: "second phone",
-            client_fax: "fax",
-            client_website: "https://example.com",
-            client_currency: "OTHER",
-            client_template_id: "t1",
-
-            client_status: "active",
-            client_note: "Requires itemized invoices",
-
-            client_payment_method: "Bank Transfer",
-            client_payment_term: 15,
-            client_terms_conditions: "Payment due in 7 days.",
-            ...baseFlags,
-        },
     ],
 
 
     // Payment methods seed data
     items: [
         {
-            item_id: "ITEM0001",
-            item_number: 'P001',
-            item_name: "🚧 Example Item (Tap to Edit)",
+            item_id: "Item_TBD",
+            item_number: 'Item_TBD',
+            item_name: "🚧Item_TBD",
             item_rate: 1.00,
-            item_unit: 'item',
-            item_sku: "FBAPMK5M",
-            item_description: "This is a sample item to demonstrate how items work. You can edit or replace it.",
+            item_unit: 'Item_TBD',
+            item_sku: "Item_TBD",
+            item_description: "Item_TBD",
 
             item_quantity: 1,  // for InvItem only
             item_note: "For InvItem Only",      // for InvItem only
             item_amount: 1,    // for InvItem only
 
             ...baseFlags,
+            is_deleted: 2, //TBD Item
         },
         {
             item_id: "T000",

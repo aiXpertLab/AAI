@@ -106,7 +106,7 @@ export const useInvCrud = () => {
             const newInvoice = {
                 ...invSnap.data(),
                 inv_id: newInvId,
-                inv_number: 'duplicate',
+                inv_number: oInv.inv_number,
                 created_at: serverTimestamp(),
                 updated_at: serverTimestamp(),
             };
