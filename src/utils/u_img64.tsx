@@ -62,7 +62,7 @@ export const processB64Client = async (
     if (!base64Image) { alert("Error: No image data available."); return; }
 
     const apiBase = await fetchAPIUrl();
-    const apiUrl = apiBase + 'aai/image_client_json';
+    const apiUrl = apiBase + 'aiai/image_client_json';
     if (!apiUrl) { console.error("No API URL available"); return; }
 
     setIsProcessing(true);
@@ -100,7 +100,7 @@ export const processB64Inv = async (
     const updateOInv = useInvStore.getState().updateOInv;
 
     const apiBase = await fetchAPIUrl();
-    const apiUrl = apiBase + 'aai/image_invoice_json';
+    const apiUrl = apiBase + 'aiai/image_invoice_json';
     if (!apiUrl) { console.error("No API URL available"); return; }
 
     setIsProcessing(true);
@@ -166,7 +166,7 @@ export const processB64Me = async (
     if (!base64Image) { alert("Error: No image data available."); return; }
 
     const apiBase = await fetchAPIUrl();
-    const apiUrl = apiBase + 'aai/image_client_json';
+    const apiUrl = apiBase + 'aiai/image_client_json';
     if (!apiUrl) { console.error("No API URL available"); return; }
 
     setIsProcessing(true);
@@ -208,7 +208,7 @@ export const processB64Me = async (
 //     if (!base64Image) { alert("Error: No image data available."); return; }
 
 //     const apiBase = await fetchAPIUrl();
-//     const apiUrl = apiBase + 'aai/image_item_json';
+//     const apiUrl = apiBase + 'aiai/image_item_json';
 //     if (!apiUrl) { console.error("No API URL available"); return; }
 
 //     setIsProcessing(true);
@@ -241,7 +241,7 @@ export const processB64Item = async (
     if (!base64Image) { alert("Error: No image data."); return null; }
 
     const apiBase = await fetchAPIUrl();
-    const apiUrl = apiBase + 'aai/image_item_json';
+    const apiUrl = apiBase + 'aiai/image_item_json';
     setIsProcessing(true);
 
     try {

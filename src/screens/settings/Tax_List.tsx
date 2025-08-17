@@ -27,7 +27,7 @@ export const Tax_List: React.FC = () => {
 
     const fetchItems = async () => {
         try {
-            const colRef = collection(db, `aai/be_${uid}/tax_list`);
+            const colRef = collection(db, `aiai/be_${uid}/tax_list`);
             const q = query(colRef, where("is_deleted", "==", 0));
             const snapshot = await getDocs(q);
 

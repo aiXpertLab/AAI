@@ -9,7 +9,7 @@ export const getInvoiceNumber = async (): Promise<string> => {
     const uid = FirebaseUser?.uid;
     if (!uid) throw new Error("User not authenticated");
 
-    const docRef = doc(db, `aai/be_${uid}`);
+    const docRef = doc(db, `aiai/be_${uid}`);
 
     const invoiceNumber = await runTransaction(db, async (transaction) => {
         const docSnap = await transaction.get(docRef);

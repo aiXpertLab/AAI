@@ -12,13 +12,13 @@ export const useClientCrud = () => {
 
 
     const updateClient = async (updates: Partial<ClientDB>, clientId: string): Promise<void> => {
-        const docRef = doc(db, `aai/be_${uid}/clients`, clientId);
+        const docRef = doc(db, `aiai/be_${uid}/clients`, clientId);
         await updateDoc(docRef, { ...updates, });
     };
 
 
     const insertClient = async (oClient: ClientDB): Promise<void> => {
-        const docRef = doc(db, `aai/be_${uid}/clients`, oClient.client_id);
+        const docRef = doc(db, `aiai/be_${uid}/clients`, oClient.client_id);
         await setDoc(docRef, oClient);
     };
 
@@ -26,7 +26,7 @@ export const useClientCrud = () => {
     const fetchClients = async (): Promise<ClientDB[]> => {
         if (!uid) throw new Error("Missing UID");
 
-        const clientsRef = collection(db, `aai/be_${uid}/clients`);
+        const clientsRef = collection(db, `aiai/be_${uid}/clients`);
         const q = query(clientsRef, where("is_deleted", "==", 0),);     // show default status . not show deleted or TBD.
         const querySnap = await getDocs(q);
 
@@ -36,7 +36,7 @@ export const useClientCrud = () => {
 
 
     const fetch1Client = async (clientId: string): Promise<ClientDB | null> => {
-        const clientsRef = collection(db, `aai/be_${uid}/clients`);
+        const clientsRef = collection(db, `aiai/be_${uid}/clients`);
         const q = query(clientsRef, where("client_id", "==", clientId));
         const querySnap = await getDocs(q);
 

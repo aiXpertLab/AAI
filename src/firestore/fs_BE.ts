@@ -11,11 +11,11 @@ export const createBusinessEntity = async (uid: string) => {
     const paymentSnaps = await getDocs(paymentMethodsRef);
 
     const biz_id = `be_${uid}`;
-    const userBizRef = doc(db, "aai", biz_id);
+    const userBizRef = doc(db, "aiai", biz_id);
     await setDoc(userBizRef, seedSnap.data());
 
     for (const snap of paymentSnaps.docs) {
-        const destRef = doc(db, "aai", biz_id, "payment_methods", snap.id);
+        const destRef = doc(db, "aiai", biz_id, "payment_methods", snap.id);
         await setDoc(destRef, snap.data());
     }
 

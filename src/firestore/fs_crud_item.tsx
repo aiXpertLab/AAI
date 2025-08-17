@@ -13,13 +13,13 @@ export const useItemCrud = () => {
 
     const updateItem = async (Item: Partial<ItemDB>): Promise<void> => {
         if (!uid || !Item.item_id) throw new Error("Missing UID or Item ID");
-        const docRef = doc(db, `aai/be_${uid}/items`, Item.item_id);
+        const docRef = doc(db, `aiai/be_${uid}/items`, Item.item_id);
         await updateDoc(docRef, Item);
     };
 
 
     const insertItem = async (preparedOItem: ItemDB): Promise<void> => {
-        const docRef = doc(db, `aai/be_${uid}/items`, preparedOItem.item_id);
+        const docRef = doc(db, `aiai/be_${uid}/items`, preparedOItem.item_id);
         const itemToInsert: ItemDB = {
             ...preparedOItem,
             item_quantity: 1,
@@ -31,7 +31,7 @@ export const useItemCrud = () => {
 
     const fetchItems = async (): Promise<ItemDB[]> => {
         try {
-            const itemsRef = collection(db, `aai/be_${uid}/items`);
+            const itemsRef = collection(db, `aiai/be_${uid}/items`);
             const q = query(itemsRef, where("is_deleted", "==", 0),);
             const querySnap = await getDocs(q);
             const items: ItemDB[] = querySnap.docs.map(doc => doc.data() as ItemDB);
@@ -43,7 +43,7 @@ export const useItemCrud = () => {
     };
 
     const fetch1Item = async (itemId: string): Promise<ItemDB | null> => {
-        const itemsRef = collection(db, `aai/be_${uid}/items`);
+        const itemsRef = collection(db, `aiai/be_${uid}/items`);
         const q = query(itemsRef, where("item_id", "==", itemId),);
         const querySnap = await getDocs(q);
         if (querySnap.empty) { return null; }

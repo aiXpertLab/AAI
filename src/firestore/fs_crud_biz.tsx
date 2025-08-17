@@ -33,7 +33,7 @@ export const useBizCrud = () => {
 
 
     const updateBiz = async (updates: Partial<BE_DB>,): Promise<void> => {
-        const docRef = doc(db, `aai/be_${uid}`);
+        const docRef = doc(db, `aiai/be_${uid}`);
         await updateDoc(docRef, {
             ...updates,
             updated_at: serverTimestamp(),
@@ -45,7 +45,7 @@ export const useBizCrud = () => {
     const fetchBiz = async () => {
         try {
             console.log("fetchBiz", uid);
-            const docRef = doc(db, "aai", `be_${uid}`);
+            const docRef = doc(db, "aiai", `be_${uid}`);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -75,7 +75,7 @@ export const useBizCrud = () => {
 
         // 1. Clone main document
         const biz_id = `be_${uid}`;
-        const userBizRef = doc(db, "aai", biz_id);
+        const userBizRef = doc(db, "aiai", biz_id);
         await setDoc(userBizRef, seedSnap.data());
 
         // 2. Loop through subcollections
@@ -84,14 +84,14 @@ export const useBizCrud = () => {
             const sourceSnaps = await getDocs(sourceColRef);
 
             for (const docSnap of sourceSnaps.docs) {
-                const destDocRef = doc(db, "aai", biz_id, subCol, docSnap.id);
+                const destDocRef = doc(db, "aiai", biz_id, subCol, docSnap.id);
                 await setDoc(destDocRef, docSnap.data());
             }
         }
 
 
         // 3. Adjust invoice dates after cloning
-        const invsRef = collection(db, "aai", biz_id, "invs");
+        const invsRef = collection(db, "aiai", biz_id, "invs");
         const invsSnap = await getDocs(invsRef);
 
         for (const invDoc of invsSnap.docs) {
@@ -143,7 +143,7 @@ export const useBizCrud = () => {
     const backupAll = async () => {
         if (!uid) throw new Error("No Firebase user UID");
 
-        const bizRef = doc(db, `aai/be_${uid}`);
+        const bizRef = doc(db, `aiai/be_${uid}`);
         const bizSnap = await getDoc(bizRef);
 
         if (!bizSnap.exists()) {
@@ -160,7 +160,7 @@ export const useBizCrud = () => {
         const subcollections = ["clients", "invs", "items"];
 
         for (const sub of subcollections) {
-            const colRef = collection(db, `aai/be_${uid}/${sub}`);
+            const colRef = collection(db, `aiai/be_${uid}/${sub}`);
             const colSnap = await getDocs(colRef);
 
             backup.__subcollections[sub] = {};

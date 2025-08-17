@@ -5,7 +5,7 @@ import { app } from "@/src/config/firebaseConfig";
 const db = getFirestore(app);
 
 export async function checkBizEntityExists(uid: string): Promise<boolean> {
-    const docRef = doc(db, "aai", `be_${uid}`);
+    const docRef = doc(db, "aiai", `be_${uid}`);
     const docSnap = await getDoc(docRef);
     return docSnap.exists();
 }

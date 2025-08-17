@@ -17,7 +17,7 @@ export const useInvCrud = () => {
         invId: string       // must pass invId, using oInvId not reliable. sometimes need update db directly
     ): Promise<void> => {
 
-        const docRef = doc(db, `aai/be_${uid}/invs`, invId);
+        const docRef = doc(db, `aiai/be_${uid}/invs`, invId);
 
         await updateDoc(docRef, {
             ...updates,
@@ -31,7 +31,7 @@ export const useInvCrud = () => {
 
         if (!oInv!.inv_id) { throw new Error("No oInv found in zustand store."); }
 
-        const docRef = doc(db, `aai/be_${uid}/invs`, oInv!.inv_id);
+        const docRef = doc(db, `aiai/be_${uid}/invs`, oInv!.inv_id);
 
         const newInv = {
             ...oInv,
@@ -44,7 +44,7 @@ export const useInvCrud = () => {
 
 
     const fetchInvs = async (hf_client: string, hf_fromDate: Date, hf_toDate: Date): Promise<InvDB[]> => {
-        const invRef = collection(db, `aai/be_${uid}/invs`);
+        const invRef = collection(db, `aiai/be_${uid}/invs`);
         const conditions = [where("is_deleted", "!=", 1)];
         if (hf_client !== "All") {
             conditions.push(where("client_company_name", "==", hf_client));
@@ -92,7 +92,7 @@ export const useInvCrud = () => {
             }
 
             // Fetch original invoice
-            const invRef = doc(db, `aai/be_${uid}/invs`, oInv.inv_id);
+            const invRef = doc(db, `aiai/be_${uid}/invs`, oInv.inv_id);
             const invSnap = await getDoc(invRef);
 
             if (!invSnap.exists()) {
@@ -111,7 +111,7 @@ export const useInvCrud = () => {
             };
 
             // Save duplicated invoice
-            await setDoc(doc(db, `aai/be_${uid}/invs`, newInvId), newInvoice);
+            await setDoc(doc(db, `aiai/be_${uid}/invs`, newInvId), newInvoice);
 
             Toast.show({
                 type: 'success',
@@ -135,7 +135,7 @@ export const useInvCrud = () => {
 
 
     const fetch1Inv = async (invNumber: string): Promise<InvDB | null> => {
-        const invsRef = collection(db, `aai/be_${uid}/invs`);
+        const invsRef = collection(db, `aiai/be_${uid}/invs`);
         const q = query(invsRef, where("inv_number", "==", invNumber));
         const querySnap = await getDocs(q);
 

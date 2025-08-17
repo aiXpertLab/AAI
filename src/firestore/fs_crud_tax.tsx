@@ -19,7 +19,7 @@ export const useTaxCrud = () => {
         try {
             if (!uid || !tax.tax_id) throw new Error("Missing UID or Tax ID");
 
-            const docRef = doc(db, `aai/be_${uid}/tax_list`, tax.tax_id);
+            const docRef = doc(db, `aiai/be_${uid}/tax_list`, tax.tax_id);
 
             const { tax_id, ...updateFields } = tax; // remove id from payload
 
@@ -46,7 +46,7 @@ export const useTaxCrud = () => {
             const tax_id = 't_' + Crypto.randomUUID().replace(/-/g, '');
 
 
-            const docRef = doc(db, `aai/be_${uid}/tax_list`, tax_id);
+            const docRef = doc(db, `aiai/be_${uid}/tax_list`, tax_id);
 
             const newTax: Partial<TaxDB> = {
                 ...tax,
@@ -70,7 +70,7 @@ export const useTaxCrud = () => {
 
     const fetchTaxList = async (): Promise<TaxDB[]> => {
         try {
-            const itemsRef = collection(db, `aai/be_${uid}/tax_list`);
+            const itemsRef = collection(db, `aiai/be_${uid}/tax_list`);
             const q = query(itemsRef, where("is_deleted", "==", 0),);
             const querySnap = await getDocs(q);
 

@@ -13,7 +13,7 @@ export const usePMCrud = () => {
 
     const updatePM = async (pm: Partial<PMDB>): Promise<void> => {
         if (!uid || !pm.pm_id) throw new Error("Missing UID or PaymentMethod ID");
-        const docRef = doc(db, `aai/be_${uid}/payment_methods`, pm.pm_id);
+        const docRef = doc(db, `aiai/be_${uid}/payment_methods`, pm.pm_id);
 
         await updateDoc(docRef, {
             ...pm,
@@ -27,8 +27,8 @@ export const usePMCrud = () => {
         const pm_id = 'p_' + Crypto.randomUUID().replace(/-/g, '');
 
 
-        // const colRef = collection(db, `aai/be_${uid}/payment_methods`);
-        const docRef = doc(db, `aai/be_${uid}/payment_methods`, pm_id);
+        // const colRef = collection(db, `aiai/be_${uid}/payment_methods`);
+        const docRef = doc(db, `aiai/be_${uid}/payment_methods`, pm_id);
 
         const newPM: Partial<PMDB> = {
             ...pm,
@@ -43,7 +43,7 @@ export const usePMCrud = () => {
     };
 
     const fetchPMs = async (): Promise<PMDB[]> => {
-        const colRef = collection(db, `aai/be_${uid}/payment_methods`);
+        const colRef = collection(db, `aiai/be_${uid}/payment_methods`);
         const q = query(colRef, where("is_deleted", "==", 0));
         const querySnap = await getDocs(q);
 
