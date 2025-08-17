@@ -6,7 +6,7 @@ import { useModalStore } from '@/src/stores/ModalStore';
 import { useTabStore } from '@/src/stores/useTabStore';
 
 import CustomDrawerContent from "@/src/navigation/DrawerContent";
-import HomeScreen from '@/src/screens/HomeScreen';
+import HomeScreen from '@/src/screens/Home';
 import { colors } from "@/src/constants";
 
 const Drawer = createDrawerNavigator();

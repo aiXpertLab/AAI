@@ -16,7 +16,7 @@ import { InvPay_Edit } from "@/src/screens/inv_pay/InvPay_Edit";
 import { Inv4Total_TaxForm } from "@/src/screens/inv_new/Inv4Total_TaxForm";
 import { InvPay_Edit_Client  } from "@/src/screens/inv_pay/InvPay_Edit_Client";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
-import { Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/biz";
+import { Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/settings";
 import { InvNumber_Form } from '@/src/screens/settings/InvNumber_Form'
 import SeedScreen from '@/seed/SeedScreen';
 import SignScreen from "@/src/screens/user/SignScreen";
