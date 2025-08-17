@@ -162,7 +162,7 @@ export const InvNew: React.FC = () => {
             await insertInv();
             const newInvInteger = (oBiz?.be_inv_integer ?? 0) + 1;
             await updateOBiz({ be_inv_integer: newInvInteger });
-            await updateBiz({ be_inv_integer: newInvInteger, be_inv_prefix: oBiz?.be_inv_prefix });
+            await updateBiz!({ be_inv_integer: newInvInteger, be_inv_prefix: oBiz?.be_inv_prefix });
 
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw
@@ -186,11 +186,10 @@ export const InvNew: React.FC = () => {
             e.preventDefault();
             setPendingAction(() => () => navigation.dispatch(e.data.action));
             showValidationModal(
-                'Invalid Invoice Number',
-                'Invoice number duplicated. Please change the invoice number before saving.'
+                'Discard changes?',
+                'You have unsaved changes. \n\nTap "Keep Editing" and use the ✅ icon in the top right corner to save.'
             );
-
-            setShowConfirmModal(true);
+            // setShowConfirmModal(true);
         };
 
         const unsubscribe = navigation.addListener("beforeRemove", handleBeforeRemove);

@@ -4,6 +4,7 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
+import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 
 import { Ionicons } from '@expo/vector-icons';
 import { s_global } from "@/src/constants";
@@ -14,6 +15,9 @@ type IoniconName = "help-circle-outline" | "sync-outline" | "star-outline" | "gi
 
 const CustomDrawerContent = (props: any) => {
     const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
+    const { backupAll } = useBizCrud()
+
+
     const handleShareApp = async () => {
         try {
             await Share.share({
@@ -40,21 +44,34 @@ const CustomDrawerContent = (props: any) => {
         });
     };
 
-    const handleBackup = () => {
-        const dbPath = FileSystem.documentDirectory + 'SQLite/db.db';
-
-        const shareDbFile = async () => {
-            const exists = await FileSystem.getInfoAsync(dbPath);
-            if (exists.exists) {
-                await Sharing.shareAsync(dbPath);
-            } else {
-                console.log('Database file does not exist.');
+    const handleBackup = async () => {
+        try {
+            // 1. Grab Firestore data
+            const backup = await backupAll();
+            if (!backup) {
+                Alert.alert("Backup Failed", "No data found to backup.");
+                return;
             }
-        };
 
-        // ✅ Make sure to call the function
-        shareDbFile();
+            // 2. Save to JSON file
+            const path = FileSystem.documentDirectory + "biz_backup.json";
+            await FileSystem.writeAsStringAsync(
+                path,
+                JSON.stringify(backup, null, 2) // pretty print
+            );
+
+            // 3. Share JSON file
+            if (await Sharing.isAvailableAsync()) {
+                await Sharing.shareAsync(path);
+            } else {
+                Alert.alert("Error", "Sharing not available on this device.");
+            }
+        } catch (err: any) {
+            console.error("Backup failed:", err);
+            Alert.alert("Error", "Could not complete backup.");
+        }
     };
+
 
     const handleDelete = () => {
         props.navigation.navigate('DetailStack', {

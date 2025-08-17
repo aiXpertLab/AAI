@@ -114,5 +114,44 @@ export const useBizCrud = () => {
         }
     }
 
-    return { updateBiz, fetchBiz, createBiz, initOBiz };
+
+
+    const backupAll = async () => {
+        if (!uid) throw new Error("No Firebase user UID");
+
+        const bizRef = doc(db, `aai/be_${uid}`);
+        const bizSnap = await getDoc(bizRef);
+
+        if (!bizSnap.exists()) {
+            console.log("No biz doc found");
+            return null;
+        }
+
+        const backup: any = {
+            __doc: bizSnap.data(),
+            __subcollections: {}
+        };
+
+        // known subcollections
+        const subcollections = ["clients", "invs", "items"];
+
+        for (const sub of subcollections) {
+            const colRef = collection(db, `aai/be_${uid}/${sub}`);
+            const colSnap = await getDocs(colRef);
+
+            backup.__subcollections[sub] = {};
+            colSnap.forEach((docSnap) => {
+                backup.__subcollections[sub][docSnap.id] = docSnap.data();
+            });
+        }
+
+        console.log("Backup complete:", backup);
+        return backup;
+    };
+
+    return {
+        backupAll,
+    };
+
+    return { updateBiz, fetchBiz, createBiz, initOBiz, backupAll };
 }
