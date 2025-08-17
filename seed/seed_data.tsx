@@ -430,7 +430,7 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            inv_id: "inv_1002",
+            inv_id: "INV-1002",
             user_id: 1,
             be_id: 1,
             client_id: "C002",
@@ -495,7 +495,7 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            inv_id: "inv_1003",
+            inv_id: "INV-1003",
             user_id: 1,
             be_id: 1,
             client_id: "C001",

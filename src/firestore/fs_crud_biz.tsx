@@ -146,12 +146,9 @@ export const useBizCrud = () => {
         }
 
         console.log("Backup complete:", backup);
-        return backup;
+        return backupAll;
     };
 
-    return {
-        backupAll,
-    };
 
     return { updateBiz, fetchBiz, createBiz, initOBiz, backupAll };
 }
