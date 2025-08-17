@@ -12,12 +12,14 @@ import { invoiceStyles } from "@/src/constants/styles";
 import { s_global } from "@/src/constants/s_global"
 import M_ClientPicker from "@/src/modals/M_ClientPicker_Inv";
 
-import { useInvStore, useClientStore } from "@/src/stores";
+import { useInvStore, useClientStore, useBizStore } from "@/src/stores";
 import { useClientCrud } from "@/src/firestore/fs_crud_client";
 
 export const Inv2Client: React.FC = () => {
     const { oInv, setIsDirty, updateOInv } = useInvStore();
     const { oClient, setOClient, createEmptyClient4New, updateOClient } = useClientStore();  // 🧠 Zustand action
+    const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
+
     const [clients, setClients] = React.useState<ClientDB[]>([]);
     const { insertClient, updateClient, fetchClients } = useClientCrud();
 
@@ -102,14 +104,27 @@ export const Inv2Client: React.FC = () => {
                     {/* Invoice No. & Dates */}
                     <View style={{ marginBottom: 4, width: "100%" }}>
                         <Text style={[s_global.Label, { textAlign: "right", marginBottom: 0 }]}>Invoice No.</Text>
-                        <TextInput
-                            style={s_global.slimInputRight}
-                            value={oInv.inv_number ?? ""}
-                            onChangeText={(text) => {
-                                setIsDirty(true);
-                                updateOInv({ inv_number: text });
-                            }}
-                        />
+                        <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: 4, width: "100%", }}>
+
+                            <TextInput
+                                style={s_global.slimInputRight}
+                                value={oBiz?.be_inv_prefix ?? ""}
+                                onChangeText={(text) => {
+                                    setIsDirty(true);
+                                    updateOBiz({ be_inv_prefix: text });
+                                }}
+                            />
+                            <TextInput
+                                style={s_global.slimInputRight}
+                                value={(oBiz!.be_inv_integer ?? 0).toString()}
+                                keyboardType="numeric"
+                                onChangeText={(text) => {
+                                    setIsDirty(true);
+                                    const num = parseInt(text, 10) || 0;
+                                    updateOBiz({ be_inv_integer: num });
+                                }}
+                            />
+                        </View>
                     </View>
 
                     {/* Invoice Date & Due Date */}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ToastAndroid } from "react-native";
+import { useWindowDimensions, TouchableOpacity, StyleSheet, View, Text, ScrollView, Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, ToastAndroid, Alert } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -14,7 +14,7 @@ import { uploadB64, cameraB64, processB64Inv } from "@/src/utils/u_img64";
 import { Inv1Me, Inv2Client, Inv3Items, Inv4Total, Inv5Notes } from "@/src/screens/inv_new";
 
 import { DetailStack, InvDB } from "@/src/types";
-import { useClientStore, useInvStore, useBizStore } from '@/src/stores';
+import { useClientStore, useItemStore, useInvStore, useBizStore } from '@/src/stores';
 import { s_global, s_fab, } from "@/src/constants";
 import { M_Spinning, M_TemplatePicker, M_Confirmation } from "@/src/modals";
 import { TooltipBubble } from "@/src/components/toolTips";
@@ -24,6 +24,8 @@ import { useInvCrud } from "@/src/firestore/fs_crud_inv";
 import { useBizCrud } from "@/src/firestore/fs_crud_biz";
 import { useItemCrud } from "@/src/firestore/fs_crud_item";
 
+import { emptyItem } from '@/src/stores/seeds4store';
+
 export const InvNew: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const isSavingRef = React.useRef(false);
@@ -32,6 +34,7 @@ export const InvNew: React.FC = () => {
     const { oInv, updateOInv, isDirty, setIsDirty } = useInvStore();
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
     const { oClient, updateOClient } = useClientStore();
+    const { createEmptyItem4New, oItem } = useItemStore();
 
     const { updateBiz } = useBizCrud();
 
@@ -124,41 +127,32 @@ export const InvNew: React.FC = () => {
         isSavingRef.current = true;
         setIsDirty(false);
 
-        // ✅ 1. If inv_number is empty, set it to "empty"
-        if (!oInv.inv_number || oInv.inv_number.trim() === "") {
-            console.log(oInv.inv_number)
-            oInv.inv_number = "INV-pending";
-        }
+        oInv.inv_number = (oBiz?.be_inv_prefix ?? "") + (oBiz?.be_inv_integer ?? 0);
+        if (oClient?.client_id) oInv.client_id = oClient.client_id;
 
         // ✅ 2. Check if inv_number is duplicated in Firestore
-        const invoice = await fetch1Inv(oInv.inv_number!);
+        const invoice = await fetch1Inv(oInv.inv_number);
         if (invoice) {
-            console.log(oInv.inv_id)
-            showValidationModal(
-                'Invalid Invoice Number',
-                'Invoice number duplicated. Please change the invoice number before saving.'
+            Alert.alert(
+                "Invalid Invoice Number",
+                "Invoice number duplicated. Please change the invoice number before saving.",
+                [
+                    { text: "Keep Editing", style: "cancel" },
+                    {
+                        text: "Discard",
+                        style: "destructive",
+                        onPress: () => {
+                            // 👇 put your "next step" logic here
+                            navigation.goBack()
+                        },
+                    },
+                ]
             );
-            return
+            return; // stop here until user decides
         }
-
-        // ✅ 3. if client empty, set to TBD
-        if (oClient?.client_id) {
-            updateOInv({ client_id: oClient?.client_id, });
-        }
-
         // ✅ 4. if no item, set TBD
         if (!oInv.inv_items || oInv.inv_items.length === 0) {
-            const itemTBD = await fetch1Item("Item_TBD");
-            if (itemTBD) {
-                console.log('Item_TBD')
-                updateOInv({ inv_items: [itemTBD] });
-            } else {
-                showValidationModal(
-                    'Missing Item',
-                    'Invoice must have at least one item. Please add items before saving.'
-                );
-                return
-            }
+            updateOInv({ inv_items: [emptyItem()] });
         }
 
         isSavingRef.current = true;
@@ -166,13 +160,9 @@ export const InvNew: React.FC = () => {
 
         try {
             await insertInv();
-            const match = oInv.inv_number.match(/(\d+)$/); // last sequence of digits
-            let newNumber = 1;
-            if (match) {
-                newNumber = parseInt(match[1], 10) + 1;
-            }
-            await updateOBiz({ be_inv_number: newNumber });
-            await updateBiz({ be_inv_number: newNumber });
+            const newInvInteger = (oBiz?.be_inv_integer ?? 0) + 1;
+            await updateOBiz({ be_inv_integer: newInvInteger });
+            await updateBiz({ be_inv_integer: newInvInteger, be_inv_prefix: oBiz?.be_inv_prefix });
 
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw

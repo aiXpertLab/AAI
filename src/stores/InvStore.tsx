@@ -12,7 +12,7 @@ type OInvStore = {
     isDirty: boolean;
     setIsDirty: (flag: boolean) => void;
 
-    createEmptyInv: () => void;
+    createEmptyInv: (invPrefix:string, invInteger:number)  => void;
 
     updateOInvPayments: (payments: PMDB[]) => void;
     addPaymentToOInv: (payment: PMDB) => void;
@@ -28,7 +28,7 @@ export const useInvStore = create<OInvStore>((set) => ({
     isDirty: false,
     setIsDirty: (flag) => set({ isDirty: flag }),
 
-    createEmptyInv: () => set({ oInv: emptyInv(), isDirty: true }),
+    createEmptyInv: (invPrefix:string, invInteger:number) => set({ oInv: emptyInv(invPrefix, invInteger), isDirty: true }),
 
     updateOInvPayments: (payments) =>
         set((state) => ({

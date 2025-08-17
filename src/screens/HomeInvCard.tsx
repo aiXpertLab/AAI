@@ -17,7 +17,6 @@ const statusColorMap = {
 type InvoiceWithClientName = InvDB & Partial<{ client_company_name: string }>;
 
 export const InvoiceCard: React.FC<Props> = ({ item }) => {
-
     return (
         <View style={[
             s_global.Card,

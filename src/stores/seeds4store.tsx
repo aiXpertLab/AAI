@@ -18,7 +18,7 @@ export const emptyClient = (): ClientDB => ({
 
     client_number: "internal usage",
     client_business_number: '',
-    client_company_name: '',
+    client_company_name: 'Client_TBD',
     client_contact_name: '',
     client_contact_title: '',
 
@@ -71,29 +71,30 @@ export const emptyPM = (): PMDB => ({
 
 export const emptyItem = (): ItemDB => ({
     item_id: 'item_' + Crypto.randomUUID().replace(/-/g, ''),
-    item_number: 'P001',
-    item_name: 'Sample',
+    item_number: 'Item_TBD',
+    item_name: 'Item_TBD',
     item_rate: 1,
     item_unit: 'item',
     item_sku: 'FBAPMK6M',
     item_description: 'Change me.',
 
-    item_quantity: 5,  // for InvItem only
+    item_quantity: 0,  // for InvItem only
     item_note: "For InvItem Only",      // for InvItem only
-    item_amount: 5,    // for InvItem only
+    item_amount: 0,    // for InvItem only
 
     ...baseFlags,
 
 });
 
 
-export const emptyInv = (): InvDB => ({
+export const emptyInv = (invPrefix:string, invInteger:number): InvDB => ({
     inv_id: 'inv_' + Crypto.randomUUID().replace(/-/g, ''),
     user_id: "reserved",
     be_id: "reserved",
     client_id: "Client_TBD",
 
-    inv_number: "pending for oBiz",
+    inv_number: invPrefix+invInteger,
+    
     inv_date: new Date(),
     inv_due_date: new Date(),
 
