@@ -3,6 +3,7 @@ import { app } from "@/src/config/firebaseConfig";
 import { BE_DB } from "@/src/types";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { useBizStore } from '@/src/stores/BizStore';
+import { seed_data,  } from "@/seed/seed_data";
 
 const db = getFirestore(app);
 
@@ -10,6 +11,26 @@ export const useBizCrud = () => {
     const firebaseUser = useFirebaseUserStore.getState().FirebaseUser;
     const uid = firebaseUser?.uid;
     const { oBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
+
+
+    const createBizFromLocalSeed = async (uid: string) => {
+        const biz_id = `be_${uid}`;
+        const userBizRef = doc(db, "aiai", biz_id);
+
+        await setDoc(userBizRef, seed_data.business_entity);
+        setOBiz(seed_data.business_entity);
+        console.log(`Business entity created for user: ${uid}`);
+    };
+
+
+
+
+
+
+
+
+
+
 
     const updateBiz = async (updates: Partial<BE_DB>,): Promise<void> => {
         const docRef = doc(db, `aai/be_${uid}`);
@@ -40,9 +61,12 @@ export const useBizCrud = () => {
     };
 
 
+
+
+
     const SUBCOLLECTIONS = ["payment_methods", "tax_list", "clients", "invs", "items", "inv_empty"];
 
-    const createBiz = async (uid: string) => {
+    const createBizFromFirestore = async (uid: string) => {
         const seedRef = doc(db, "biz_seed", "biz_seed_doc");
         const seedSnap = await getDoc(seedRef);
         if (!seedSnap.exists()) {
@@ -150,5 +174,5 @@ export const useBizCrud = () => {
     };
 
 
-    return { updateBiz, fetchBiz, createBiz, initOBiz, backupAll };
+    return { updateBiz, fetchBiz, createBizFromLocalSeed, initOBiz, backupAll };
 }

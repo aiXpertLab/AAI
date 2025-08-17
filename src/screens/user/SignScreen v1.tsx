@@ -18,7 +18,7 @@ export default function SmartAuthScreen() {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { setOBiz, } = useBizStore();  // 🧠 Zustand action
-    const {createBizFromLocalSeed, fetchBiz} = useBizCrud();
+    const {createBiz, fetchBiz} = useBizCrud();
     const setFirebaseUser = useFirebaseUserStore((s) => s.setFirebaseUser);
     const setIsNewUser = useFirebaseUserStore((s) => s.setIsNewUser);
 
@@ -65,10 +65,10 @@ export default function SmartAuthScreen() {
                                     // Create the user account
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
-                                    await createBizFromLocalSeed(user.uid);
-                                    console.log('creating biz...')
-                                    // const bizData = await fetchBiz(user.uid);
-                                    // setOBiz(bizData ?? null);
+                                    await createBiz(user.uid);
+                                    console.log('create biz...')
+                                    const bizData = await fetchBiz(user.uid);
+                                    setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
                                     setIsNewUser(true);
                                 } catch (signUpError: any) {
@@ -97,9 +97,9 @@ export default function SmartAuthScreen() {
 
                 // Create business entity for anonymous user
                 try {
-                    // await getBizCrud().createBiz(user.uid);
-                    // const bizData = await getBizCrud().fetchBiz(user.uid);
-                    // setOBiz(bizData ?? null);
+                    await getBizCrud().createBiz(user.uid);
+                    const bizData = await getBizCrud().fetchBiz(user.uid);
+                    setOBiz(bizData ?? null);
                     setMessage('✅ Continuing as guest with business setup!');
                 } catch (businessError) {
                     console.error('Business creation failed for anonymous user:', businessError);
