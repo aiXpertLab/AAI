@@ -29,6 +29,7 @@ const HomeScreen: React.FC = () => {
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices,] = React.useState<InvDB[]>([]);
     const { updateInv, fetchInvs, } = useInvCrud();
+    const firstRun = React.useRef(true);
 
     const [summaryTotals, setSummaryTotals] = React.useState({ overdue: 0, unpaid: 0 });
 
@@ -145,10 +146,19 @@ const HomeScreen: React.FC = () => {
         }
     }, []);
 
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         fetchInvoicesFromModule();
+    //     }, [])
+    // );
     useFocusEffect(
         React.useCallback(() => {
-            fetchInvoicesFromModule();
-        }, [])
+            if (firstRun.current) {
+                firstRun.current = false;
+                return; // skip first time, let useEffect handle it
+            }
+            fetchInvoicesFromModule(); // only runs on re-focus
+        }, [selectedHeaderFilter])
     );
 
     const handleAddNewInvoice = async () => {
@@ -172,6 +182,7 @@ const HomeScreen: React.FC = () => {
             <FlatList<InvDB>
                 data={selectedFilter === "All" ? invoices : invoices.filter(inv => inv.inv_payment_status === selectedFilter)}
                 keyExtractor={(item) => item.inv_id}
+                extraData={invoices}
 
                 renderItem={renderItem}
                 contentContainerStyle={

@@ -66,8 +66,8 @@ export default function SmartAuthScreen() {
                                     const userCredential = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
                                     const user = userCredential.user;
                                     await createBizFromLocalSeed(user.uid);
-                                    console.log('creating biz...')
-                                    // const bizData = await fetchBiz(user.uid);
+                                    console.log('created')
+                                    // const bizData = await fetchBiz();
                                     // setOBiz(bizData ?? null);
                                     setFirebaseUser(user);
                                     setIsNewUser(true);

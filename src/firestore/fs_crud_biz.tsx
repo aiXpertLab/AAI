@@ -2,8 +2,8 @@ import { getDoc, getFirestore, doc, updateDoc, serverTimestamp, Timestamp, colle
 import { app } from "@/src/config/firebaseConfig";
 import { BE_DB } from "@/src/types";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
-import { useBizStore } from '@/src/stores/BizStore';
-import { seed_data,  } from "@/seed/seed_data";
+import { useBizStore, useInvStore, useClientStore } from '@/src/stores/';
+import { seed_data, } from "@/seed/seed_data";
 
 const db = getFirestore(app);
 
@@ -15,10 +15,42 @@ export const useBizCrud = () => {
 
     const createBizFromLocalSeed = async (uid: string) => {
         const biz_id = `be_${uid}`;
-        const userBizRef = doc(db, "aiai", biz_id);
+        const be_doc = doc(db, "aiai", biz_id);
 
-        await setDoc(userBizRef, seed_data.business_entity);
+        await setDoc(be_doc, seed_data.business_entity);
         setOBiz(seed_data.business_entity);
+
+        // // 1. invocies
+        // for (const inv of seed_data.invs) {
+        //     const invDoc = doc(collection(be_doc, "invs"), inv.inv_id);
+        //     console.log("1.invoices", invDoc)
+        //     await setDoc(invDoc, inv);
+        // }
+
+        // // 2. clients
+        // for (const client of seed_data.clients) {
+        //     const clientDoc = doc(collection(be_doc, "clients"), client.client_id);
+        //     console.log("4.client")
+        //     await setDoc(clientDoc, client);
+        // }
+
+        // Invoices
+        await Promise.all(
+            seed_data.invs.map(inv => {
+                const invDoc = doc(collection(be_doc, "invs"), inv.inv_id);
+                return setDoc(invDoc, inv);  // return the Promise
+            })
+        );
+
+        // Clients
+        await Promise.all(
+            seed_data.clients.map(client => {
+                const clientDoc = doc(collection(be_doc, "clients"), client.client_id);
+                return setDoc(clientDoc, client);
+            })
+        );
+
+
         console.log(`Business entity created for user: ${uid}`);
     };
 
