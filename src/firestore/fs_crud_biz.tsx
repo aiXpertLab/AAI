@@ -3,7 +3,7 @@ import { app } from "@/src/config/firebaseConfig";
 import { BE_DB } from "@/src/types";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
 import { useBizStore, useInvStore, useClientStore } from '@/src/stores/';
-import { seed_data, } from "@/seed/seed_data";
+import { seed_data, } from "@/src/firestore/seed_data";
 
 const db = getFirestore(app);
 
@@ -17,45 +17,60 @@ export const useBizCrud = () => {
         const biz_id = `be_${uid}`;
         const be_doc = doc(db, "aiai", biz_id);
 
+        // 1. biz be
         await setDoc(be_doc, seed_data.business_entity);
         setOBiz(seed_data.business_entity);
+        console.log(`1. Business entity created for user: ${uid}`);
 
-        // // 1. invocies
-        // for (const inv of seed_data.invs) {
-        //     const invDoc = doc(collection(be_doc, "invs"), inv.inv_id);
-        //     console.log("1.invoices", invDoc)
-        //     await setDoc(invDoc, inv);
-        // }
-
-        // // 2. clients
-        // for (const client of seed_data.clients) {
-        //     const clientDoc = doc(collection(be_doc, "clients"), client.client_id);
-        //     console.log("4.client")
-        //     await setDoc(clientDoc, client);
-        // }
-
-        // Invoices
+        // 2. Invoices
         await Promise.all(
             seed_data.invs.map(inv => {
                 const invDoc = doc(collection(be_doc, "invs"), inv.inv_id);
                 return setDoc(invDoc, inv);  // return the Promise
             })
         );
+        console.log(`2. Invoices created for user: ${uid}`);
 
-        // Clients
+        // 3. Clients
         await Promise.all(
             seed_data.clients.map(client => {
                 const clientDoc = doc(collection(be_doc, "clients"), client.client_id);
                 return setDoc(clientDoc, client);
             })
         );
+        console.log(`3. Clients  created for user: ${uid}`);
 
 
-        console.log(`Business entity created for user: ${uid}`);
+        // 4. Items
+        await Promise.all(
+            seed_data.items.map(item => {
+                const itemDoc = doc(collection(be_doc, "items"), item.item_id);
+                return setDoc(itemDoc, item);
+            })
+        );
+        console.log(`4. Items created for user: ${uid}`);
+
+
+        // 5. PMs
+        await Promise.all(
+            seed_data.payment_methods.map(item => {
+                const itemDoc = doc(collection(be_doc, "payment_methods"), item.pm_id);
+                return setDoc(itemDoc, item);
+            })
+        );
+        console.log(`5. PM created for user: ${uid}`);
+
+
+        // 6. tax list
+        await Promise.all(
+            seed_data.tax_list.map(item => {
+                const itemDoc = doc(collection(be_doc, "tax_list"), item.tax_id);
+                return setDoc(itemDoc, item);
+            })
+        );
+
+        console.log(`6. Tax created for user: ${uid}`);
     };
-
-
-
 
 
 

@@ -60,6 +60,7 @@ const CustomDrawerContent = (props: any) => {
                 JSON.stringify(backup, null, 2) // pretty print
             );
 
+            
             // 3. Share JSON file
             if (await Sharing.isAvailableAsync()) {
                 await Sharing.shareAsync(path);

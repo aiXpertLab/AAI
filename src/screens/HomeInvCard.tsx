@@ -27,7 +27,9 @@ export const InvoiceCard: React.FC<Props> = ({ item }) => {
         ]} >
             <View style={{ flexDirection: 'row', alignItems: 'center', padding: 6 }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>{(item as InvoiceWithClientName).client_company_name}</Text>
+                    <Text style={{ fontWeight: 'bold', lineHeight: 20 }}>
+                        {(item as InvoiceWithClientName).client_company_name || item.client_id}
+                    </Text>
                     <Text style={{ color: 'gray', lineHeight: 20 }}>{item.inv_number}</Text>
                     <Text style={{ color: 'gray', lineHeight: 20 }}>{item.inv_reference}</Text>
                 </View>

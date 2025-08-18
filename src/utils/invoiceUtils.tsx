@@ -56,11 +56,11 @@ export async function attachClientNames(invoices: any[]) {
             const client = await fetch1Client(inv.client_id);
             return {
                 ...inv,
-                client_company_name: client?.client_company_name || "(Unknown)",
-                client_contact_name: client?.client_contact_name || "(Unknown)",
-                client_email: client?.client_email || "(Unknown)",
-                client_phone: client?.client_mainphone || "(Unknown)",
-                client_address: client?.client_address || "(Unknown)",
+                client_company_name: client?.client_company_name ?? null,
+                client_contact_name: client?.client_contact_name ?? null,
+                client_email: client?.client_email ?? null,
+                client_phone: client?.client_mainphone ?? null,
+                client_address: client?.client_address ?? null,
             };
         })
     );

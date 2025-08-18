@@ -1,5 +1,5 @@
 import { InvDB } from "@/src/types";
-import { seed_data } from "@/seed/seed_data";
+import { seed_data } from "@/src/firestore/seed_data";
 
 export const genEmptyInv = (
     inv_number: string,

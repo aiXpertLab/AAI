@@ -210,7 +210,7 @@ export const BizInfo: React.FC = () => {
                         <View style={{ height: 12 }} />
                         <Text style={s_global.Label}>Invoice Number</Text>
                         <TextInput style={[s_global.InputGreyBackground]} placeholder="2024" placeholderTextColor="#999" multiline
-                            value={oBiz?.be_inv_number?.toString() || ''} onChangeText={(text) => handleChange("be_inv_number", Number(text))} />
+                            value={oBiz?.be_inv_integer?.toString() || ''} onChangeText={(text) => handleChange("be_inv_integer", Number(text))} />
                     </View>
 
                     {/* Card 4: place holder for input pad*/}

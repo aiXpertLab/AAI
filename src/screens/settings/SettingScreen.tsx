@@ -12,13 +12,9 @@ import { s_global } from "@/src/constants";
 
 import { DetailStack } from "@/src/types";
 import SettingItem from "./SettingItem";
-import { useBizCrud } from '@/src/firestore/fs_crud_biz';
-import { useBizStore } from '@/src/stores/BizStore';
 
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
-    const { fetchBiz } = useBizCrud();
-    const { setOBiz, oBiz } = useBizStore();
 
     React.useLayoutEffect(() => {
         const parent = navigation.getParent();
@@ -61,11 +57,11 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem title="Date Format" subtitle="31/12/2025" />
             </Section> */}
 
-            {__DEV__ && (
+            {/* {__DEV__ && (
                 <Section title="Dev">
                     <SettingItem title="Seed" onPress={() => navigation.navigate("SeedBizScreen")} />
                 </Section>
-            )}
+            )} */}
 
             <Pressable
                 onLongPress={() => {

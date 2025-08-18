@@ -10,7 +10,7 @@ import { useBizCrud } from '@/src/firestore/fs_crud_biz';
 import { use } from 'react';
 
 const CLOUD_NAME = 'dbysasiob';
-const UPLOAD_PRESET = 'aiailogo';
+const UPLOAD_PRESET = 'aailogo';
 
 const showToast = (type: 'success' | 'error', title: string, message: string) => {
     Toast.show({ type, text1: title, text2: message, position: 'bottom' });
@@ -69,8 +69,8 @@ export const pickAndSaveLogo = async (
                 (err) => showToast('error', 'Failed to Save Logo', 'An error occurred.')
             );
 
-        } catch (error) {
-            console.error("Cloudinary upload failed:", error);
+        } catch (error:any) {
+            console.error("Cloudinary upload failed:", error.response?.data || error.message);
             showToast('error', 'Upload Failed', 'Could not upload image to Cloudinary.');
         }
     }

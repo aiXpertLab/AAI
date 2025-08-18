@@ -146,11 +146,6 @@ const HomeScreen: React.FC = () => {
         }
     }, []);
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         fetchInvoicesFromModule();
-    //     }, [])
-    // );
     useFocusEffect(
         React.useCallback(() => {
             if (firstRun.current) {

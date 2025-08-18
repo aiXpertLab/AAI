@@ -200,7 +200,7 @@ export const seed_data = {
         },
 
         {
-            client_id: "C001",
+            client_id: "Demo Client 1",
             client_company_name: "Demo Client 1",
             client_contact_name: "Alice Johnson",
             client_contact_title: "Manager",
@@ -224,7 +224,7 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            client_id: "C002",
+            client_id: "Demo Client 2",
             client_company_name: "Demo Client 2",
             client_contact_name: "Bob Smith",
             client_contact_title: "Manager",
@@ -248,7 +248,7 @@ export const seed_data = {
             ...baseFlags
         },
         {
-            client_id: "C003",
+            client_id: "Demo Client 3",
             client_company_name: "Demo Client 3",
             client_contact_name: "Carol Lee",
             client_contact_title: "Manager",
@@ -366,7 +366,7 @@ export const seed_data = {
             inv_id: "INV-1001",
             user_id: 1,
             be_id: 1,
-            client_id: "C003",
+            client_id: "Demo Client 3",
 
             inv_number: "INV-1001",
             inv_date: new Date(),
@@ -433,7 +433,7 @@ export const seed_data = {
             inv_id: "INV-1002",
             user_id: 1,
             be_id: 1,
-            client_id: "C002",
+            client_id: "Demo Client 2",
 
             inv_number: "INV-1002",
             inv_title: "Invoice for Demo Client 2",
@@ -498,7 +498,7 @@ export const seed_data = {
             inv_id: "INV-1003",
             user_id: 1,
             be_id: 1,
-            client_id: "C001",
+            client_id: "Demo Client 1",
 
 
             inv_number: "INV-1003",
