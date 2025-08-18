@@ -54,6 +54,7 @@ const ClientsScreen: React.FC = () => {
 
     const handleDelete = async (clientId: string) => {
         await updateClient({ is_deleted: 1, }, clientId,);
+        setClients(prev => prev.filter(item => item.client_id !== clientId));
     };
 
     React.useLayoutEffect(() => {

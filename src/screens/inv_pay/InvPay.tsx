@@ -122,15 +122,15 @@ export const InvPay: React.FC = () => {
     const handleDuplicate = async () => {
         try {
 
-            const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_number}`
+            const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_integer}`
             updateOInv({ inv_number: newInvNumber });
 
             let newNumber = 1;
             if (match) {
                 newNumber = parseInt(match[1], 10) + 1;
             }
-            await updateOBiz({ be_inv_number: newNumber });
-            await updateBiz({ be_inv_number: newNumber });
+            await updateOBiz({ be_inv_integer: newNumber });
+            await updateBiz({ be_inv_integer: newNumber });
 
             const success = await duplicateInv();
             console.log('Duplicate success:', success);

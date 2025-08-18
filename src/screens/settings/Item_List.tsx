@@ -127,13 +127,8 @@ const ItemsScreen: React.FC = () => {
     };
 
     const handleDelete = async (itemId: string) => {
-        await updateItem(
-            {
-                item_id: itemId,
-                is_deleted: 1,
-            },
-        );
-
+        await updateItem({ item_id: itemId, is_deleted: 1, },);
+        setItems(prev => prev.filter(item => item.item_id !== itemId));
     };
 
 

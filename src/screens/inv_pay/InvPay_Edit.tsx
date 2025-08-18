@@ -130,8 +130,8 @@ export const InvPay_Edit: React.FC = () => {
             if (match) {
                 newNumber = parseInt(match[1], 10) + 1;
             }
-            await updateOBiz({ be_inv_number: newNumber });
-            await updateBiz({ be_inv_number: newNumber });
+            await updateOBiz({ be_inv_integer: newNumber });
+            await updateBiz({ be_inv_integer: newNumber });
 
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw

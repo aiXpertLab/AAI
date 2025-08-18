@@ -30,16 +30,11 @@ export const useItemCrud = () => {
 
 
     const fetchItems = async (): Promise<ItemDB[]> => {
-        try {
-            const itemsRef = collection(db, `aiai/be_${uid}/items`);
-            const q = query(itemsRef, where("is_deleted", "==", 0),);
-            const querySnap = await getDocs(q);
-            const items: ItemDB[] = querySnap.docs.map(doc => doc.data() as ItemDB);
-            return items;
-        } catch (err) {
-            console.error("❌ fetchItems error:", err);
-            throw err;
-        }
+        const itemsRef = collection(db, `aiai/be_${uid}/items`);
+        const q = query(itemsRef, where("is_deleted", "==", 0),);
+        const querySnap = await getDocs(q);
+        const items: ItemDB[] = querySnap.docs.map(doc => doc.data() as ItemDB);
+        return items;
     };
 
     const fetch1Item = async (itemId: string): Promise<ItemDB | null> => {
