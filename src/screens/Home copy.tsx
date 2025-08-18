@@ -17,7 +17,7 @@ import { M_HeaderFilter } from "@/src/modals/M_HeaderFilter";
 
 import { useInvStore, useBizStore } from '@/src/stores';
 import { useInvCrud, useBizCrud } from "@/src/firestore";
-import { calcOverdue } from "@/src/utils/invoiceUtils";
+
 
 import { attachClientNames } from "@/src/utils/invoiceUtils";
 
@@ -58,8 +58,8 @@ const HomeScreen: React.FC = () => {
     const fetchInvoicesFromModule = async () => {
         try {
             const result_inv = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
-            const result_w_overdue = calcOverdue(result_inv);
-            const result = await attachClientNames(result_w_overdue);
+
+            const result = await attachClientNames(result_inv);
 
             const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')
                 .reduce((sum, inv) => sum + (inv.inv_balance_due || 0), 0);

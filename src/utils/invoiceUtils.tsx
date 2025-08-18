@@ -1,9 +1,28 @@
 // src/utils/invoiceUtils.ts
 import { useClientCrud} from "@/src/firestore/fs_crud_client";
+import { InvDB } from "../types";
 
 export type PaidStatus = 'Unpaid' | 'Partially Paid' | 'Paid' | 'Overdue';
 
-export async function checkOverdueInvoices(db: any) {
+
+export function calcOverdue(invoices: InvDB[]): InvDB[] {
+    const today = new Date().toISOString().split('T')[0];  // Get today's date in 'YYYY-MM-DD' format
+
+    // Loop through invoices and check if they are overdue
+    const updatedInvoices = invoices.map(inv => {
+        if (inv.inv_payment_status !== 'Paid' && new Date(inv.inv_due_date) < new Date(today) && inv.inv_paid_total < inv.inv_total) {
+            inv.inv_payment_status = 'Overdue'; // Update status to Overdue
+        }
+        return inv; // Return the updated invoice
+    });
+
+    return updatedInvoices; // Return the updated array of invoices
+}
+
+
+
+
+export async function checkOverdueInvoicesSQLite(db: any) {
     const today = new Date().toISOString().split('T')[0];
 
     try {
@@ -23,29 +42,6 @@ export async function checkOverdueInvoices(db: any) {
 }
 
 
-export async function updateInvoiceStatus(invoiceId:any) {
-    const today = new Date().toISOString().split('T')[0];
-
-}
-
-
-
-
-// async function addPayment(invoiceId, amount) {
-//     const db = await SQLite.openDatabase('invoices.db');
-//     await db.runAsync(
-//         'UPDATE invoices SET paid_total = paid_total + ? WHERE id = ?',
-//         [amount, invoiceId]
-//     );
-//     await updateInvoiceStatus(invoiceId);
-// }
-
-
-
-// async function getInvoices() {
-//     await checkAllOverdueInvoices(); // Quick check
-//     return db.getAllAsync('SELECT * FROM invoices ORDER BY due_date');
-// }
 
 
 // utils/invoiceUtils.ts
