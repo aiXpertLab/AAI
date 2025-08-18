@@ -5,9 +5,9 @@ import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ClientDB } from "@/src/types";
 import { modalStyles } from "@/src/constants/styles";
-import { s_modal, s_global } from "@/src/constants";
+import { s_modal } from "@/src/constants";
 import { useNavigation } from "@react-navigation/native";
-import { useDrawerHeaderStore, useClientStore } from '@/src/stores';
+import { useClientStore } from '@/src/stores';
 import { useClientCrud } from "../firestore/fs_crud_client";
 
 interface ClientPickerModalProps {
@@ -72,7 +72,7 @@ const ClientPickerModal: React.FC<ClientPickerModalProps> = ({ visible, onClose,
                         onPress={() => {
                             onClose();
                             createEmptyClient4New();
-                            navigation.navigate("Tab2_Client_Form" as never);
+                            navigation.navigate("Client_Form" as never);
                         }}
                     >
                         <Ionicons name="add" size={16} color="#fff" />
