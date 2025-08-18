@@ -50,12 +50,8 @@ const HomeScreen: React.FC = () => {
 
 
     const renderEmptyComponent = () => (
-
-        <TouchableOpacity
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
-            onPress={handleAddNewInvoice}
-        >
-            <Text style={{ color: "#999", textAlign: "center", }}>Click + to add a new invoice</Text>
+        <TouchableOpacity style={s_global.EmptyInvList} onPress={handleAddNewInvoice}        >
+            <Text style={s_global.EmptyText}>Click ➕ to add a new invoice</Text>
         </TouchableOpacity>
     );
 
@@ -188,15 +184,9 @@ const HomeScreen: React.FC = () => {
                 ListEmptyComponent={renderEmptyComponent}
             />
 
-            <M_HeaderFilter
-                selectedHeaderFilter={selectedHeaderFilter}
-                setSelectedHeaderFilter={setSelectedHeaderFilter}
-            />
+            <M_HeaderFilter selectedHeaderFilter={selectedHeaderFilter} setSelectedHeaderFilter={setSelectedHeaderFilter} />
 
-            <TouchableOpacity
-                style={[s_global.FABSquare]}
-                onPress={handleAddNewInvoice}
-            >
+            <TouchableOpacity style={[s_global.FABSquare]} onPress={handleAddNewInvoice}            >
                 <Ionicons name="add" size={42} color="white" />
             </TouchableOpacity>
 

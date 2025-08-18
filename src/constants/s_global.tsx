@@ -168,6 +168,14 @@ export const s_global = StyleSheet.create({
         marginTop: 40,
         textAlign: "center",
     },
+    EmptyInvList: {
+        flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20
+    },
+    emptyList: {
+        flexGrow: 1,
+        justifyContent: 'center'
+    },
+
     InputRightAAA:
         { color: "#aaa", textAlign: "right" },
 
@@ -348,10 +356,6 @@ export const s_global = StyleSheet.create({
 
     listContainer: {
         flex: 1, // This will make the list take all remaining space
-    },
-    emptyList: {
-        flexGrow: 1,
-        justifyContent: 'center'
     },
 
     modalOverlay: {
@@ -662,7 +666,7 @@ export const modalStyles = StyleSheet.create({
 
 
 export const s_global_template = StyleSheet.create({
-        title: {
+    title: {
         fontSize: 18,
         fontWeight: '600',
         marginBottom: 18,
