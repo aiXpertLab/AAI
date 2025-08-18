@@ -230,6 +230,8 @@ const ItemForm: React.FC = () => {
                             </View>
                         </View>
                         }
+                        {/* Card 4: place holder for input pad*/}
+                        <View style={{ height: 220, opacity: 0 }} pointerEvents="none" />
 
                     </ScrollView>
                     <M_Confirmation
