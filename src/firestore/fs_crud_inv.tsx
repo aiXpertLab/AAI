@@ -10,8 +10,6 @@ export const useInvCrud = () => {
     const db = getFirestore(app);
     const uid = useFirebaseUserStore.getState().FirebaseUser?.uid;
 
-
-
     const updateInv = async (
         updates: Partial<InvDB>,
         invId: string       // must pass invId, using oInvId not reliable. sometimes need update db directly
@@ -82,54 +80,38 @@ export const useInvCrud = () => {
     };
 
 
-    const duplicateInv = async () => {
-        try {
-            const { oInv } = useInvStore.getState();
+    const duplicateInv = async (newInvId: string, newInvNumber: string): Promise<boolean> => {
+        const { oInv } = useInvStore.getState();
 
-            if (!uid || !oInv?.inv_id) {
-                Toast.show({ type: 'error', text1: 'Error', text2: 'No invoice selected to duplicate.' });
-                return false;
-            }
-
-            // Fetch original invoice
-            const invRef = doc(db, `aiai/be_${uid}/invs`, oInv.inv_id);
-            const invSnap = await getDoc(invRef);
-
-            if (!invSnap.exists()) {
-                Toast.show({ type: 'error', text1: 'Error', text2: 'Source invoice not found.' });
-                return false;
-            }
-
-            // Copy all fields & replace inv_id + inv_number
-            const newInvId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
-            const newInvoice = {
-                ...invSnap.data(),
-                inv_id: newInvId,
-                inv_number: oInv.inv_number,
-                created_at: serverTimestamp(),
-                updated_at: serverTimestamp(),
-            };
-
-            // Save duplicated invoice
-            await setDoc(doc(db, `aiai/be_${uid}/invs`, newInvId), newInvoice);
-
-            Toast.show({
-                type: 'success',
-                text1: 'Invoice Duplicated',
-                text2: 'New invoice created from source invoice',
-                position: 'bottom'
-            });
-
-            return true;
-        } catch (err) {
-            console.error("❌ duplicateInvoice error:", err);
-            Toast.show({
-                type: 'error',
-                text1: 'Error',
-                text2: 'Failed to duplicate invoice.'
-            });
+        if (!uid || !oInv?.inv_id) {
+            Toast.show({ type: 'error', text1: 'Error', text2: 'No invoice selected to duplicate.' });
             return false;
         }
+
+        // Fetch original invoice
+        const invRef = doc(db, `aiai/be_${uid}/invs`, oInv.inv_id);
+        const invSnap = await getDoc(invRef);
+
+        if (!invSnap.exists()) {
+            Toast.show({ type: 'error', text1: 'Error', text2: 'Source invoice not found.' });
+            return false;
+        }
+
+        // Copy all fields & replace inv_id + inv_number
+        const newInvoice = {
+            ...invSnap.data(),
+            inv_id: newInvId,
+            inv_date: new Date(),
+            inv_due_date: new Date(new Date().setDate(new Date().getDate() + oInv.inv_payment_term)),
+            inv_number: newInvNumber,
+            created_at: serverTimestamp(),
+            updated_at: serverTimestamp(),
+        };
+
+        // Save duplicated invoice
+        await setDoc(doc(db, `aiai/be_${uid}/invs`, newInvId), newInvoice);
+
+        return true;
     };
 
 
@@ -146,6 +128,7 @@ export const useInvCrud = () => {
         return {
             ...data,
             inv_date: data.inv_date?.toDate(),
+            inv_payment_status: 'Unpaid',
             inv_due_date: data.inv_due_date?.toDate(),
             inv_payments: data.inv_payments?.map((p: any) => ({
                 ...p,

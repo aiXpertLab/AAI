@@ -1,3 +1,4 @@
+import * as Crypto from 'expo-crypto';
 import React from "react";
 import * as Print from 'expo-print';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -7,7 +8,7 @@ import { WebView } from "react-native-webview";
 import { Ionicons } from '@expo/vector-icons';
 
 import { useInvStore, useBizStore, usePMStore } from '@/src/stores';
-import { useInvCrud } from "@/src/firestore/fs_crud_inv";
+import { useInvCrud, useBizCrud } from "@/src/firestore";
 
 import { genHTML } from "@/src/utils/genHTML";
 
@@ -26,7 +27,7 @@ export const InvPay: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
     const { oInv, addPaymentToOInv, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
     const { createEmptyPM4New, oPM, updateOPM } = usePMStore();  // 🧠 Zustand action
-    const { oBiz, } = useBizStore();  // 🧠 Zustand action
+    const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
 
     const [showConfirm, setShowConfirm] = React.useState(false);
     const [showTemplateModal, setShowTemplateModal] = React.useState(false);
@@ -37,6 +38,7 @@ export const InvPay: React.FC = () => {
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
     const { updateInv, duplicateInv } = useInvCrud();
+    const { updateBiz } = useBizCrud();
 
     const removePayment = async (paymentId: number) => {
         console.log(oInv)
@@ -121,19 +123,16 @@ export const InvPay: React.FC = () => {
 
     const handleDuplicate = async () => {
         try {
-
+            const newInvId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
             const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_integer}`
-            updateOInv({ inv_number: newInvNumber });
 
-            let newNumber = 1;
-            if (match) {
-                newNumber = parseInt(match[1], 10) + 1;
-            }
-            await updateOBiz({ be_inv_integer: newNumber });
-            await updateBiz({ be_inv_integer: newNumber });
+            const success = await duplicateInv(newInvId, newInvNumber);
 
-            const success = await duplicateInv();
+            const newInteger = oBiz?.be_inv_integer! + 1;
+            await updateOBiz({ be_inv_integer: newInteger });
+            await updateBiz({ be_inv_integer: newInteger });
             console.log('Duplicate success:', success);
+            navigation.goBack();
         } catch (error) {
             console.error('Error during duplication:', error);
         }

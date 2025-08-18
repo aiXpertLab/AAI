@@ -59,6 +59,16 @@ const HomeScreen: React.FC = () => {
         try {
             const result_inv = await fetchInvs(hf_client, hf_fromDate, hf_toDate);
             const result_w_overdue = calcOverdue(result_inv);
+            // const result_w_overdue = result_inv.map(inv => calcOverdue([inv]));
+            // const result_w_overdue = [];
+            // console.log("Processing invoices...", result_inv.length);
+            // for (let i = 0; i < result_inv.length; i++) {
+            //     console.log("Processing invoice:", result_inv[i].inv_number);
+            //     const updatedInvoice = calcOverdue([result_inv[i]]);  // Pass the single invoice as an array
+            //     result_w_overdue.push(updatedInvoice[0]);  // Add the updated invoice to result_w_overdue
+            // }
+
+
             const result = await attachClientNames(result_w_overdue);
 
             const overdue = result.filter(inv => inv.inv_payment_status === 'Overdue')

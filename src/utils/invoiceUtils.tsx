@@ -1,17 +1,30 @@
 // src/utils/invoiceUtils.ts
-import { useClientCrud} from "@/src/firestore/fs_crud_client";
+import { useClientCrud } from "@/src/firestore/fs_crud_client";
 import { InvDB } from "../types";
 
 export type PaidStatus = 'Unpaid' | 'Partially Paid' | 'Paid' | 'Overdue';
 
 
 export function calcOverdue(invoices: InvDB[]): InvDB[] {
-    const today = new Date().toISOString().split('T')[0];  // Get today's date in 'YYYY-MM-DD' format
+    const today = new Date();  // Get today's date and time
+
 
     // Loop through invoices and check if they are overdue
     const updatedInvoices = invoices.map(inv => {
-        if (inv.inv_payment_status !== 'Paid' && new Date(inv.inv_due_date) < new Date(today) && inv.inv_paid_total < inv.inv_total) {
-            inv.inv_payment_status = 'Overdue'; // Update status to Overdue
+        console.log(inv.inv_number, inv.inv_due_date, inv.inv_payment_status);
+        if (inv.inv_payment_status !== 'Paid') {
+            inv.inv_due_date.setDate(inv.inv_due_date.getDate() - 1);
+
+            if (inv.inv_due_date < today) {
+                inv.inv_payment_status = 'Overdue';  // Mark as overdue if due date is before tomorrow
+            }else{
+                if (inv.inv_balance_due < inv.inv_total) {
+                    inv.inv_payment_status = 'Partially Paid';  // Mark as partially paid if due date is today
+                } else {
+                    inv.inv_payment_status = 'Unpaid';  // Mark as paid if fully paid
+                }
+            }
+
         }
         return inv; // Return the updated invoice
     });
@@ -33,7 +46,7 @@ export async function checkOverdueInvoicesSQLite(db: any) {
             WHERE inv_payment_status IN ('Unpaid', 'Partially Paid')
                 AND inv_due_date < ?
                 AND inv_paid_total < inv_total`,
-                [today]
+            [today]
         );
     } catch (error) {
         console.error("Failed to update overdue invoices:", error);
