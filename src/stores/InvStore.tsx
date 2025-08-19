@@ -30,6 +30,7 @@ export const useInvStore = create<OInvStore>((set) => ({
 
     createEmptyInv: (invPrefix:string, invInteger:number) => set({ oInv: emptyInv(invPrefix, invInteger), isDirty: true }),
 
+    // update will remove the old values
     updateOInvPayments: (payments) =>
         set((state) => ({
             oInv: state.oInv ? {
@@ -37,6 +38,7 @@ export const useInvStore = create<OInvStore>((set) => ({
                 inv_payments: payments, 
             } : null,
         })),
+        
     addPaymentToOInv: (payment) =>
         set((state) => {
             if (!state.oInv) return {};

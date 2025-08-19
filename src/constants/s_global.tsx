@@ -203,7 +203,7 @@ export const s_global = StyleSheet.create({
 
     FABSquare: {
         position: 'absolute',
-        bottom: 50,
+        bottom: 120,
         right: 20,
         backgroundColor: "#F28500",
         borderRadius: 20,

@@ -11,7 +11,6 @@ export function calcOverdue(invoices: InvDB[]): InvDB[] {
 
     // Loop through invoices and check if they are overdue
     const updatedInvoices = invoices.map(inv => {
-        console.log(inv.inv_number, inv.inv_due_date, inv.inv_payment_status);
         if (inv.inv_payment_status !== 'Paid') {
             inv.inv_due_date.setDate(inv.inv_due_date.getDate() - 1);
 

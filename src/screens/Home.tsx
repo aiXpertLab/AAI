@@ -194,6 +194,8 @@ const HomeScreen: React.FC = () => {
                 ListEmptyComponent={renderEmptyComponent}
             />
 
+            <View style={{ height: 30, opacity: 0 }} pointerEvents="none" />
+
             <M_HeaderFilter selectedHeaderFilter={selectedHeaderFilter} setSelectedHeaderFilter={setSelectedHeaderFilter} />
 
             <TouchableOpacity style={[s_global.FABSquare]} onPress={handleAddNewInvoice}            >

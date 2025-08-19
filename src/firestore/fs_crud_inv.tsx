@@ -151,7 +151,54 @@ export const useInvCrud = () => {
                 pay_date: p.pay_date?.toDate(),
             })) || []
         } as InvDB;
-
     };
-    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv, fetchDeleted };
+
+
+
+    const deletePayment = async (invNumber: string, pm_id: string): Promise<{ updatedBalanceDue: number, updatedInvPaidTotal: number } | false> => {
+        try {
+            // Fetch the invoice using the provided invNumber
+            const inv = await fetch1Inv(invNumber);
+
+            if (!inv) {
+                console.log("Invoice not found.");
+                return false;
+            }
+
+            // Filter out the payment with the given pm_id
+            const updatedPayments = inv.inv_payments.filter(payment => payment.pm_id !== pm_id);
+
+            // Check if the payment was found and removed
+            if (updatedPayments.length === inv.inv_payments.length) {
+                console.log("Payment with the provided pm_id not found.");
+                return false;
+            }
+
+            // Calculate the sum of removed payment(s) for the update
+            const removedPayment = inv.inv_payments.find(payment => payment.pm_id === pm_id);
+            const paymentAmount = removedPayment ? removedPayment.pay_amount : 0;
+
+            // Recalculate inv_balance_due and inv_paid_total
+            const updatedInvPaidTotal = updatedPayments.reduce((total, payment) => total + payment.pay_amount, 0);
+            const updatedBalanceDue = inv.inv_total - updatedInvPaidTotal;
+
+            // Update the invoice in Firestore with updated payments, balance due, and paid total
+            const invRef = doc(db, `aiai/be_${uid}/invs`, inv.inv_id);
+            await updateDoc(invRef, {
+                inv_payments: updatedPayments,
+                inv_balance_due: updatedBalanceDue,
+                inv_paid_total: updatedInvPaidTotal,
+            });
+
+            console.log("Payment deleted and summary updated successfully.");
+            return { updatedBalanceDue, updatedInvPaidTotal };
+        } catch (error) {
+            console.error("Error deleting payment:", error);
+            return false;
+        }
+    };
+
+
+
+    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv, fetchDeleted, deletePayment };
 };

@@ -57,11 +57,9 @@ export const emptyPM = (): PMDB => ({
     is_active: 1,
     is_locked: 0,
     is_deleted: 0,
-    created_at: new Date(),
-    updated_at: new Date(),
 
-    pay_date: new Date(),         // for InvPayment only
-    pay_amount: 0,     // for InvPayment only
+    pay_date: new Date(),           // for InvPayment only
+    pay_amount: 0,                  // for InvPayment only
     pay_reference: '',
     pay_note: '',
 

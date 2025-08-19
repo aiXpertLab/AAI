@@ -37,26 +37,39 @@ export const InvPay: React.FC = () => {
     const [showAddPayment, setShowAddPayment] = React.useState(false);
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
-    const { updateInv, duplicateInv } = useInvCrud();
+    const { updateInv, deletePayment, duplicateInv } = useInvCrud();
     const { updateBiz } = useBizCrud();
 
-    const removePayment = async (paymentId: number) => {
-        console.log(oInv)
+    const removePayment = async (pId: string) => {
+        console.log('removePayment called with pId:', pId);
+        console.log('oInv before removal:', oInv);
+        const paymentToRemove = oInv?.inv_payments.find(payment => payment.pm_id === pId);
 
-        try {
-            // await db.runAsync(
-            //     `UPDATE inv_payments SET is_deleted = 1, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
-            //     [paymentId]
-            // );
-        } catch (error) {
-            console.error("Failed to remove payment:", error);
+        if (paymentToRemove) {
+            const result = await deletePayment(oInv!.inv_number, pId);
+
+            if (result !== false) {
+                const updatedPayments = oInv?.inv_payments.filter(payment => payment.pm_id !== pId);
+
+                updateOInv({
+                    inv_balance_due: result.updatedBalanceDue,
+                    inv_paid_total: result.updatedInvPaidTotal,
+                    inv_payments: updatedPayments
+                });
+
+                console.log('Payment removed successfully');
+            } else {
+                console.log('Error removing payment: failed to update totals.');
+            }
+        } else {
+            console.log('Payment not found');
         }
     };
 
     const handleAddPayment = () => {
         createEmptyPM4New();
-        updateOPM({ pay_amount: oInv?.inv_balance_due });
-        setShowAddPayment(true)
+        updateOPM({ pay_amount: oInv?.inv_balance_due ?? 0 });
+        setShowAddPayment(true);
     };
 
     const onDuplicate = () => {
@@ -223,9 +236,9 @@ export const InvPay: React.FC = () => {
 
                                         {/* Right Column: Trash Icon vertically centered */}
                                         <View style={{ justifyContent: "center", paddingLeft: 8 }}>
-                                            {/* <TouchableOpacity onPress={() => removePayment("p.pm_id")}> */}
-                                            <Ionicons name="trash-outline" size={14} color="#e74c3c" />
-                                            {/* </TouchableOpacity> */}
+                                            <TouchableOpacity onPress={() => removePayment(p.pm_id)}>
+                                                <Ionicons name="trash-outline" size={14} color="#e74c3c" />
+                                            </TouchableOpacity>
                                         </View>
                                     </View>
                                 ))
@@ -291,12 +304,19 @@ export const InvPay: React.FC = () => {
                     <M_Payment_Add
                         visible={showAddPayment}
                         onCancel={() => setShowAddPayment(false)}
-                        onSave={() => {
-                            console.log(oPM)
+                        onSave={async () => {
+                            console.log('M_Payment_Add --> ', oPM)
                             if (oPM) {
+                                console.log('oPM --> ', oPM)
                                 addPaymentToOInv(oPM);
+                                // console.log('oInv --> ', oInv)
 
-                                updateOInv({ inv_balance_due: oInv?.inv_balance_due! - oPM.pay_amount });
+                                const updatedBalanceDue = oInv?.inv_balance_due! - oPM.pay_amount;
+                                const updatedInvPaidTotal = oInv?.inv_paid_total! + oPM.pay_amount;
+
+                                updateOInv({ inv_balance_due: updatedBalanceDue, inv_paid_total: updatedInvPaidTotal });
+
+                                await updateInv({ inv_payments: oInv?.inv_payments }, oInv!.inv_id);
                             }
                             setShowAddPayment(false); // hide modal
                         }}
