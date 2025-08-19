@@ -29,7 +29,6 @@ export const RestoreScreen: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
-    // const { restoreArchived, restoreDeletedInvoice } = useInvCrud();
 
     const [showConfirm, setShowConfirm] = React.useState(false);
 
@@ -39,18 +38,18 @@ export const RestoreScreen: React.FC = () => {
         setShowConfirm(true);
     };
 
-    // const handleConfirmRestore = async () => {
-    //     setShowConfirm(false);
-    //     if (mode === 'restore_archived') {
-    //         const success = await restoreArchived(oInv?.id!, oInv?.inv_number!);
-    //         if (success) fetchInvoices();
-    //     }
+    const handleConfirmRestore = async () => {
+        setShowConfirm(false);
+        // if (mode === 'restore_archived') {
+        //     const success = await restoreArchived(oInv?.id!, oInv?.inv_number!);
+        //     if (success) fetchInvoices();
+        // }
 
-    //     if (mode === 'restore_deleted') {
-    //         const success = await restoreDeletedInvoice(oInv?.id!, oInv?.inv_number!);
-    //         if (success) fetchInvoices();
-    //     }
-    // };
+        if (mode === 'restore_deleted') {
+            await updateInv({ is_deleted: 0 }, oInv?.inv_id!);
+            fetchInvoices();
+        }
+    };
 
     const handleSelectInvoice = async (invoice: InvDB) => {
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
@@ -120,8 +119,8 @@ export const RestoreScreen: React.FC = () => {
                 message="Are you sure you want to Restore this invoice?"
                 confirmText="Restore"
                 cancelText="Cancel"
-                // onConfirm={handleConfirmRestore}
-                onConfirm={() => setShowConfirm(false)}
+                onConfirm={handleConfirmRestore}
+                // onConfirm={() => setShowConfirm(false)}
                 onCancel={() => setShowConfirm(false)}
                 confirmColor="#4CAF50"
             />
