@@ -9,14 +9,13 @@ export function date2string(date: Date | Timestamp | string | null | undefined):
         date instanceof Timestamp
             ? date.toDate()
             : typeof date === 'string'
-                ? new Date(date)
-                : date;
+            ? new Date(date)
+            : date;
 
     return new Intl.DateTimeFormat('en-US', {
-        month: 'short', // "Aug"
-        day: 'numeric', // "19"
-        year: 'numeric', // "2025"
-        timeZone: 'UTC', // Ensure UTC to avoid local time shifts
+        month: 'short', // "May"
+        day: 'numeric', // "28"
+        year: 'numeric' // "2025"
     }).format(jsDate);
 }
 
