@@ -39,7 +39,7 @@ const HomeScreen: React.FC = () => {
     const [selectedHeaderFilter, setSelectedHeaderFilter] = React.useState({
         hf_client: "All",
         hf_fromDate: new Date("2001-01-01"),
-        hf_toDate: new Date(new Date().setHours(24, 0, 0, 0)),
+        hf_toDate: new Date("2222-11-11"),
     });
 
     const { hf_client, hf_fromDate, hf_toDate } = selectedHeaderFilter;

@@ -80,6 +80,22 @@ export const useInvCrud = () => {
     };
 
 
+    const fetchDeleted = async (): Promise<InvDB[]> => {
+        const invRef = collection(db, `aiai/be_${uid}/invs`);
+        const conditions = [where("is_deleted", "==", 1)];
+        const q = query(invRef, ...conditions, orderBy("inv_due_date", "desc"));
+        const querySnap = await getDocs(q);
+
+        const invoices: InvDB[] = querySnap.docs.map(doc => {
+            const data = doc.data();
+            return data as InvDB;
+        });
+
+        return invoices;
+
+    };
+
+
     const duplicateInv = async (newInvId: string, newInvNumber: string): Promise<boolean> => {
         const { oInv } = useInvStore.getState();
 
@@ -137,5 +153,5 @@ export const useInvCrud = () => {
         } as InvDB;
 
     };
-    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv };
+    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv, fetchDeleted };
 };

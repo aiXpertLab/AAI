@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 // import { useSQLiteContext } from "expo-sqlite";
 import { M_Confirmation, } from "@/src/modals";
 
-import { useInvStore, useBizStore,  } from '@/src/stores/InvStore';
+import { useInvStore, useBizStore, } from '@/src/stores/';
 import { RootStack, InvDB, ItemDB } from '@/src/types';
 import { RouteType } from "@/src/types";
 
@@ -20,7 +20,8 @@ export const RestoreScreen: React.FC = () => {
     useTabSync('Invoices');
     // const db = useSQLiteContext();
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-
+    const { updateInv, fetchInvs, fetchDeleted} = useInvCrud();
+    
     const mode = useRoute<RouteType<'Restore'>>().params?.mode ?? 'restore_deleted';
     let msg = mode === 'restore_deleted' ? "Deleted Invoices" : "Archived Invoices";
 
@@ -28,7 +29,7 @@ export const RestoreScreen: React.FC = () => {
 
     const [selectedFilter, setSelectedFilter] = React.useState<string>("All");
     const [invoices, setInvoices] = React.useState<InvDB[]>([]);
-    const { restoreArchived, restoreDeletedInvoice } = useInvoiceCrud();
+    // const { restoreArchived, restoreDeletedInvoice } = useInvCrud();
 
     const [showConfirm, setShowConfirm] = React.useState(false);
 
@@ -38,18 +39,18 @@ export const RestoreScreen: React.FC = () => {
         setShowConfirm(true);
     };
 
-    const handleConfirmRestore = async () => {
-        setShowConfirm(false);
-        if (mode === 'restore_archived') {
-            const success = await restoreArchived(oInv?.id!, oInv?.inv_number!);
-            if (success) fetchInvoices();
-        }
+    // const handleConfirmRestore = async () => {
+    //     setShowConfirm(false);
+    //     if (mode === 'restore_archived') {
+    //         const success = await restoreArchived(oInv?.id!, oInv?.inv_number!);
+    //         if (success) fetchInvoices();
+    //     }
 
-        if (mode === 'restore_deleted') {
-            const success = await restoreDeletedInvoice(oInv?.id!, oInv?.inv_number!);
-            if (success) fetchInvoices();
-        }
-    };
+    //     if (mode === 'restore_deleted') {
+    //         const success = await restoreDeletedInvoice(oInv?.id!, oInv?.inv_number!);
+    //         if (success) fetchInvoices();
+    //     }
+    // };
 
     const handleSelectInvoice = async (invoice: InvDB) => {
         setOInv(invoice);   // 🧠 Save selected invoice to Zustand
@@ -59,13 +60,11 @@ export const RestoreScreen: React.FC = () => {
     const fetchInvoices = async () => {
         try {
             if (mode === 'restore_deleted') {
-                let query = `SELECT * FROM invoices WHERE is_deleted = 1`;
-                const result = await db.getAllAsync<any>(query);
-                setInvoices(result);
+                const result_inv = await fetchDeleted();
+                setInvoices(result_inv);
             } else {
-                let query = `SELECT * FROM invoices WHERE is_locked = 1`;
-                const result = await db.getAllAsync<any>(query);
-                setInvoices(result);
+                const result_inv = await fetchDeleted();
+                setInvoices(result_inv);
             }
         } catch (err) {
             console.error("Failed to load invoices:", err);
@@ -88,7 +87,7 @@ export const RestoreScreen: React.FC = () => {
                         ? invoices
                         : invoices.filter(inv => inv.inv_payment_status === selectedFilter)
                 }
-                keyExtractor={(item) => item.id!.toString()}
+                keyExtractor={(item) => item.inv_id}
                 renderItem={({ item: invoice }) => (
                     <Pressable
                         onPress={() => {
@@ -121,7 +120,8 @@ export const RestoreScreen: React.FC = () => {
                 message="Are you sure you want to Restore this invoice?"
                 confirmText="Restore"
                 cancelText="Cancel"
-                onConfirm={handleConfirmRestore}
+                // onConfirm={handleConfirmRestore}
+                onConfirm={() => setShowConfirm(false)}
                 onCancel={() => setShowConfirm(false)}
                 confirmColor="#4CAF50"
             />

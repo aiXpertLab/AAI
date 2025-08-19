@@ -104,7 +104,8 @@ export const InvPay: React.FC = () => {
     const handleConfirmDelete = async () => {
         setShowConfirm(false);
         try {
-            // await updateInv(inv_id!, oInv?.inv_number!);
+            await updateInv({ is_deleted: 1 }, oInv?.inv_id!);
+
             navigation.goBack();
         } catch (error) {
             console.error('Error during deletion:', error);
