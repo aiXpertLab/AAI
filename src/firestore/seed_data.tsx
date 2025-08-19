@@ -35,9 +35,10 @@ export const seed_data = {
 
         be_timezone: "America/New_York",
         be_date_format: "MM/DD/YYYY",
+
         be_inv_prefix: "INV-",
         be_inv_integer: 2501,
-
+        be_inv_integer_max: 2501,
 
         ...baseFlags,
     },
@@ -363,12 +364,14 @@ export const seed_data = {
 
     invs: [
         {
-            inv_id: "INV-1001",
+            inv_id: "i_1001",
             user_id: 1,
             be_id: 1,
             client_id: "Demo Client 3",
 
             inv_number: "INV-1001",
+            inv_prefix: "INV-",
+            inv_integer: 1001,
             inv_date: new Date(),
             inv_due_date: new Date(),
 
@@ -430,12 +433,14 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            inv_id: "INV-1002",
+            inv_id: "i_1002",
             user_id: 1,
             be_id: 1,
             client_id: "Demo Client 2",
 
             inv_number: "INV-1002",
+            inv_prefix: "INV-",
+            inv_integer: 1002,
             inv_title: "Invoice for Demo Client 2",
             inv_date: new Date(),
             inv_due_date: new Date(),
@@ -495,13 +500,15 @@ export const seed_data = {
             ...baseFlags,
         },
         {
-            inv_id: "INV-1003",
+            inv_id: "i_1003",
             user_id: 1,
             be_id: 1,
             client_id: "Demo Client 1",
 
 
             inv_number: "INV-1003",
+            inv_prefix: "INV-",
+            inv_integer: 1003,
             inv_title: "Invoice for Client 3",
             inv_date: new Date(),
             inv_due_date: new Date(),

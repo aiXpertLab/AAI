@@ -122,6 +122,7 @@ export const useInvCrud = () => {
             inv_number: newInvNumber,
             created_at: serverTimestamp(),
             updated_at: serverTimestamp(),
+            inv_payments: []
         };
 
         // Save duplicated invoice

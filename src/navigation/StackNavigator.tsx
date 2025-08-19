@@ -18,7 +18,6 @@ import { InvPay_Edit_Client  } from "@/src/screens/inv_pay/InvPay_Edit_Client";
 import { BizInfo, Tax_List, Tax_Form,} from "@/src/screens/settings";
 import { Biz_Logo, PaymentMethod_Form, PaymentMethod_List } from "@/src/screens/settings";
 import { InvNumber_Form } from '@/src/screens/settings/InvNumber_Form'
-import SeedScreen from '@/seed/SeedScreen';
 import SignScreen from "@/src/screens/user/SignScreen";
 
 import { SupportHub, RestoreScreen } from "@/src/screens/drawer";
@@ -57,7 +56,6 @@ function StackNavigator() {
             <DetailStack.Screen name="SupportHub" component={SupportHub} options={{ title: 'Support Hub' }} />
             <DetailStack.Screen name="TestScreen" component={TestScreen} options={{ title: 'Test Screen' }} />
             <DetailStack.Screen name="Biz_Logo" component={Biz_Logo} options={{ title: 'Logo' }} />
-            <DetailStack.Screen name="SeedBizScreen" component={SeedScreen} options={{ title: 'Seed Business Data' }} /> 
         </DetailStack.Navigator>
     );
 }

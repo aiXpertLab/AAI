@@ -128,6 +128,7 @@ export const InvNew: React.FC = () => {
         setIsDirty(false);
 
         oInv.inv_number = (oBiz?.be_inv_prefix ?? "") + (oBiz?.be_inv_integer ?? 0);
+        
         if (oClient?.client_id) oInv.client_id = oClient.client_id;
 
         // ✅ 2. Check if inv_number is duplicated in Firestore
@@ -160,9 +161,12 @@ export const InvNew: React.FC = () => {
 
         try {
             await insertInv();
-            const newInvInteger = (oBiz?.be_inv_integer ?? 0) + 1;
-            await updateOBiz({ be_inv_integer: newInvInteger });
-            await updateBiz!({ be_inv_integer: newInvInteger, be_inv_prefix: oBiz?.be_inv_prefix });
+
+            
+            const max = Math.max(oBiz?.be_inv_integer??0, oBiz?.be_inv_integer_max ?? 0) + 1;
+
+            await updateOBiz({ be_inv_integer: max, be_inv_integer_max:max });
+            await updateBiz!({ be_inv_integer: max, be_inv_integer_max:max,  be_inv_prefix: oBiz?.be_inv_prefix });
 
             ToastAndroid.show('Succeed!', ToastAndroid.SHORT);
             navigation.goBack(); // only runs if insertInv didn't throw

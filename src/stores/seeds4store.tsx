@@ -92,6 +92,8 @@ export const emptyInv = (invPrefix:string, invInteger:number): InvDB => ({
     client_id: "Client_TBD",
 
     inv_number: invPrefix+invInteger,
+    inv_integer: invInteger,
+    inv_prefix: invPrefix,
     
     inv_date: new Date(),
     inv_due_date: new Date(),

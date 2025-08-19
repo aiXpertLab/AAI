@@ -24,6 +24,7 @@ export interface BE_DB {
     be_date_format: string;
     be_inv_prefix: string;
     be_inv_integer: number,  // current inv_number, when fetch, add 1 to be new
+    be_inv_integer_max: number,  // current inv_number, when fetch, add 1 to be new
 
     status: string;
     is_active: number;

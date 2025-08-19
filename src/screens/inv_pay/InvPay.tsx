@@ -25,7 +25,7 @@ import { date2string } from "@/src/utils/dateUtils";
 export const InvPay: React.FC = () => {
     console.log("InvPay")
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-    const { oInv, addPaymentToOInv, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
+    const { oInv, addPaymentToOInv, updateOInvPayments, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
     const { createEmptyPM4New, oPM, updateOPM } = usePMStore();  // 🧠 Zustand action
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
 
@@ -137,14 +137,16 @@ export const InvPay: React.FC = () => {
 
     const handleDuplicate = async () => {
         try {
-            const newInvId = 'i_' + Crypto.randomUUID().replace(/-/g, '');
+            const newInvId = 'i2_' + Crypto.randomUUID().replace(/-/g, '');
             const newInvNumber = `${oBiz!.be_inv_prefix}${oBiz?.be_inv_integer}`
 
             const success = await duplicateInv(newInvId, newInvNumber);
 
-            const newInteger = oBiz?.be_inv_integer! + 1;
-            await updateOBiz({ be_inv_integer: newInteger });
-            await updateBiz({ be_inv_integer: newInteger });
+            const max = Math.max(oBiz?.be_inv_integer??0, oBiz?.be_inv_integer_max ?? 0) + 1;
+
+            await updateOBiz({ be_inv_integer: max, be_inv_integer_max:max });
+            await updateBiz!({ be_inv_integer: max, be_inv_integer_max:max,  be_inv_prefix: oBiz?.be_inv_prefix });
+
             console.log('Duplicate success:', success);
             navigation.goBack();
         } catch (error) {
@@ -307,14 +309,16 @@ export const InvPay: React.FC = () => {
                         onSave={async () => {
                             console.log('M_Payment_Add --> ', oPM)
                             if (oPM) {
-                                console.log('oPM --> ', oPM)
-                                addPaymentToOInv(oPM);
-                                // console.log('oInv --> ', oInv)
+                                // const updatedPayments = [...(oInv?.inv_payments || []), oPM];
+                                // updateOInvPayments(updatedPayments);
+                                // console.log('oPM --> ', oPM)
+                                // // addPaymentToOInv(oPM);
+                                // console.log('oInv --> ', oInv?.inv_payments)
 
-                                const updatedBalanceDue = oInv?.inv_balance_due! - oPM.pay_amount;
-                                const updatedInvPaidTotal = oInv?.inv_paid_total! + oPM.pay_amount;
+                                // // const updatedBalanceDue = oInv?.inv_balance_due! - oPM.pay_amount;
+                                // // const updatedInvPaidTotal = oInv?.inv_paid_total! + oPM.pay_amount;
 
-                                updateOInv({ inv_balance_due: updatedBalanceDue, inv_paid_total: updatedInvPaidTotal });
+                                // // updateOInv({ inv_balance_due: updatedBalanceDue, inv_paid_total: updatedInvPaidTotal });
 
                                 await updateInv({ inv_payments: oInv?.inv_payments }, oInv!.inv_id);
                             }
