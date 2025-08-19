@@ -27,7 +27,7 @@
             "permissions": [
                 "com.android.vending.BILLING"
             ],
-            "package": "com.aixpertlab.aiautoinvoicing"
+            "package": "com.aixpertlab.aiautoinvoicing.dev"
         },
         "web": {
             "bundler": "metro",
