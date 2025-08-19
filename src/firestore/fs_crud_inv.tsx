@@ -1,5 +1,5 @@
 import * as Crypto from 'expo-crypto';
-import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp, getDoc } from "firebase/firestore";
+import { getFirestore, setDoc, updateDoc, doc, serverTimestamp, collection, query, where, orderBy, getDocs, Timestamp, getDoc, arrayUnion } from "firebase/firestore";
 import Toast from 'react-native-toast-message';
 import { app } from "@/src/config/firebaseConfig";
 import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
@@ -200,6 +200,28 @@ export const useInvCrud = () => {
     };
 
 
+    const insertPayment = async (
+        updates: Partial<InvDB>,
+        invId: string       // must pass invId, using oInvId not reliable. sometimes need update db directly
+    ): Promise<void> => {
 
-    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv, fetchDeleted, deletePayment };
+        const docRef = doc(db, `aiai/be_${uid}/invs`, invId);
+
+        console.log('Firestore reference:', docRef);
+        try {
+            const payments = updates.inv_payments ? updates.inv_payments : [];
+
+            await updateDoc(docRef, {
+                ...updates,
+                updated_at: serverTimestamp(),
+                inv_payments: arrayUnion(...payments),
+            });
+            console.log('Invoice updated successfully');
+        } catch (error) {
+            console.error('Error updating invoice:', error);  // Log any errors
+        }
+    };
+
+
+    return { insertInv, updateInv, fetchInvs, duplicateInv, fetch1Inv, fetchDeleted, deletePayment, insertPayment };
 };

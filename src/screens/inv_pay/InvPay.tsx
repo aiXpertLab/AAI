@@ -25,7 +25,7 @@ import { date2string } from "@/src/utils/dateUtils";
 export const InvPay: React.FC = () => {
     console.log("InvPay")
     const navigation = useNavigation<NativeStackNavigationProp<RootStack>>();
-    const { oInv, addPaymentToOInv, updateOInvPayments, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
+    const { oInv, setOInv, addPaymentToOInv, updateOInvPayments, updateOInv, isDirty, setIsDirty, } = useInvStore();  // 🧠 Zustand action
     const { createEmptyPM4New, oPM, updateOPM } = usePMStore();  // 🧠 Zustand action
     const { oBiz, updateOBiz } = useBizStore();  // 🧠 Zustand action
 
@@ -37,7 +37,7 @@ export const InvPay: React.FC = () => {
     const [showAddPayment, setShowAddPayment] = React.useState(false);
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
-    const { updateInv, deletePayment, duplicateInv } = useInvCrud();
+    const { updateInv, fetch1Inv,insertPayment, deletePayment, duplicateInv } = useInvCrud();
     const { updateBiz } = useBizCrud();
 
     const removePayment = async (pId: string) => {
@@ -142,10 +142,10 @@ export const InvPay: React.FC = () => {
 
             const success = await duplicateInv(newInvId, newInvNumber);
 
-            const max = Math.max(oBiz?.be_inv_integer??0, oBiz?.be_inv_integer_max ?? 0) + 1;
+            const max = Math.max(oBiz?.be_inv_integer ?? 0, oBiz?.be_inv_integer_max ?? 0) + 1;
 
-            await updateOBiz({ be_inv_integer: max, be_inv_integer_max:max });
-            await updateBiz!({ be_inv_integer: max, be_inv_integer_max:max,  be_inv_prefix: oBiz?.be_inv_prefix });
+            await updateOBiz({ be_inv_integer: max, be_inv_integer_max: max });
+            await updateBiz!({ be_inv_integer: max, be_inv_integer_max: max, be_inv_prefix: oBiz?.be_inv_prefix });
 
             console.log('Duplicate success:', success);
             navigation.goBack();
@@ -309,6 +309,10 @@ export const InvPay: React.FC = () => {
                         onSave={async () => {
                             console.log('M_Payment_Add --> ', oPM)
                             if (oPM) {
+                                if (typeof oPM.pay_amount === 'string') {
+                                    oPM.pay_amount = parseFloat(oPM.pay_amount);  // or use Number(oPM.pay_amount)
+                                }
+
                                 // const updatedPayments = [...(oInv?.inv_payments || []), oPM];
                                 // updateOInvPayments(updatedPayments);
                                 // console.log('oPM --> ', oPM)
@@ -320,9 +324,18 @@ export const InvPay: React.FC = () => {
 
                                 // // updateOInv({ inv_balance_due: updatedBalanceDue, inv_paid_total: updatedInvPaidTotal });
 
-                                await updateInv({ inv_payments: oInv?.inv_payments }, oInv!.inv_id);
+                                await insertPayment({ inv_payments: [oPM] }, oInv!.inv_id);
+                                const updatedInv = await fetch1Inv(oInv!.inv_number); // Assuming fetch1Inv fetches an invoice by its number
+
+                                if (updatedInv) {
+                                    setOInv(updatedInv);
+                                } else {
+                                    console.log('Failed to refetch updated invoice');
+                                }
+
                             }
                             setShowAddPayment(false); // hide modal
+
                         }}
                     />
 
