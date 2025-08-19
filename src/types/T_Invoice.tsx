@@ -5,8 +5,6 @@ export interface InvDB {
     client_id: string;// Link to client table
 
     inv_number: string; //INV-0001
-    inv_prefix?: string; // e.g., "INV-"
-    inv_integer?: number; // e.g., 0001
     inv_date: Date;
     inv_due_date: Date;
 

@@ -370,8 +370,6 @@ export const seed_data = {
             client_id: "Demo Client 3",
 
             inv_number: "INV-1001",
-            inv_prefix: "INV-",
-            inv_integer: 1001,
             inv_date: new Date(),
             inv_due_date: new Date(),
 
@@ -439,8 +437,6 @@ export const seed_data = {
             client_id: "Demo Client 2",
 
             inv_number: "INV-1002",
-            inv_prefix: "INV-",
-            inv_integer: 1002,
             inv_title: "Invoice for Demo Client 2",
             inv_date: new Date(),
             inv_due_date: new Date(),
@@ -507,8 +503,6 @@ export const seed_data = {
 
 
             inv_number: "INV-1003",
-            inv_prefix: "INV-",
-            inv_integer: 1003,
             inv_title: "Invoice for Client 3",
             inv_date: new Date(),
             inv_due_date: new Date(),
