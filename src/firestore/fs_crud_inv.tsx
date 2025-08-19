@@ -210,12 +210,31 @@ export const useInvCrud = () => {
         console.log('Firestore reference:', docRef);
         try {
             const payments = updates.inv_payments ? updates.inv_payments : [];
-
             await updateDoc(docRef, {
                 ...updates,
                 updated_at: serverTimestamp(),
                 inv_payments: arrayUnion(...payments),
             });
+
+            // calculate total
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const invData = docSnap.data();
+                const totalPayment = invData.inv_payments.reduce((sum: number, payment: any) => sum + payment.pay_amount, 0);
+                const balanceDue = invData.inv_total - totalPayment;
+
+                console.log('Total Payment:', totalPayment);
+                console.log('Balance Due:', balanceDue);
+
+                await updateDoc(docRef, {
+                    inv_paid_total: totalPayment,
+                    inv_balance_due: balanceDue
+                });
+            }
+
+
+
+
             console.log('Invoice updated successfully');
         } catch (error) {
             console.error('Error updating invoice:', error);  // Log any errors
