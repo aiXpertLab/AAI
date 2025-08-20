@@ -15,7 +15,7 @@
         },
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.aixpertlab.aiautoinvoicing.dev"
+            "bundleIdentifier": "com.aixpertlab.aiautoinvoicing"
         },
         "android": {
             "adaptiveIcon": {
@@ -23,11 +23,11 @@
                 "backgroundColor": "#ffffff"
             },
             "edgeToEdgeEnabled": true,
-            "googleServicesFile": "./google-services.json",
+            "googleServicesFile": "./src/config/google-services.json",
             "permissions": [
                 "com.android.vending.BILLING"
             ],
-            "package": "com.aixpertlab.aiautoinvoicing.dev"
+            "package": "com.aixpertlab.aiautoinvoicing"
         },
         "web": {
             "bundler": "metro",
