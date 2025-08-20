@@ -23,7 +23,7 @@
                 "backgroundColor": "#ffffff"
             },
             "edgeToEdgeEnabled": true,
-            "googleServicesFile": "./src/config/google-services.json",
+            "googleServicesFile": "./google-services.json",
             "permissions": [
                 "com.android.vending.BILLING"
             ],
