@@ -6,7 +6,7 @@ export const t1 = (
     oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
-    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0)
+    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
         ? `    <div class="paid-stamp">PAID</div>  `  : "";
 
     const bodyContent = `

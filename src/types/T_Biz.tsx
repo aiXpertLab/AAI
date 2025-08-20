@@ -32,6 +32,7 @@ export interface BE_DB {
     is_deleted: number;
     created_at?: Date;
     updated_at?: Date;
+    be_show_paid_stamp?: boolean; // whether to show paid stamp on invoice
 
 }
 

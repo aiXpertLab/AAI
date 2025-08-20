@@ -12,9 +12,11 @@ import { s_global } from "@/src/constants";
 
 import { DetailStack } from "@/src/types";
 import SettingItem from "./SettingItem";
+import { useBizStore } from '@/src/stores';
 
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
+    const { oBiz, updateOBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
 
     React.useLayoutEffect(() => {
         const parent = navigation.getParent();
@@ -45,8 +47,10 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem
                     title="Paid show on Invoice"
                     toggle
-                    toggleValue={showPaidOnInvoice}
-                    onToggle={setShowPaidOnInvoice}
+                    toggleValue={oBiz?.be_show_paid_stamp ?? true}
+                    onToggle={(val) => {
+                        updateOBiz({ be_show_paid_stamp: val });  // Zustand or Firestore update
+                    }}
                 />
             </Section>
 

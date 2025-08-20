@@ -39,7 +39,8 @@ export const seed_data = {
         be_inv_prefix: "INV-",
         be_inv_integer: 2501,
         be_inv_integer_max: 2501,
-
+        be_show_paid_stamp: true, // Show "Paid" stamp on invoices by default
+        
         ...baseFlags,
     },
 
