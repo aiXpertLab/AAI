@@ -18,6 +18,7 @@ export const seed_data = {
         be_logo: "",
         be_name: "My Corporation",
         be_address: "1600 Pennsylvania Ave.,\nWashington DC",
+        be_contact: "John Doe",
         be_email: "change@me.com",
         be_phone: "1-888-168-5868",
         be_website: "https://aiautoinvoicing.github.io",

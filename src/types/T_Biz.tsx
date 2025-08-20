@@ -4,6 +4,7 @@ export interface BE_DB {
     be_id: string;
     be_logo: string;
     be_name: string;
+    be_contact: string;
     be_address: string;
     be_email: string;
     be_phone: string;

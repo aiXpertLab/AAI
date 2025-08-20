@@ -152,6 +152,11 @@ export const BizInfo: React.FC = () => {
                             value={oBiz?.be_address} onChangeText={(text) => handleChange("be_address", text)} />
 
                         <View style={{ height: 12 }} />
+                        <Text style={s_global.Label}>Contact</Text>
+                        <TextInput style={[s_global.InputGreyBackground]} placeholder="Contact" placeholderTextColor="#999" multiline
+                            value={oBiz?.be_contact} onChangeText={(text) => handleChange("be_contact", text)} />
+
+                        <View style={{ height: 12 }} />
                         <Text style={s_global.Label}>Email</Text>
                         <TextInput style={[s_global.InputGreyBackground]} placeholder="Email" placeholderTextColor="#999"
                             value={oBiz?.be_email} onChangeText={(text) => handleChange("be_email", text)} />

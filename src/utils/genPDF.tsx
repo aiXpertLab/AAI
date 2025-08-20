@@ -1,12 +1,13 @@
 // utils/exportPDF.js
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import * as WebBrowser from 'expo-web-browser';
 import * as MailComposer from 'expo-mail-composer';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as FileSystem from 'expo-file-system';
 import { genHTML } from './genHTML'; // Adjust path to your HTML generator
 import { InvDB, BE_DB } from "@/src/types";
+
+import { date2string } from './dateUtils';
 
 export const genPDF = async (oInv: any, oBiz: any, oInvItems: any) => {
     if (!oInv) throw new Error("Missing invoice data");
@@ -88,12 +89,13 @@ export const emailPDF = async (uri: any, oInv: InvDB, oBiz: BE_DB) => {
         : `Dear Client,`; // fallback if missing
 
     const emailBody = [
-        greeting,
-        `I hope this message finds you well. Please find your invoice ${oInv.inv_number} attached. Your prompt payment is appreciated.`,
+        greeting,        
+        `I hope you are doing well! I have attached your invoice ${oInv.inv_number}, which is due on ${date2string(oInv.inv_due_date)}.`,
         `If you have any questions, please feel free to let me know. `,
         `Thank you for your continued business. `,
         `Best regards,`,
-        oBiz?.be_name,
+        oBiz?.be_contact || "",
+        oBiz?.be_name|| "",
         oBiz?.be_email || "",   // only show if not null
         oBiz?.be_phone || ""    // only show if not null
     ].filter(Boolean).join("\n\n");
@@ -101,7 +103,7 @@ export const emailPDF = async (uri: any, oInv: InvDB, oBiz: BE_DB) => {
     try {
         await MailComposer.composeAsync({
             recipients: [(oInv as any)?.client_email!],
-            subject: `Invoice ${oInv.inv_number} from ${oBiz?.be_name}`,
+            subject: `Invoice ${oInv.inv_number} (${date2string(oInv?.inv_date)}) from ${oBiz?.be_name} `,
             body: emailBody,
             attachments: [uri],
         });
