@@ -11,20 +11,19 @@ export function calcOverdue(invoices: InvDB[]): InvDB[] {
 
     // Loop through invoices and check if they are overdue
     const updatedInvoices = invoices.map(inv => {
-        if (inv.inv_payment_status !== 'Paid') {
+        const { inv_due_date, inv_total, inv_balance_due } = inv;
 
-            if (inv.inv_due_date < today0) {
-                inv.inv_payment_status = 'Overdue';  // Mark as overdue if due date is before tomorrow
-            }else{
-                if (inv.inv_balance_due < inv.inv_total) {
-                    inv.inv_payment_status = 'Partially Paid';  // Mark as partially paid if due date is today
-                } else {
-                    inv.inv_payment_status = 'Unpaid';  // Mark as paid if fully paid
-                }
-            }
-
+        if (inv_balance_due <= 0) {
+            inv.inv_payment_status = "Paid";
+        } else if (inv_due_date < today0) {
+            inv.inv_payment_status = "Overdue";
+        } else if (inv_balance_due === inv_total) {
+            inv.inv_payment_status = "Unpaid";
+        } else if (inv_balance_due < inv_total) {
+            inv.inv_payment_status = "Partially Paid";
         }
-        return inv; // Return the updated invoice
+
+        return inv;
     });
 
     return updatedInvoices; // Return the updated array of invoices
