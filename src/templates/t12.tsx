@@ -1,10 +1,10 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 // Template t12: Classic Styled Invoice (based on original HTML/CSS)
 export const t12 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -14,12 +14,12 @@ export const t12 = (
       <h1 style="background: #000; color: #fff; padding: 0.5em 0; margin-bottom: 1em; text-align: center; letter-spacing: 0.5em;">Invoice</h1>
       <div style="display: flex; justify-content: space-between;">
         <address style="font-size: 75%; line-height: 1.25;">
-          <p>${oBiz.biz_name || "Business Name"}</p>
-          <p>${oBiz.biz_address || "Business Address"}</p>
-          <p>${oBiz.biz_phone || "(000) 000-0000"}</p>
+          <p>${oBiz.be_name || "Business Name"}</p>
+          <p>${oBiz.be_address || "Business Address"}</p>
+          <p>${oBiz.be_phone || "(000) 000-0000"}</p>
         </address>
         <div>
-          <img src="${oBiz.biz_logo || "http://www.jonathantneal.com/examples/invoice/logo.png"}" style="max-width: 150px; max-height: 80px;" />
+          <img src="${oBiz.be_logo || "http://www.jonathantneal.com/examples/invoice/logo.png"}" style="max-width: 150px; max-height: 80px;" />
         </div>
       </div>
     </header>
@@ -28,8 +28,8 @@ export const t12 = (
       <section style="margin-bottom: 3em;">
         <h2 style="font-size: 16px; font-weight: bold;">Bill To:</h2>
         <address style="font-size: 125%; font-weight: bold;">
-          <p>${oClient?.client_company_name || "Client Company"}</p>
-          <p>${oClient?.client_address || "Client Address"}</p>
+          <p>${(oInv as any)?.client_company_name || "Client Company"}</p>
+          <p>${(oInv as any)?.client_address || "Client Address"}</p>
         </address>
       </section>
 
@@ -40,7 +40,7 @@ export const t12 = (
         </tr>
         <tr>
           <th style="background: #eee; border: 1px solid #bbb; padding: 0.5em;">Date</th>
-          <td style="border: 1px solid #ddd; padding: 0.5em;">${formatDateForUI(oInv.inv_date)}</td>
+          <td style="border: 1px solid #ddd; padding: 0.5em;">${date2string(oInv.inv_date)}</td>
         </tr>
         <tr>
           <th style="background: #eee; border: 1px solid #bbb; padding: 0.5em;">Amount Due</th>
@@ -59,7 +59,7 @@ export const t12 = (
           </tr>
         </thead>
         <tbody>
-          ${oInv!.inv_items.map(item => `
+          ${oInv!.inv_items!.map(item => `
             <tr>
               <td style="border: 1px solid #ddd; padding: 0.5em;">${item.item_name || ""}</td>
               <td style="border: 1px solid #ddd; padding: 0.5em;">${item.item_description || ""}</td>

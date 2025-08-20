@@ -1,11 +1,10 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 // Template t3: Classic
 export const t6 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
-    // oInv!.inv_items: Partial<ItemDB>[],
+    oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
@@ -13,19 +12,19 @@ export const t6 = (
     <h1 style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px;">Invoice</h1>
     <div style="display: flex; justify-content: space-between;">
       <div>
-        <h3>${oBiz.biz_name}</h3>
-        <p>${oBiz.biz_address || ""}<br/>${oBiz.biz_phone || ""}<br/>${oBiz.biz_email || ""}</p>
+        <h3>${oBiz.be_name}</h3>
+        <p>${oBiz.be_address || ""}<br/>${oBiz.be_phone || ""}<br/>${oBiz.be_email || ""}</p>
       </div>
       <div>
         <p><strong>Invoice #:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-        <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-        <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+        <p><strong>Date:</strong> ${date2string((oInv as any)?.inv_date)}</p>
+        <p><strong>Due:</strong> ${date2string((oInv as any)?.inv_due_date)}</p>
       </div>
     </div>
 
     <div style="margin-top: 20px;">
       <strong>Bill To:</strong><br/>
-      <p>${oClient?.client_company_name || "Client Company"}<br/>${oClient?.client_address || "Client Address"}</p>
+      <p>${(oInv as any)?.client_company_name || "Client Company"}<br/>${(oInv as any)?.client_address || "Client Address"}</p>
     </div>
 
     <table style="width: 100%; margin-top: 20px; border: 1px solid #000; border-collapse: collapse;">
@@ -38,7 +37,7 @@ export const t6 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items.map(item => `
+        ${oInv!.inv_items!!.map(item => `
           <tr>
             <td style="border: 1px solid #000; padding: 6px;">${item.item_name}</td>
             <td style="border: 1px solid #000; padding: 6px; text-align: right;">${item.item_quantity}</td>

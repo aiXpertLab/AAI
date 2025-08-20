@@ -1,10 +1,10 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 // Template t4: Dark Mode
 export const t16 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -13,18 +13,18 @@ export const t16 = (
     <h1 style="border-bottom: 2px solid #444; padding-bottom: 10px;">Invoice</h1>
     <div style="display: flex; justify-content: space-between;">
       <div>
-        <h2>${oBiz.biz_name}</h2>
-        <p>${oBiz.biz_address || ""}<br/>${oBiz.biz_phone || ""}<br/>${oBiz.biz_email || ""}</p>
+        <h2>${oBiz.be_name}</h2>
+        <p>${oBiz.be_address || ""}<br/>${oBiz.be_phone || ""}<br/>${oBiz.be_email || ""}</p>
       </div>
       <div>
         <p><strong>No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-        <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-        <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+        <p><strong>Date:</strong> ${date2string(oInv.inv_date)}</p>
+        <p><strong>Due:</strong> ${date2string(oInv.inv_due_date)}</p>
       </div>
     </div>
 
     <h3 style="margin-top: 30px;">Bill To:</h3>
-    <p>${oClient?.client_company_name || "Client"}<br/>${oClient?.client_address || "Address"}</p>
+    <p>${(oInv as any)?.client_company_name || "Client"}<br/>${(oInv as any)?.client_address || "Address"}</p>
 
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <thead style="background: #333;">
@@ -36,7 +36,7 @@ export const t16 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items.map(item => `
+        ${oInv!.inv_items!.map(item => `
           <tr style="border-bottom: 1px solid #444;">
             <td style="padding: 10px;">${item.item_name}</td>
             <td style="text-align: right; padding: 10px;">${item.item_quantity}</td>

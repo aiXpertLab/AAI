@@ -1,5 +1,5 @@
 import { BE_DB, ClientDB, InvDB, ItemDB } from "@/src/types";
-import { formatDateForUI, date2string } from "@/src/utils/dateUtils";
+import { date2string,  } from "@/src/utils/dateUtils";
 
 export const t3 = (
     oInv: Partial<InvDB>,
@@ -30,7 +30,7 @@ export const t3 = (
     <section class="bill-to">
       <h3>Bill To</h3>
       <p>
-        ${oInv?.client_company_name || "Client Company Name"}<br />
+        ${(oInv as any)?.client_company_name || "Client Company Name"}<br />
         ${oInv?.client_address || "Client Address"}
       </p>
     </section>
@@ -45,7 +45,7 @@ export const t3 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items
+        ${oInv!.inv_items!
             .map(
                 (item) => `
           <tr>

@@ -1,9 +1,9 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t13 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -23,14 +23,14 @@ export const t13 = (
     <div id="details" class="clearfix">
       <div id="client">
         <div class="to">INVOICE TO:</div>
-        <h2 class="name">${oClient?.client_company_name || "John Doe"}</h2>
-        <div class="address">${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
-        <div class="email"><a href="mailto:${oInv.client_email || "john@example.com"}">${oInv.client_email || "john@example.com"}</a></div>
+        <h2 class="name">${(oInv as any)?.client_company_name || "John Doe"}</h2>
+        <div class="address">${(oInv as any)?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
+        <div class="email"><a href="mailto:${(oInv as any).client_email || "john@example.com"}">${(oInv as any).client_email || "john@example.com"}</a></div>
       </div>
       <div id="invoice">
         <h1>${oInv.inv_number || "INVOICE 3-2-1"}</h1>
-        <div class="date">Date of Invoice: ${formatDateForUI(oInv.inv_date)}</div>
-        <div class="date">Due Date: ${formatDateForUI(oInv.inv_due_date)}</div>
+        <div class="date">Date of Invoice: ${date2string(oInv.inv_date)}</div>
+        <div class="date">Due Date: ${date2string(oInv.inv_due_date)}</div>
       </div>
     </div>
     <table>
@@ -44,7 +44,7 @@ export const t13 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items
+        ${oInv!.inv_items!
             .map(
                 (item, i) => `
             <tr>

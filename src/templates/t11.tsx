@@ -1,5 +1,5 @@
 import { InvDB, BE_DB, ItemDB, ClientDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t11 = (
   oInv: Partial<InvDB>,
@@ -69,7 +69,7 @@ export const t11 = (
 </tr>
 <tr>
                         <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; text-align: left;">
-                          Hello, ${oInv?.client_company_name || "Client Name"}.<br />
+                          Hello, ${(oInv as any)?.client_company_name || "Client Name"}.<br />
                           Thank you for your order.
                         </td>
                       </tr>
@@ -80,7 +80,7 @@ export const t11 = (
                       <tr>
                         <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; text-align: right;">
                           <small>ORDER</small> #${oInv.inv_number || "INV-XXXX"}<br />
-                          <small>${formatDateForUI(oInv.inv_date) || "DATE"}</small>
+                          <small>${date2string(oInv.inv_date) || "DATE"}</small>
                         </td>
                       </tr>
                     </table>
@@ -110,7 +110,7 @@ export const t11 = (
                   <th align="right">Subtotal</th>
                 </tr>
                 <tr><td height="10" colspan="4"></td></tr>
-                ${oInv!.inv_items.map(item => `
+                ${oInv!.inv_items!.map(item => `
                   <tr>
                     <td style="padding:10px 0;">${item.item_name || "Item"}</td>
                     <td><small>${item.item_sku || "SKU"}</small></td>

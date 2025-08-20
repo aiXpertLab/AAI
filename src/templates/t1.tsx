@@ -59,7 +59,7 @@ export const t1 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items!
+        ${oInv!.inv_items!!
             .map(
                 (item) => `
           <tr>

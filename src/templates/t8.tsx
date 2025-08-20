@@ -1,5 +1,5 @@
 import { ClientDB, InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t8 = (
   oInv: Partial<InvDB>,
@@ -26,12 +26,12 @@ export const t8 = (
           <div>
             <h2>Invoice</h2>
             <p><strong>No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-            <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-            <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+            <p><strong>Date:</strong> ${date2string(oInv.inv_date)}</p>
+            <p><strong>Due:</strong> ${date2string(oInv.inv_due_date)}</p>
           </div>
           <div>
             <h3>Bill To:</h3>
-            <p>${oInv?.client_company_name || "Client Company Name"}<br/>${oInv?.client_address || "Client Address"}</p>
+            <p>${(oInv as any)?.client_company_name || "Client Company Name"}<br/>${oInv?.client_address || "Client Address"}</p>
           </div>
         </div>
 
@@ -42,7 +42,7 @@ export const t8 = (
             </tr>
           </thead>
           <tbody>
-            ${oInv!.inv_items
+            ${oInv!.inv_items!
               .map(
                 (item) => `
               <tr>

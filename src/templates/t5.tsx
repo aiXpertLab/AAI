@@ -1,30 +1,29 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string,  } from "@/src/utils/dateUtils";
 
 // Template t5: Elegant Accent
 export const t5 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
-    // oInv!.inv_items: Partial<ItemDB>[],
+    oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
     const bodyContent = `
   <div style="font-family: 'Playfair Display', serif; padding: 50px; background: #fff7f0; color: #3a3a3a;">
     <h1 style="text-align: center; font-size: 36px;">INVOICE</h1>
     <div style="text-align: center; margin-bottom: 30px;">
-      <p>${oBiz.biz_name}</p>
-      <p>${oBiz.biz_address || ""} | ${oBiz.biz_phone || ""} | ${oBiz.biz_email || ""}</p>
+      <p>${oBiz.be_name}</p>
+      <p>${oBiz.be_address || ""} | ${oBiz.be_phone || ""} | ${oBiz.be_email || ""}</p>
     </div>
 
     <div style="display: flex; justify-content: space-between;">
       <div>
         <h3>Bill To:</h3>
-        <p>${oClient?.client_company_name || "Client"}<br/>${oClient?.client_address || "Address"}</p>
+        <p>${(oInv as any)?.client_company_name || "Client"}<br/>${(oInv as any)?.client_address || "Address"}</p>
       </div>
       <div>
         <p><strong>Invoice No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-        <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-        <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+        <p><strong>Date:</strong> ${date2string(oInv.inv_date)}</p>
+        <p><strong>Due:</strong> ${date2string(oInv.inv_due_date)}</p>
       </div>
     </div>
 
@@ -38,7 +37,7 @@ export const t5 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items.map(item => `
+        ${oInv!.inv_items!!.map(item => `
           <tr style="border-bottom: 1px solid #ddd;">
             <td style="padding: 10px;">${item.item_name}</td>
             <td style="padding: 10px; text-align: right;">${item.item_quantity}</td>

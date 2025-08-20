@@ -1,12 +1,18 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t4 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
-    // oInv!.inv_items: Partial<ItemDB>[],
+    oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
+
+    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
     const bodyContent = `
 
 <body>
@@ -37,16 +43,16 @@ export const t4 = (
 		<div class="details clearfix">
 			<div class="client left">
 				<p>INVOICE TO:</p>
-				<p class="name">${oClient?.client_company_name}</p>
-				<p>${oClient?.client_address}
+				<p class="name">${(oInv as any)?.client_company_name}</p>
+				<p>${(oInv as any)?.client_address}
 				</p>
-				<a href="mailto:john@example.com">${oInv.client_email}</a>
+				<a href="mailto:john@example.com">${(oInv as any)?.client_email}</a>
 			</div>
 			<div class="data right">
-				<div class="title">${oInv.inv_number}</div>
+				<div class="title">${(oInv as any)?.inv_number}</div>
 				<div class="date">
-                    <p><strong>Invoice Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-                    <p><strong>Due Date:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+                    <p><strong>Invoice Date:</strong> ${date2string((oInv as any)?.inv_date)}</p>
+                    <p><strong>Due Date:</strong> ${date2string((oInv as any)?.inv_due_date)}</p>
 				</div>
 			</div>
 		</div>
@@ -65,7 +71,7 @@ export const t4 = (
 					</tbody>
 
                     <tbody class="body">
-                    ${oInv!.inv_items
+                    ${oInv!.inv_items!!
                         .map(
                         (item, index) => `
                             <tr>
@@ -445,7 +451,8 @@ header figure img {
 </head>
 
     <body>
-        ${previewMode === "pdf"
+  ${paidStamp}
+      ${previewMode === "pdf"
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

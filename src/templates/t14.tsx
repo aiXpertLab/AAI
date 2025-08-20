@@ -1,9 +1,9 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t14 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -26,11 +26,11 @@ export const t14 = (
     </div>
     <div id="project">
       <div><span>PROJECT</span> ${oInv.inv_title || "Website development"}</div>
-      <div><span>CLIENT</span> ${oClient?.client_company_name || "John Doe"}</div>
-      <div><span>ADDRESS</span> ${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
-      <div><span>EMAIL</span> <a href="mailto:${oInv.client_email || "john@example.com"}">${oInv.client_email || "john@example.com"}</a></div>
-      <div><span>DATE</span> ${formatDateForUI(oInv.inv_date)}</div>
-      <div><span>DUE DATE</span> ${formatDateForUI(oInv.inv_due_date)}</div>
+      <div><span>CLIENT</span> ${(oInv as any)?.client_company_name || "John Doe"}</div>
+      <div><span>ADDRESS</span> ${(oInv as any)?.client_address || "796 Silver Harbour, TX 79273, US"}</div>
+      <div><span>EMAIL</span> <a href="mailto:${(oInv as any).client_email || "john@example.com"}">${(oInv as any).client_email || "john@example.com"}</a></div>
+      <div><span>DATE</span> ${date2string(oInv.inv_date)}</div>
+      <div><span>DUE DATE</span> ${date2string(oInv.inv_due_date)}</div>
     </div>
   </header>
   <main>
@@ -45,7 +45,7 @@ export const t14 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items
+        ${oInv!.inv_items!
             .map(
                 (item) => `
           <tr>
@@ -63,7 +63,7 @@ export const t14 = (
         </tr>
         <tr>
           <td colspan="4">TAX ${oInv.inv_tax_rate || 25}%</td>
-          <td class="total">$${Number(oInv.inv_tax || 0).toFixed(2)}</td>
+          <td class="total">$${Number(oInv.inv_tax_amount || 0).toFixed(2)}</td>
         </tr>
         <tr>
           <td colspan="4" class="grand total">GRAND TOTAL</td>

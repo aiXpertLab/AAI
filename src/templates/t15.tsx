@@ -1,9 +1,9 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t15 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -11,27 +11,27 @@ export const t15 = (
   <div class="invoice-container">
     <div class="invoice-header">
       <div class="company-details" style="text-align: left;">
-        <h1 style="margin: 0;">${oBiz.biz_name || "Company Name"}</h1>
+        <h1 style="margin: 0;">${oBiz.be_name || "Company Name"}</h1>
         <p style="margin: 5px 0;">
-          ${oBiz.biz_address || "455 Foggy Heights, AZ 85004, US"}<br/>
-          ${oBiz.biz_phone || "1 (602) 519-0450.1"}<br/>
-          ${oBiz.biz_email || "company@example.com"}
+          ${oBiz.be_address || "455 Foggy Heights, AZ 85004, US"}<br/>
+          ${oBiz.be_phone || "1 (602) 519-0450.1"}<br/>
+          ${oBiz.be_email || "company@example.com"}
         </p>
       </div>
       <div class="invoice-info">
         <h2>INVOICE</h2>
         <p><strong>No:</strong> ${oInv.inv_number || "3-2-1"}</p>
-        <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date || "01/06/2014")}</p>
-        <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date || "30/06/2014")}</p>
+        <p><strong>Date:</strong> ${date2string(oInv.inv_date || "01/06/2014")}</p>
+        <p><strong>Due:</strong> ${date2string(oInv.inv_due_date || "30/06/2014")}</p>
       </div>
     </div>
 
     <div class="bill-section">
       <h3>INVOICE TO:</h3>
       <p>
-        ${oClient?.client_company_name || "John Doe"}<br />
-        ${oClient?.client_address || "796 Silver Harbour, TX 79273, US"}<br />
-        ${oInv.client_email || "john@example.com"}
+        ${(oInv as any)?.client_company_name || "John Doe"}<br />
+        ${(oInv as any)?.client_address || "796 Silver Harbour, TX 79273, US"}<br />
+        ${(oInv as any).client_email || "john@example.com"}
       </p>
     </div>
 
@@ -45,7 +45,7 @@ export const t15 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items
+        ${oInv!.inv_items!
             .map(
                 (item) => `
           <tr>

@@ -1,10 +1,10 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 // Template t2: Modern Minimal
 export const t7 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
@@ -13,14 +13,14 @@ export const t7 = (
     <header style="border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
       <h1 style="margin: 0; font-size: 32px;">Invoice</h1>
       <p style="margin: 4px 0; font-size: 14px;">No: ${oInv.inv_number || "INV-XXXX"}</p>
-      <p style="margin: 4px 0; font-size: 14px;">Date: ${formatDateForUI(oInv.inv_date)}</p>
-      <p style="margin: 4px 0; font-size: 14px;">Due: ${formatDateForUI(oInv.inv_due_date)}</p>
+      <p style="margin: 4px 0; font-size: 14px;">Date: ${date2string(oInv.inv_date)}</p>
+      <p style="margin: 4px 0; font-size: 14px;">Due: ${date2string(oInv.inv_due_date)}</p>
     </header>
 
     <section>
       <h2 style="font-size: 18px; margin-bottom: 5px;">Bill To:</h2>
-      <p style="margin: 0;">${oClient?.client_company_name || "Client Name"}</p>
-      <p style="margin: 0;">${oClient?.client_address || "Client Address"}</p>
+      <p style="margin: 0;">${(oInv as any)?.client_company_name || "Client Name"}</p>
+      <p style="margin: 0;">${(oInv as any)?.client_address || "Client Address"}</p>
     </section>
 
     <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
@@ -33,7 +33,7 @@ export const t7 = (
         </tr>
       </thead>
       <tbody>
-        ${oInv!.inv_items.map(item => `
+        ${oInv!.inv_items!.map(item => `
           <tr>
             <td style="padding: 8px;">${item.item_name}</td>
             <td style="text-align: right; padding: 8px;">${item.item_quantity}</td>

@@ -1,9 +1,9 @@
 import { InvDB, BE_DB, ItemDB } from "@/src/types";
-import { formatDateForUI } from "@/src/utils/dateUtils";
+import { date2string } from "@/src/utils/dateUtils";
 
 export const t10 = (
     oInv: Partial<InvDB>,
-    oBiz: Partial<BE_DB>, oClient: Partial<ClientDB>,
+    oBiz: Partial<BE_DB>,
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
@@ -20,12 +20,12 @@ export const t10 = (
           <div>
             <h2>Invoice</h2>
             <p><strong>No:</strong> ${oInv.inv_number || "INV-XXXX"}</p>
-            <p><strong>Date:</strong> ${formatDateForUI(oInv.inv_date)}</p>
-            <p><strong>Due:</strong> ${formatDateForUI(oInv.inv_due_date)}</p>
+            <p><strong>Date:</strong> ${date2string(oInv.inv_date)}</p>
+            <p><strong>Due:</strong> ${date2string(oInv.inv_due_date)}</p>
           </div>
           <div>
             <h3>Bill To:</h3>
-            <p>${oClient?.client_company_name || "Client Company Name"}<br/>${oClient?.client_address || "Client Address"}</p>
+            <p>${(oInv as any)?.client_company_name || "Client Company Name"}<br/>${(oInv as any)?.client_address || "Client Address"}</p>
           </div>
         </div>
 
@@ -36,7 +36,7 @@ export const t10 = (
             </tr>
           </thead>
           <tbody>
-            ${oInv!.inv_items
+            ${oInv!.inv_items!
             .map(
                 (item) => `
               <tr>
