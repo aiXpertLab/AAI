@@ -6,8 +6,14 @@ export const t3 = (
     oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
-    const bodyContent = `
-  <div class="invoice-wrapper">
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `  <div class="invoice-wrapper">
     <header class="invoice-header">
       <div class="header-left">
         <h1>${oBiz.be_name}</h1>
@@ -31,7 +37,7 @@ export const t3 = (
       <h3>Bill To</h3>
       <p>
         ${(oInv as any)?.client_company_name || "Client Company Name"}<br />
-        ${oInv?.client_address || "Client Address"}
+        ${(oInv as any)?.client_address || "Client Address"}
       </p>
     </section>
 
@@ -135,12 +141,37 @@ export const t3 = (
           padding: 0;
         }
 
+        .invoice-wrapper {
+            position: relative; /* ADD THIS - makes it the positioning context */
+            }
+
+                    .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
+                
         .invoice-header {
           display: flex;
           justify-content: space-between;
           border-bottom: 2px solid #333;
           padding-bottom: 20px;
         }
+
+
+
+
 
         .invoice-header h1 {
           margin: 0;
@@ -206,7 +237,9 @@ export const t3 = (
       </style>
     </head>
     <body>
-        ${previewMode === "pdf"
+        ${paidStamp}
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

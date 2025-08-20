@@ -8,8 +8,14 @@ export const t18 = (
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
 
-    const bodyContent = `
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
 
+
+const bodyContent = `
     <div class="container">
     <img src="https://aiautoinvoicing.github.io/img/svg/logo.svg" alt="Logo" class="logo" style="width: 250px; height: 120px; " />
 

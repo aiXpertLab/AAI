@@ -7,8 +7,15 @@ export const t14 = (
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
-    const bodyContent = `
-  <header class="clearfix">
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `  <header class="clearfix">
+${paidStamp}
 <div id="logo" style="text-align: center;">
   ${oBiz.be_logo ? `
     <div class="logo" style="margin-bottom: 10px;">
@@ -169,10 +176,28 @@ export const t14 = (
         padding: 8px 0;
         text-align: center;
       }
+                    .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
     </style>
   </head>
   <body>
-    ${previewMode === "pdf"
+    ${paidStamp}
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.53); transform-origin: top left; width: 80%;">${bodyContent}</div>`

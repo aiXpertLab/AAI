@@ -13,8 +13,9 @@ export const t4 = (
         `
     : "";
 
-    const bodyContent = `
 
+
+const bodyContent = `
 <body>
 	<header class="clearfix">
 		<div class="container">
@@ -161,7 +162,28 @@ export const t4 = (
 		html {
 			line-height: 1;
 		}
-.logo {
+
+
+
+            .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
+
+
+        .logo {
   height: 160px; 
    width: auto;
   display: block;
@@ -447,12 +469,15 @@ header figure img {
 			text-align: center;
 		}
 
+        
 	</style>
 </head>
 
     <body>
   ${paidStamp}
+      ${paidStamp}
       ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

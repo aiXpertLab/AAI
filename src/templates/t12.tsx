@@ -8,8 +8,14 @@ export const t12 = (
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
-    const bodyContent = `
-  <div style="font-family: 'Open Sans', sans-serif; background: #fff; width: 8.5in; height: 11in; padding: 0.5in; box-shadow: 0 0 1in -0.25in rgba(0,0,0,0.5);">
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `  <div style="font-family: 'Open Sans', sans-serif; background: #fff; width: 8.5in; height: 11in; padding: 0.5in; box-shadow: 0 0 1in -0.25in rgba(0,0,0,0.5);">
     <header style="margin-bottom: 3em;">
       <h1 style="background: #000; color: #fff; padding: 0.5em 0; margin-bottom: 1em; text-align: center; letter-spacing: 0.5em;">Invoice</h1>
       <div style="display: flex; justify-content: space-between;">
@@ -104,6 +110,24 @@ export const t12 = (
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <style type="text/css">
+
+            .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
+
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
     body { margin: 0; padding: 0; background: #e1e1e1; }
     div, p, a, li, td { -webkit-text-size-adjust: none; }
@@ -131,7 +155,9 @@ export const t12 = (
   </style>
       </head>
       <body style="margin: 0;">
-        ${previewMode === "pdf"
+        ${paidStamp}
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

@@ -14,8 +14,9 @@ export function t2(
     : "";
 
 
-const bodyContent = `
-    <!-- Green background section -->
+
+
+const bodyContent = `    <!-- Green background section -->
     <div class="header-bg">
       <div class="invoice-banner">
         <div class="company-info">
@@ -263,7 +264,8 @@ const bodyContent = `
       </head>
       <body>
 ${paidStamp}
-        ${previewMode === "pdf"
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div class="preview-scale-container" style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

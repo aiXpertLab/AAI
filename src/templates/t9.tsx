@@ -7,8 +7,14 @@ export const t9 = (
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
-    const bodyContent = `
-    <div class="wrapper">
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `    <div class="wrapper">
       <header>
         ${oBiz.be_logo ? `<img src="${oBiz.be_logo}" alt="Logo" class="logo" />` : ""}
         <h1>${oBiz.be_name || "Your Company"}</h1>
@@ -180,8 +186,23 @@ export const t9 = (
             padding-top: 20px;
             margin-top: 20px;
           }
+            .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
 
-          footer {
+          .footer {
             text-align: center;
             color: #888;
             font-style: italic;
@@ -191,7 +212,9 @@ export const t9 = (
         </style>
       </head>
       <body>
-        ${previewMode === "pdf"
+        ${paidStamp}
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`

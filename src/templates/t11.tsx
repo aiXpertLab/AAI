@@ -6,8 +6,11 @@ export const t11 = (
   oBiz: Partial<BE_DB>,
   previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
-  const bodyContent = `
-<!DOCTYPE html>
+  const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+    ? `<div class="paid-stamp">PAID</div>`
+    : "";
+
+const bodyContent = `<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -16,13 +19,31 @@ export const t11 = (
   <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
   <style type="text/css">
     @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-    body { margin: 0; padding: 0; background: #e1e1e1; }
+    body { margin: 0; padding: 0; background: #e1e1e1; position: relative; }
     div, p, a, li, td { -webkit-text-size-adjust: none; }
     .ReadMsgBody, .ExternalClass { width: 100%; background-color: #ffffff; }
     html, body { width: 100%; height: 100%; background-color: #e1e1e1; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
     p { padding: 0 !important; margin: 0 !important; }
     .visibleMobile { display: none; }
     .hiddenMobile { display: block; }
+    
+    /* PAID STAMP CSS */
+    .paid-stamp {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-25deg);
+      font-size: 88px;
+      font-weight: bold;
+      color: rgba(255, 0, 0, 0.25);
+      border: 8px solid rgba(255, 0, 0, 0.3);
+      padding: 15px 30px;
+      border-radius: 15px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    
     @media only screen and (max-width: 600px) {
       body { width: auto !important; }
       table[class=fullTable] { width: 96% !important; clear: both; }
@@ -42,6 +63,7 @@ export const t11 = (
   </style>
 </head>
 <body>
+  ${paidStamp}
   <!-- Header section here -->
   <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="fullTable" bgcolor="#e1e1e1">
     <tr><td height="20"></td></tr>

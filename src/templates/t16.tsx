@@ -8,8 +8,15 @@ export const t16 = (
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
-    const bodyContent = `
-  <div style="background: #aaa; color: #eee; font-family: 'Arial', sans-serif; padding: 40px;">
+        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `  <div style="background: #aaa; color: #eee; font-family: 'Arial', sans-serif; padding: 40px;">
+${paidStamp}
     <h1 style="border-bottom: 2px solid #444; padding-bottom: 10px;">Invoice</h1>
     <div style="display: flex; justify-content: space-between;">
       <div>
@@ -65,6 +72,22 @@ export const t16 = (
         padding: 0;
         background: #aaa;
       }
+                    .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
     </style>
   </head>
   <body>

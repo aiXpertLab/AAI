@@ -6,8 +6,14 @@ export const t8 = (
   oBiz: Partial<BE_DB>,
   previewMode: "pdf" | "picker" | "view" = "pdf"
 ) => {
-  const bodyContent = `
-    <div class="invoice-wrapper">
+      const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
+const bodyContent = `    <div class="invoice-wrapper">
       <div class="card">
         <div class="header">
           <div class="company-name">
@@ -31,7 +37,7 @@ export const t8 = (
           </div>
           <div>
             <h3>Bill To:</h3>
-            <p>${(oInv as any)?.client_company_name || "Client Company Name"}<br/>${oInv?.client_address || "Client Address"}</p>
+            <p>${(oInv as any)?.client_company_name || "Client Company Name"}<br/>${(oInv as any).client_address || "Client Address"}</p>
           </div>
         </div>
 
@@ -189,6 +195,23 @@ export const t8 = (
           line-height: 1.5;
         }
 
+            .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
+
         footer {
           text-align: center;
           margin-top: 40px;
@@ -199,6 +222,8 @@ export const t8 = (
       </style>
     </head>
     <body>
+    ${paidStamp}
+
       ${
         previewMode === "pdf"
           ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`

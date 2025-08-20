@@ -231,8 +231,10 @@ export const t1 = (
       </style>
     </head>
     <body>
-    ${paidStamp}
-        ${previewMode === "pdf"
+    
+        ${paidStamp}
+      ${previewMode === "pdf"
+  
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
                 ? `<div style="transform: scale(0.5); transform-origin: top left; width: 200%;">${bodyContent}</div>`
