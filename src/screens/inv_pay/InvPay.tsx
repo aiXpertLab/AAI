@@ -37,7 +37,7 @@ export const InvPay: React.FC = () => {
     const [showAddPayment, setShowAddPayment] = React.useState(false);
     const tip1 = useTipVisibility('tip1_count', true, 1800);
 
-    const { updateInv, fetch1Inv,insertPayment, deletePayment, duplicateInv } = useInvCrud();
+    const { updateInv, fetch1Inv, insertPayment, deletePayment, duplicateInv } = useInvCrud();
     const { updateBiz } = useBizCrud();
 
     const removePayment = async (pId: string) => {
@@ -256,12 +256,21 @@ export const InvPay: React.FC = () => {
 
                         {/* Live Preview */}
                         <View style={{ minHeight: 600, flexShrink: 0 }}>
-                            <WebView
+                            {/* <WebView
                                 originWhitelist={["*"]}
                                 source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || 't1') }}
                                 style={{ flex: 1, backgroundColor: 'transparent' }}
                                 nestedScrollEnabled
+                            /> */}
+                            <WebView
+                                // key={oInv?.inv_id + (oInv?.inv_payment_status ?? "")}
+                                key={JSON.stringify({ oInv, oBiz })}
+                                originWhitelist={["*"]}
+                                source={{ html: genHTML(oInv!, oBiz!, "view", oInv!.inv_template_id || "t1") }}
+                                style={{ flex: 1, backgroundColor: "transparent" }}
+                                nestedScrollEnabled
                             />
+
 
                             {tip1.visible && <TooltipBubble />}
                             <TouchableWithoutFeedback onPress={() => setShowTemplateModal(true)}>

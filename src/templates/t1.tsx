@@ -1,14 +1,16 @@
 import { InvDB, BE_DB, ItemDB, ClientDB } from "@/src/types";
 import {date2string} from "@/src/utils/dateUtils"
 
-
-
 export const t1 = (
     oInv: Partial<InvDB>,
     oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
+    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0)
+        ? `    <div class="paid-stamp">PAID</div>  `  : "";
+
     const bodyContent = `
+    
   <div class="invoice-container">
     
     <div class="invoice-header">
@@ -42,8 +44,8 @@ export const t1 = (
     <div class="bill-section">
       <h3>Bill To:</h3>
       <p>
-        ${oInv?.client_company_name || "Client Company Name"}<br />
-        ${oInv?.client_address || "Client Address"}
+        ${(oInv as any)?.client_company_name || "Client Company Name"}<br />
+        ${(oInv as any)?.client_address || "Client Address"}
       </p>
     </div>
 
@@ -204,6 +206,21 @@ export const t1 = (
         .notes-section {
           margin-top: 30px;
         }
+.paid-stamp {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  font-size: 88px;
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.25);
+  border: 8px solid rgba(255, 0, 0, 0.3);
+  padding: 15px 30px;
+  border-radius: 15px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 9999;
+}
 
         .invoice-footer {
           margin-top: 40px;
@@ -214,6 +231,7 @@ export const t1 = (
       </style>
     </head>
     <body>
+    ${paidStamp}
         ${previewMode === "pdf"
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"

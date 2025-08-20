@@ -6,6 +6,14 @@ export function t2(
     oBiz: Partial<BE_DB>, 
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ): string {
+
+    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0)
+        ? `
+            <div class="paid-stamp">PAID</div>
+        `
+    : "";
+
+
 const bodyContent = `
     <!-- Green background section -->
     <div class="header-bg">
@@ -228,6 +236,23 @@ const bodyContent = `
             width: 100%;
             }
 
+
+            .paid-stamp {
+                position: absolute;
+                top: 30%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(-25deg);
+                font-size: 88px;
+                font-weight: bold;
+                color: rgba(255, 0, 0, 0.25);
+                border: 8px solid rgba(255, 0, 0, 0.3);
+                padding: 15px 30px;
+                border-radius: 15px;
+                text-transform: uppercase;
+                pointer-events: none;
+                z-index: 9999;
+                }
+
           .footer {
             margin-top: 40px;
             font-size: 14px;
@@ -237,6 +262,7 @@ const bodyContent = `
         </style>
       </head>
       <body>
+${paidStamp}
         ${previewMode === "pdf"
             ? `<div style="transform: scale(1); transform-origin: top left; width: 100%;">${bodyContent}</div>`
             : previewMode === "view"
