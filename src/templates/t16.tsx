@@ -8,11 +8,8 @@ export const t16 = (
     // oInv!.inv_items: Partial<ItemDB>[],
     previewMode: "pdf" | "picker" | "view" = "pdf",
 ) => {
-        const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
-        ? `
-            <div class="paid-stamp">PAID</div>
-        `
-    : "";
+    const paidStamp = (oInv.inv_payment_status === "Paid" || Number(oInv.inv_balance_due) === 0) && oBiz.be_show_paid_stamp
+        ? `<div class="paid-stamp">PAID</div>`: "";
 
 
 const bodyContent = `  <div style="background: #aaa; color: #eee; font-family: 'Arial', sans-serif; padding: 40px;">

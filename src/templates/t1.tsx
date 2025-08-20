@@ -38,9 +38,6 @@ export const t1 = (
       </div>
     </div>
 
-
-
-
     <div class="bill-section">
       <h3>Bill To:</h3>
       <p>

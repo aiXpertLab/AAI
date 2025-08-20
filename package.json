@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/caveat": "^0.4.1",
-    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/datetimepicker": "8.4.1",
     "@react-native-firebase/analytics": "^22.4.0",
     "@react-native-firebase/app": "^22.4.0",
