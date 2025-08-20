@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const CONFIG_URL = 'https://raw.githubusercontent.com/aiautoinvoicing/aiautoinvoicing.github.io/refs/heads/main/config/aiai.json';
-const DEFAULT_API_URL = 'https://xai34130.ddns-ip.net:8080/aiai/image_invoice_json';
+const CONFIG_URL = 'https://raw.githubusercontent.com/aiautoinvoicing/aiautoinvoicing.github.io/refs/heads/main/config/aai.json';
+const DEFAULT_API_URL = 'https://xai34130.ddns-ip.net:8080/aai/image_invoice_json';
 // https://xai34130.ddns-ip.net:8000/
 
 export const fetchAPIUrl = async () => {
