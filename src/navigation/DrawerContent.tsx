@@ -111,7 +111,7 @@ const CustomDrawerContent = (props: any) => {
         { icon: 'mail-outline', label: 'Contact Us', onPress: handleContactUs },
         // { icon: 'archive-outline', label: 'Archived', onPress: handleArchive },
         { icon: 'trash-outline', label: 'Deleted', onPress: handleDelete },
-        { icon: 'save-outline', label: 'Backup', onPress: handleBackup },
+        { icon: 'save-outline', label: 'Backup/Export', onPress: handleBackup },
         { icon: 'shield-outline', label: 'Privacy Policy', onPress: handlePrivacyPolicy },
         { icon: 'cafe', label: 'Buy Me a Coffee', onPress: () => Linking.openURL('https://ko-fi.com/aiautoinvoicing'), },
     ];

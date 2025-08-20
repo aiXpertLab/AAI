@@ -37,7 +37,9 @@ export const InvoiceCard: React.FC<Props> = ({ item }) => {
                 <View style={{ alignItems: 'flex-end' }}>
                     <Text style={{ fontWeight: 'bold' }}>${item.inv_total}</Text>
                     <Text style={{ color: 'gray' }}>{date2string(item.inv_date)}</Text>
-                    <Text style={{ color: 'gray' }}>{item.inv_payment_status}</Text>
+                    <Text style={{ color: item.inv_payment_status === "Overdue" ? "#D87C7C" : "gray" }}>
+                        {item.inv_payment_status}
+                    </Text>
                 </View>
             </View>
         </View>

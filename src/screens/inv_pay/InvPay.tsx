@@ -184,9 +184,9 @@ export const InvPay: React.FC = () => {
             headerRight: () => (
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     {/* Email Button */}
-                    <TouchableOpacity onPressIn={sendEmail}>
+                    {/* <TouchableOpacity onPressIn={sendEmail}>
                         <Ionicons name="mail-outline" size={25} color="#fff" style={{ marginRight: 30 }} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     {/* Edit Button */}
                     <TouchableOpacity onPressOut={() => onEdit()}>
                         <Ionicons name="create-outline" size={26} color="#fff" style={{ marginRight: 4 }} />
@@ -356,8 +356,8 @@ export const InvPay: React.FC = () => {
                     {/* Bottom Floating Action Bar */}
                     <View style={s_inv.FloatingBar}>
                         <TouchableOpacity onPress={onDelete}><Ionicons name="trash-outline" size={26} color="#333" /></TouchableOpacity>
-                        <TouchableOpacity onPress={onArchive}><Ionicons name="archive-outline" size={26} color="#333" /></TouchableOpacity>
                         <TouchableOpacity onPress={onDuplicate}><Ionicons name="copy-outline" size={26} color="#333" /></TouchableOpacity>
+                        <TouchableOpacity onPress={sendEmail}><Ionicons name="mail-outline" size={26} color="#333" /></TouchableOpacity>
                         <TouchableOpacity onPress={handleShare}><Ionicons name="share-social-outline" size={26} color="#333" /></TouchableOpacity>
                     </View>
                 </View>
@@ -365,4 +365,3 @@ export const InvPay: React.FC = () => {
         </KeyboardAvoidingView>
     );
 };
-

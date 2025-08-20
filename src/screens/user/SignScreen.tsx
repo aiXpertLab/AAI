@@ -49,8 +49,7 @@ export default function SmartAuthScreen() {
             console.log('✅ Signed in successfully!');
         } catch (signInError: any) {
             if (
-                signInError.code === 'auth/user-not-found' ||
-                signInError.code === 'auth/invalid-credential'
+                signInError.code === 'auth/user-not-found' 
             ) {
                 Alert.alert(
                     'No account found',
@@ -80,7 +79,7 @@ export default function SmartAuthScreen() {
                         },
                     ]
                 );
-            } else if (signInError.code === 'auth/wrong-password') {
+            } else if (signInError.code === 'auth/wrong-password' || signInError.code === 'auth/invalid-credential') {
                 setMessage('❌ Incorrect password.');
             } else {
                 setMessage(`❌ Sign-in failed: ${signInError.message}`);

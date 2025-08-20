@@ -3,7 +3,13 @@ import Constants from 'expo-constants';
 const version = Constants.expoConfig?.version ?? '18.8.30';
 
 import React from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, Alert } from "react-native";
+import { useFirebaseUserStore } from '@/src/stores/FirebaseUserStore';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '@/src/config/firebaseConfig';
+import { updatePassword } from "firebase/auth";
+import { deleteUser } from "firebase/auth";
+import { useInvCrud, useBizCrud } from "@/src/firestore";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -17,6 +23,53 @@ import { useBizStore } from '@/src/stores';
 const Drawer_Settings_Screen: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<DetailStack>>();
     const { oBiz, updateOBiz, setOBiz } = useBizStore();  // 🧠 Zustand action
+    const firebaseUser = useFirebaseUserStore.getState().FirebaseUser;
+    const email = firebaseUser?.email;
+    const { updateBiz } = useBizCrud();
+
+    const handleResetPassword = async () => {
+        if (!email) return Alert.alert('Please enter your email to reset password.');
+        try {
+            await sendPasswordResetEmail(auth, email.trim().toLowerCase());
+            Alert.alert('Password reset email sent!', 'Check your inbox or spam folder.');
+        } catch (error: any) {
+            Alert.alert('Error', error.message);
+        }
+    };
+
+
+    const handleDeleteAccount = async () => {
+        if (!auth.currentUser) {
+            Alert.alert("No user is signed in.");
+            return;
+        }
+
+        Alert.alert(
+            "⚠️ Delete Account?",
+            "This action is **undoable**. All your data will be lost and cannot be recovered.\n\n👉 Please backup/export your data before proceeding.",
+            [
+                { text: "Cancel", style: "cancel" },
+                {
+                    text: "Delete Permanently",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            await deleteUser(auth.currentUser!);
+                            Alert.alert("✅ Account deleted successfully!");
+                        } catch (err: any) {
+                            if (err.code === "auth/requires-recent-login") {
+                                Alert.alert("Please sign in again to delete your account.");
+                            } else {
+                                Alert.alert("❌ Error", err.message);
+                            }
+                        }
+                        navigation.goBack();
+                    },
+                },
+            ]
+        );
+    };
+
 
     React.useLayoutEffect(() => {
         const parent = navigation.getParent();
@@ -48,8 +101,9 @@ const Drawer_Settings_Screen: React.FC = () => {
                     title="Paid show on Invoice"
                     toggle
                     toggleValue={oBiz?.be_show_paid_stamp ?? true}
-                    onToggle={(val) => {
-                        updateOBiz({ be_show_paid_stamp: val });  // Zustand or Firestore update
+                    onToggle={async (val) => {
+                        await updateOBiz({ be_show_paid_stamp: val });  // Zustand or Firestore update
+                        await updateBiz({ be_show_paid_stamp: val });  // Zustand or Firestore update
                     }}
                 />
             </Section>
@@ -60,6 +114,11 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem title="Number Format" subtitle="1,000,000.00" />
                 <SettingItem title="Date Format" subtitle="31/12/2025" />
             </Section> */}
+
+            <Section title="User">
+                <SettingItem title="Reset Password" onPress={handleResetPassword} />
+                <SettingItem title="Delete Account" onPress={handleDeleteAccount} />
+            </Section>
 
             {/* {__DEV__ && (
                 <Section title="Dev">
