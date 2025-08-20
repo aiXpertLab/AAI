@@ -15,7 +15,7 @@
         },
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.aixpertlab.aiautoinvoicing"
+            "bundleIdentifier": "com.aixpertlab.aiautoinvoicing.dev"
         },
         "android": {
             "adaptiveIcon": {
@@ -27,7 +27,7 @@
             "permissions": [
                 "com.android.vending.BILLING"
             ],
-            "package": "com.aixpertlab.aiautoinvoicing"
+            "package": "com.aixpertlab.aiautoinvoicing.dev"
         },
         "web": {
             "bundler": "metro",
