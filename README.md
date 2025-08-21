@@ -1,5 +1,7 @@
 https://aiautoinvoicing.github.io/
 
+https://gateway.ai.cloudflare.com/v1/fd033d3686dfa2f44dedab3003704f8d/ai/openai
+
 adb shell setprop debug.firebase.analytics.app com.aixpertlab.aiautoinvoicing
 
 1. db strucutre:

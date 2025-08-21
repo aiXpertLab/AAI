@@ -38,6 +38,22 @@ const Drawer_Settings_Screen: React.FC = () => {
     };
 
 
+    const handleAI = async () => {
+        const res = await fetch("https://gateway.ai.cloudflare.com/v1/fd033d3686dfa2f44dedab3003704f8d/ai/openai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [{ role: "user", content: "Hello from AI Gateway!" }]
+            })
+        });
+
+        const data = await res.json();
+        console.log(data);
+    }
+
     const handleDeleteAccount = async () => {
         if (!auth.currentUser) {
             Alert.alert("No user is signed in.");
@@ -120,11 +136,11 @@ const Drawer_Settings_Screen: React.FC = () => {
                 <SettingItem title="Delete Account" onPress={handleDeleteAccount} />
             </Section>
 
-            {/* {__DEV__ && (
+            {__DEV__ && (
                 <Section title="Dev">
-                    <SettingItem title="Seed" onPress={() => navigation.navigate("SeedBizScreen")} />
+                    <SettingItem title="AI" onPress={handleAI} />
                 </Section>
-            )} */}
+            )}
 
             <Pressable
                 onLongPress={() => {
