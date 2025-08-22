@@ -26,6 +26,8 @@ const Drawer_Settings_Screen: React.FC = () => {
     const firebaseUser = useFirebaseUserStore.getState().FirebaseUser;
     const email = firebaseUser?.email;
     const { updateBiz } = useBizCrud();
+    const [answer, setAnswer] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
 
     const handleResetPassword = async () => {
         if (!email) return Alert.alert('Please enter your email to reset password.');
@@ -39,20 +41,24 @@ const Drawer_Settings_Screen: React.FC = () => {
 
 
     const handleAI = async () => {
-        const res = await fetch("https://gateway.ai.cloudflare.com/v1/fd033d3686dfa2f44dedab3003704f8d/ai/openai", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: "gpt-4o-mini",
-                messages: [{ role: "user", content: "Hello from AI Gateway!" }]
-            })
-        });
-
-        const data = await res.json();
-        console.log(data);
-    }
+        setLoading(true);
+        setAnswer(""); // clear previous answer
+        try {
+            const response = await fetch("https://aiworker.aiautoinvoicing.workers.dev/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: "Canada Capital" }),
+            });
+            const data = await response.json();
+            console.log("AI Response:", data);
+            setAnswer(data.answer);
+        } catch (err) {
+            setAnswer("Error fetching answer");
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleDeleteAccount = async () => {
         if (!auth.currentUser) {
@@ -139,6 +145,10 @@ const Drawer_Settings_Screen: React.FC = () => {
             {__DEV__ && (
                 <Section title="Dev">
                     <SettingItem title="AI" onPress={handleAI} />
+                    <View style={{ marginTop: 8 }}>
+                        {loading && <Text>Loading...</Text>}
+                        {!loading && answer ? <Text>{answer}</Text> : null}
+                    </View>
                 </Section>
             )}
 
